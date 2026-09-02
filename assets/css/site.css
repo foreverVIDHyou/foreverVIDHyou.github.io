@@ -143,24 +143,35 @@ p  { margin: 0 0 1.05em; }
 
 .amp { font-family: var(--script); color: var(--gold); font-weight: 400; letter-spacing: 0; }
 
-/* the gold rule with a lozenge at its centre — the site's one ornament */
-.rule {
-  width: min(300px, 62%); height: 1px; background: var(--gold-lt);
-  margin: 1.6rem auto; position: relative;
-}
-.rule::after {
-  content: ""; position: absolute; left: 50%; top: 50%;
-  width: 7px; height: 7px; translate: -50% -50%; rotate: 45deg;
-  background: var(--gold);
+/* ---- vector ornaments -------------------------------------------------
+   All of these are SVG, drawn by tools/make_ornaments.py. They replaced
+   bitmaps cropped from the 1080px-wide save-the-date video, which were being
+   painted at up to 2360 device pixels on a phone and looked soft. Vector art
+   has no resolution to run out of, so these stay sharp at any zoom or density.
+   ---------------------------------------------------------------------- */
+
+/* the section divider: a short stave, blossom either side, one flower where a
+   note would sit */
+.divider {
+  display: block; margin: 1.5rem auto;
+  width: min(300px, 66%); height: auto;
 }
 
-/* the cherry blossom garland, lifted from their own save-the-date */
+/* the garland arching over the invitation */
 .garland {
   position: absolute; top: 0; left: 50%; translate: -50% 0;
-  width: min(1180px, 118vw); max-width: none; height: auto;
+  width: min(1400px, 124vw); max-width: none; height: auto;
   pointer-events: none; user-select: none; z-index: 0;
-  opacity: .95;
 }
+
+/* corner sprigs on the story and travel headers */
+.sprig {
+  position: absolute; top: 0; width: min(360px, 40vw); height: auto;
+  pointer-events: none; user-select: none; z-index: 0;
+}
+.sprig-l { left: 0; }
+.sprig-r { right: 0; }
+@media (max-width: 620px) { .sprig { width: 54vw; opacity: .9; } }
 
 /* ==========================================================================
    buttons
@@ -211,7 +222,7 @@ p  { margin: 0 0 1.05em; }
 }
 
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
-.brand-mark { border-radius: 6px; width: 34px; height: 34px; }
+.brand-mark { width: 36px; height: auto; }
 .brand-txt { font-family: var(--display); font-size: 1.32rem; font-weight: 600; letter-spacing: .04em; }
 .brand-txt em { font-family: var(--script); font-style: normal; color: var(--gold); }
 
@@ -301,9 +312,11 @@ p  { margin: 0 0 1.05em; }
 
 .hero-in { position: relative; z-index: 1; max-width: 780px; }
 
+/* the mark itself, gold on cream, not a dark tile. As a rounded green square
+   it read as an app icon stuck onto the invitation. */
 .hero-mono {
-  width: 82px; height: 82px; border-radius: 11px;
-  margin: 0 auto 1.7rem; box-shadow: var(--shadow);
+  width: clamp(88px, 12vw, 118px); height: auto;
+  margin: 0 auto 1.4rem;
 }
 
 .names {
@@ -358,10 +371,13 @@ p  { margin: 0 0 1.05em; }
 }
 .count.over .count-row { display: none; }
 
+/* Capped at 280 CSS px because the source illustration is 560px wide: any
+   larger and a 2x screen upscales it. Everything else on the page is either
+   vector or comfortably oversized, so this is the one asset with a ceiling. */
 .hero-art {
   position: relative; z-index: 1;
-  width: min(400px, 74vw); height: auto;
-  margin: clamp(1.6rem, 4vw, 2.5rem) auto 0;
+  width: min(280px, 62vw); height: auto;
+  margin: clamp(1.4rem, 3.5vw, 2.2rem) auto 0;
 }
 
 /* Stacked, the illustration is 1.8x taller than it is wide, so at 400px it
@@ -369,7 +385,7 @@ p  { margin: 0 0 1.05em; }
    before a guest reaches the schedule. Bound it by viewport height instead of
    width so it stays proportionate on a short laptop screen. */
 @media (min-width: 760px) and (max-width: 1399px) {
-  .hero-art { max-height: 48vh; width: auto; }
+  .hero-art { max-height: 44vh; width: auto; max-width: 280px; }
 }
 
 /* Wide screens put the illustration beside the names rather than under them.
@@ -383,7 +399,7 @@ p  { margin: 0 0 1.05em; }
     align-items: end; padding-bottom: 0; column-gap: 1rem;
   }
   .hero-in { grid-column: 2; padding-bottom: 3.5rem; }
-  .hero-art { grid-column: 3; grid-row: 1; width: 100%; max-width: 300px;
+  .hero-art { grid-column: 3; grid-row: 1; width: 100%; max-width: 280px;
               align-self: end; margin: 0; }
 }
 
@@ -421,7 +437,7 @@ p  { margin: 0 0 1.05em; }
   background: var(--marigold); margin-right: .7em; vertical-align: middle;
 }
 
-.sec-more { text-align: center; margin: 2.4rem 0 0; }
+.sec-more { text-align: center; margin: 1rem 0 0; display: flex; gap: .4rem 1.6rem; justify-content: center; flex-wrap: wrap; }
 /* inline-block with padding: bare inline links are ~18px tall on a phone */
 .sec-more a {
   display: inline-block;
@@ -503,6 +519,16 @@ p  { margin: 0 0 1.05em; }
   color: var(--gold-lt); margin: 0 0 2rem;
 }
 
+/* the piano-and-violin drawing that opens Our Story */
+.duet {
+  margin: 0 auto clamp(2.5rem, 6vw, 4rem); max-width: 660px; text-align: center;
+}
+.duet img { width: 100%; height: auto; }
+.duet figcaption {
+  font-family: var(--display); font-style: italic; font-size: 1.1rem;
+  color: var(--ink-2); margin-top: .6rem;
+}
+
 /* ==========================================================================
    story chapters
    ========================================================================== */
@@ -531,6 +557,8 @@ p  { margin: 0 0 1.05em; }
   width: auto; max-width: 100%; max-height: 460px;
   border-radius: var(--radius);
 }
+/* the mark is gold on transparency: it wants air, not a frame */
+.chapter-fig img[src$="mark.png"] { max-height: 340px; padding: 1rem; }
 
 /* ==========================================================================
    travel cards
@@ -731,7 +759,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
    green they desaturate into grey smudges rather than reading as flowers. The
    ornament belongs on cream, where it was drawn to sit. */
 .foot .wrap { position: relative; z-index: 1; }
-.foot-mono { width: 62px; height: 62px; border-radius: 9px; margin: 0 auto 1.5rem; }
+.foot-mono { width: 72px; height: auto; margin: 0 auto 1.4rem; }
 .foot-names {
   font-family: var(--display); font-weight: 400;
   font-size: clamp(1.5rem, 4vw, 2.05rem); color: var(--paper); margin: 0 0 .3em;
@@ -761,7 +789,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
    ========================================================================== */
 
 @media print {
-  .head, .cta, .count, .hero-art, .garland, .foot-garland, .sec-rsvp,
+  .head, .cta, .count, .hero-art, .garland, .sprig, .sec-rsvp,
   .ev-cal, .band, .nav-rsvp { display: none !important; }
   body { background: #fff; font-size: 11pt; }
   .sec { padding: 1.2rem 0; }
