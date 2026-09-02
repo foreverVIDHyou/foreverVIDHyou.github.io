@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://foreverVIDHyou.github.io/sitemap.xml
