@@ -1,11 +1,11 @@
 /* ==========================================================================
    Vibhakar & Dhwani — 5–6 December 2026
-   One stylesheet. Design tokens first; change those and the site moves.
+   One stylesheet. Design tokens first; change those and the whole site moves.
 
    The palette is not invented. Every colour is lifted from the couple's own
-   material: the bottle green and gold are the dV monogram, the rose is the
-   band on the save-the-date, the marigold is the umbrella, and the paper is
-   the white the illustrations were drawn on — which is why the site is cream
+   artwork: the bottle green and gold are the dV monogram, the rose is the band
+   on the save-the-date, the marigold is the umbrella, and the paper is the
+   white the illustrations were drawn on — which is why the site is cream
    rather than white, and why the artwork drops onto it without a seam.
    ========================================================================== */
 
@@ -18,7 +18,8 @@
   --ink-2:    #3D5347;   /* secondary text */
   --ink-3:    #7C7565;   /* metadata */
   --gold:     #B08D3C;
-  --gold-2:   #D8C79C;   /* hairlines */
+  --gold-lt:  #D8C79C;   /* hairlines */
+  --gold-pale:#F6EEDC;   /* icon wells */
   --rose:     #C2185B;
   --rose-2:   #F8E6EC;
   --marigold: #E2A72E;
@@ -31,18 +32,18 @@
   --script:  "Great Vibes", "Cormorant Garamond", cursive;
 
   /* --- metrics ------------------------------------------------------- */
-  --wrap:   1180px;
-  --narrow: 720px;
+  --wrap:   1140px;
+  --narrow: 700px;
   --pad:    clamp(1.15rem, 4.5vw, 2.6rem);
   --radius: 4px;
   --t:      200ms cubic-bezier(.2, .7, .3, 1);
   --head-h: 66px;
-  --shadow: 0 1px 2px rgba(20,40,29,.05), 0 8px 28px -12px rgba(20,40,29,.16);
+  --shadow: 0 1px 2px rgba(20,40,29,.05), 0 10px 30px -14px rgba(20,40,29,.18);
 }
 
-/* Devanagari needs a little more room and a different display face; Cormorant
-   has no Devanagari coverage, so without this the Hindi silently falls back to
-   whatever the browser picks and the two languages stop looking related. */
+/* Cormorant has no Devanagari coverage, so without this the Hindi silently
+   falls back to whatever the browser picks and the two languages stop looking
+   like the same site. */
 html[lang="hi"] {
   --display: "Noto Serif Devanagari", "Cormorant Garamond", serif;
   --body:    "Noto Serif Devanagari", "Lora", serif;
@@ -58,12 +59,10 @@ html[lang="hi"] {
 html[lang="en"] .l[data-l="hi"],
 html[lang="hi"] .l[data-l="en"] { display: none; }
 
-/* Hindi runs longer than English almost everywhere and sits lower on the line */
-html[lang="hi"] .names { font-size: clamp(2.6rem, 9vw, 5.4rem); }
+html[lang="hi"] .names { font-size: clamp(2.5rem, 8.5vw, 5rem); font-weight: 500; }
 html[lang="hi"] .eyebrow { letter-spacing: .12em; }
 /* "दोपहर ४ बजे" needs more room than "4 pm" */
-html[lang="hi"] .tl-i { grid-template-columns: 112px 1fr; }
-html[lang="hi"] .tl-t { text-transform: none; letter-spacing: .02em; }
+html[lang="hi"] .ev-t { letter-spacing: .02em; text-transform: none; }
 
 /* ==========================================================================
    base
@@ -74,7 +73,7 @@ html[lang="hi"] .tl-t { text-transform: none; letter-spacing: .02em; }
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--head-h) + 12px);
+  scroll-padding-top: calc(var(--head-h) + 14px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -91,45 +90,37 @@ body {
   color: var(--ink);
   font-family: var(--body);
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-/* height:auto is load-bearing, not boilerplate. The gallery images carry
-   width/height attributes so the browser can reserve space and not shift the
-   layout while they load — but a used width *and* a used height make
-   `aspect-ratio` inert, and the tiles rendered at the literal 1000px from the
-   attribute instead of the 4:5 the CSS asks for. Letting the height go auto
-   hands control back to aspect-ratio while keeping the attributes doing their
-   real job. */
+/* height:auto is load-bearing. Images carry width/height attributes so the
+   browser can reserve space, but a used width *and* height make `aspect-ratio`
+   inert — tiles then render at the literal attribute height. */
 img, video { max-width: 100%; height: auto; display: block; }
 
-a { color: var(--ink); text-decoration-color: var(--gold-2); text-underline-offset: .2em; }
+a { color: var(--ink); text-decoration-color: var(--gold-lt); text-underline-offset: .2em; }
 a:hover { text-decoration-color: var(--gold); }
 
 h1, h2, h3, h4 {
   font-family: var(--display);
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -.005em;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -.004em;
   margin: 0;
 }
-h2 { font-size: clamp(2rem, 5vw, 3rem); }
-h3 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); }
-h4 { font-size: 1.18rem; }
+h1 { font-size: clamp(2.4rem, 6.5vw, 4rem); font-weight: 400; }
+h2 { font-size: clamp(1.9rem, 4.4vw, 2.8rem); }
+h3 { font-size: clamp(1.3rem, 2.4vw, 1.6rem); }
+h4 { font-size: 1.2rem; }
 p  { margin: 0 0 1.05em; }
 
 ::selection { background: var(--marigold); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
 
-:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
-.wrap   { width: 100%; max-width: var(--wrap);   margin-inline: auto; padding-inline: var(--pad); }
+.wrap   { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
 .narrow { max-width: var(--narrow); }
 
 .skip {
@@ -138,25 +129,37 @@ p  { margin: 0 0 1.05em; }
 }
 .skip:focus { left: .5rem; top: .5rem; }
 
-.dot { color: var(--gold); padding-inline: .28em; }
+.dot { color: var(--gold); padding-inline: .3em; }
 
 .eyebrow {
   font-family: var(--ui);
-  font-size: .74rem;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase;
   color: var(--ink-3);
-  margin: 0 0 .7em;
+  margin: 0 0 .9em;
 }
 
-.lede { font-size: 1.1rem; color: var(--ink-2); max-width: 62ch; }
+.lede { font-size: 1.08rem; color: var(--ink-2); max-width: 60ch; }
 
-.amp {
-  font-family: var(--script);
-  color: var(--gold);
-  font-weight: 400;
-  letter-spacing: 0;
+.amp { font-family: var(--script); color: var(--gold); font-weight: 400; letter-spacing: 0; }
+
+/* the gold rule with a lozenge at its centre — the site's one ornament */
+.rule {
+  width: min(300px, 62%); height: 1px; background: var(--gold-lt);
+  margin: 1.6rem auto; position: relative;
+}
+.rule::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 7px; height: 7px; translate: -50% -50%; rotate: 45deg;
+  background: var(--gold);
+}
+
+/* the cherry blossom garland, lifted from their own save-the-date */
+.garland {
+  position: absolute; top: 0; left: 50%; translate: -50% 0;
+  width: min(1180px, 118vw); max-width: none; height: auto;
+  pointer-events: none; user-select: none; z-index: 0;
+  opacity: .95;
 }
 
 /* ==========================================================================
@@ -164,17 +167,12 @@ p  { margin: 0 0 1.05em; }
    ========================================================================== */
 
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: .5em;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
   font-family: var(--ui);
-  font-size: .84rem;
-  font-weight: 600;
-  letter-spacing: .11em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: .95em 1.9em;
-  border-radius: 100px;
-  border: 1px solid transparent;
+  font-size: .82rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+  padding: 1em 2em;
+  border-radius: 100px; border: 1px solid transparent;
   cursor: pointer;
   transition: background var(--t), color var(--t), border-color var(--t), transform var(--t);
 }
@@ -184,8 +182,11 @@ p  { margin: 0 0 1.05em; }
 .btn-primary:hover { background: #1D3A2A; }
 .btn-primary[disabled] { background: var(--ink-3); cursor: not-allowed; opacity: .55; }
 
-.btn-ghost { background: transparent; color: var(--ink); border-color: var(--gold-2); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--gold-lt); }
 .btn-ghost:hover { border-color: var(--gold); background: #FBF5E8; }
+
+.btn-gold { background: var(--gold); color: #1A1206; }
+.btn-gold:hover { background: #C29B45; }
 
 .btn-wide { width: 100%; padding-block: 1.1em; }
 
@@ -195,33 +196,29 @@ p  { margin: 0 0 1.05em; }
 
 .head {
   position: sticky; top: 0; z-index: 60;
-  background: rgba(253, 250, 244, .86);
+  background: rgba(253, 250, 244, .88);
   backdrop-filter: saturate(150%) blur(12px);
   -webkit-backdrop-filter: saturate(150%) blur(12px);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--t), background var(--t);
+  transition: border-color var(--t);
 }
 .head.stuck { border-bottom-color: var(--rule); }
 
 .head-in {
   max-width: var(--wrap); margin-inline: auto;
-  padding: 0 var(--pad);
-  height: var(--head-h);
+  padding: 0 var(--pad); height: var(--head-h);
   display: flex; align-items: center; gap: 1rem;
 }
 
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
 .brand-mark { border-radius: 6px; width: 34px; height: 34px; }
-.brand-txt {
-  font-family: var(--display); font-size: 1.3rem; font-weight: 600;
-  letter-spacing: .04em;
-}
+.brand-txt { font-family: var(--display); font-size: 1.32rem; font-weight: 600; letter-spacing: .04em; }
 .brand-txt em { font-family: var(--script); font-style: normal; color: var(--gold); }
 
-.nav { display: none; margin-left: auto; gap: clamp(.9rem, 2vw, 1.7rem); }
+.nav { display: none; margin-left: auto; align-items: center; gap: clamp(.9rem, 2vw, 1.8rem); }
 .nav-a {
-  font-family: var(--ui); font-size: .8rem; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase;
+  font-family: var(--ui); font-size: .78rem; font-weight: 600;
+  letter-spacing: .11em; text-transform: uppercase;
   color: var(--ink-2); text-decoration: none;
   padding: .4em 0; position: relative;
 }
@@ -233,55 +230,55 @@ p  { margin: 0 0 1.05em; }
 .nav-a:hover::after, .nav-a.on::after { transform: scaleX(1); }
 .nav-a.on { color: var(--ink); }
 
+.nav-rsvp {
+  font-family: var(--ui); font-size: .74rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+  background: var(--ink); color: var(--paper);
+  padding: .62em 1.25em; border-radius: 100px;
+  transition: background var(--t);
+}
+.nav-rsvp:hover { background: #1D3A2A; }
+
 .head-r { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
-@media (min-width: 900px) { .head-r { margin-left: 1.2rem; } }
+@media (min-width: 980px) { .head-r { margin-left: 1.2rem; } }
 
 .lang {
-  font-family: var(--ui); font-size: .78rem; font-weight: 600;
-  letter-spacing: .06em;
+  font-family: var(--ui); font-size: .76rem; font-weight: 600; letter-spacing: .06em;
   background: transparent; color: var(--ink-2);
-  border: 1px solid var(--gold-2); border-radius: 100px;
+  border: 1px solid var(--gold-lt); border-radius: 100px;
   padding: .58em 1.05em; cursor: pointer;
   transition: border-color var(--t), color var(--t), background var(--t);
 }
 .lang:hover { border-color: var(--gold); color: var(--ink); background: #FBF5E8; }
 
-.burger {
-  width: 42px; height: 38px; display: grid; place-content: center; gap: 5px;
-  background: none; border: 0; cursor: pointer; padding: 0;
-}
-.burger span {
-  display: block; width: 21px; height: 1.6px; background: var(--ink);
-  transition: transform var(--t), opacity var(--t);
-}
+.burger { width: 42px; height: 38px; display: grid; place-content: center; gap: 5px;
+  background: none; border: 0; cursor: pointer; padding: 0; }
+.burger span { display: block; width: 21px; height: 1.6px; background: var(--ink);
+  transition: transform var(--t), opacity var(--t); }
 .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.6px) rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.6px) rotate(-45deg); }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .nav { display: flex; }
   .burger { display: none; }
 }
 
-/* mobile drawer */
-@media (max-width: 899px) {
+@media (max-width: 979px) {
   .nav {
     position: fixed; inset: var(--head-h) 0 auto 0;
-    display: flex; flex-direction: column; gap: 0;
-    background: var(--paper);
-    border-bottom: 1px solid var(--rule);
+    display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
     padding: .5rem var(--pad) 1.4rem;
     transform: translateY(-8px); opacity: 0; pointer-events: none;
     transition: opacity var(--t), transform var(--t);
     box-shadow: var(--shadow);
   }
   .nav.open { transform: none; opacity: 1; pointer-events: auto; }
-  .nav-a {
-    padding: .95em 0; font-size: .95rem; letter-spacing: .08em;
-    border-bottom: 1px solid var(--rule);
-  }
+  .nav-a { padding: 1em 0; font-size: .92rem; letter-spacing: .09em;
+           border-bottom: 1px solid var(--rule); }
   .nav-a::after { display: none; }
-  .nav-a:last-child { border-bottom: 0; }
+  .nav-rsvp { margin-top: 1.1rem; text-align: center; padding: .95em 1.25em; }
 }
 
 /* ==========================================================================
@@ -290,359 +287,308 @@ p  { margin: 0 0 1.05em; }
 
 .hero {
   position: relative;
-  padding: clamp(2.5rem, 7vw, 5rem) var(--pad) 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
+  padding: clamp(3.2rem, 8vw, 5.5rem) var(--pad) 0;
+  display: grid; place-items: center; text-align: center;
   overflow: hidden;
 }
-
-/* a very soft marigold wash behind the top of the page */
 .hero::before {
   content: ""; position: absolute; z-index: 0;
-  top: -32vh; left: 50%; translate: -50% 0;
+  top: -34vh; left: 50%; translate: -50% 0;
   width: min(1100px, 150vw); aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(226,167,46,.14), rgba(226,167,46,0) 62%);
+  background: radial-gradient(circle, rgba(226,167,46,.13), rgba(226,167,46,0) 62%);
   pointer-events: none;
 }
 
-.hero-in { position: relative; z-index: 1; max-width: 760px; }
+.hero-in { position: relative; z-index: 1; max-width: 780px; }
 
 .hero-mono {
-  width: 78px; height: 78px; border-radius: 10px;
-  margin: 0 auto 1.6rem;
-  box-shadow: var(--shadow);
+  width: 82px; height: 82px; border-radius: 11px;
+  margin: 0 auto 1.7rem; box-shadow: var(--shadow);
 }
 
 .names {
   font-family: var(--display);
-  font-size: clamp(3rem, 11vw, 6.4rem);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -.012em;
-  margin: 0 0 .4em;
+  font-size: clamp(3rem, 10.5vw, 5.4rem);
+  font-weight: 300;
+  line-height: 1.02; letter-spacing: -.01em;
+  margin: 0 0 .35em;
   display: flex; flex-direction: column; align-items: center;
 }
-.names .amp {
-  font-size: .52em; line-height: 1; margin: .04em 0;
-}
+.names .amp { font-size: .5em; line-height: 1; margin: .05em 0; }
 @media (min-width: 760px) {
-  .names { flex-direction: row; gap: .3em; align-items: baseline; }
-  .names .amp { font-size: .62em; }
-}
-
-/* gold rule with a small lozenge in the middle */
-.rule {
-  width: min(320px, 70%); height: 1px; background: var(--gold-2);
-  margin: 1.5rem auto; position: relative;
-}
-.rule::after {
-  content: ""; position: absolute; left: 50%; top: 50%;
-  width: 7px; height: 7px; translate: -50% -50%; rotate: 45deg;
-  background: var(--gold);
+  .names { flex-direction: row; gap: .32em; align-items: baseline; }
+  .names .amp { font-size: .6em; }
 }
 
 .when {
-  font-family: var(--ui); font-size: clamp(1rem, 2.4vw, 1.22rem);
-  font-weight: 600; letter-spacing: .17em; text-transform: uppercase;
-  margin: 0 0 .5em;
+  font-family: var(--ui); font-size: clamp(.98rem, 2.2vw, 1.18rem);
+  font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  margin: 0 0 .55em;
 }
-.where { font-size: .98rem; color: var(--ink-2); margin: 0 0 1.5rem; }
+.where { font-size: .97rem; color: var(--ink-2); margin: 0 0 1.6rem; }
 .where a { text-decoration: none; }
 .where a:hover { text-decoration: underline; }
 
-.tag { margin: 0 0 2rem; }
+.tag { margin: 0 0 2.1rem; }
 .tag > span {
-  display: inline-block;
-  background: var(--rose-2); color: var(--rose);
-  font-family: var(--display); font-style: italic; font-size: 1.15rem;
-  padding: .38em 1.3em; border-radius: 100px;
+  display: inline-block; background: var(--rose-2); color: var(--rose);
+  font-family: var(--display); font-style: italic; font-size: 1.18rem;
+  padding: .4em 1.35em; border-radius: 100px;
 }
 
 .cta { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
 
-/* --- countdown --- */
-.count { margin: clamp(2.6rem, 6vw, 4rem) 0 0; }
+.count { margin: clamp(2.8rem, 6vw, 4rem) 0 0; }
 .count-lbl {
-  font-family: var(--ui); font-size: .72rem; font-weight: 600;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ink-3); margin: 0 0 1rem;
+  font-family: var(--ui); font-size: .7rem; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3);
+  margin: 0 0 1.1rem;
 }
-.count-row { display: flex; justify-content: center; gap: clamp(.7rem, 3.5vw, 2.2rem); }
+.count-row { display: flex; justify-content: center; gap: clamp(.7rem, 3.5vw, 2.4rem); }
 .cu { min-width: 62px; }
 .cu b {
-  display: block;
-  font-family: var(--display); font-size: clamp(1.9rem, 6vw, 2.9rem);
-  font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums;
+  display: block; font-family: var(--display);
+  font-size: clamp(1.9rem, 6vw, 2.9rem); font-weight: 400; line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 .cu i {
-  display: block; font-style: normal;
-  font-family: var(--ui); font-size: .64rem; font-weight: 600;
-  letter-spacing: .17em; text-transform: uppercase; color: var(--ink-3);
-  margin-top: .5em;
+  display: block; font-style: normal; font-family: var(--ui);
+  font-size: .62rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-3); margin-top: .55em;
 }
 .count.over .count-row { display: none; }
 
 .hero-art {
   position: relative; z-index: 1;
-  width: min(420px, 78vw); height: auto;
-  margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
+  width: min(400px, 74vw); height: auto;
+  margin: clamp(1.6rem, 4vw, 2.5rem) auto 0;
+}
+
+/* Stacked, the illustration is 1.8x taller than it is wide, so at 400px it
+   alone was 720px and pushed the hero to 1549px — nearly two laptop viewports
+   before a guest reaches the schedule. Bound it by viewport height instead of
+   width so it stays proportionate on a short laptop screen. */
+@media (min-width: 760px) and (max-width: 1399px) {
+  .hero-art { max-height: 48vh; width: auto; }
 }
 
 /* Wide screens put the illustration beside the names rather than under them.
-   It is a three-column grid — empty gutter, content, art — and not absolute
-   positioning, because absolute positioning anchored to the centre scales in
-   lockstep with the names and overlaps them at every width by the same 100px.
-   A grid column cannot be overlapped. The empty left gutter is what keeps the
-   names optically centred in the viewport, which an invitation wants.
-
-   Below 1520px there is not enough room for a 760px-wide pair of names plus
-   the art, so it stacks instead — the same layout the phone gets. */
-@media (min-width: 1520px) {
+   A three-column grid — empty gutter, content, art — not absolute positioning,
+   because absolute positioning anchored to the centre scales in lockstep with
+   the names and overlaps them at every width by the same amount. A grid column
+   cannot be overlapped. Below 1400px there is not room, so it stacks. */
+@media (min-width: 1400px) {
   .hero {
     grid-template-columns: minmax(0, 300px) minmax(0, 1fr) minmax(0, 300px);
-    align-items: end;
-    padding-bottom: 0;
-    column-gap: 1rem;
+    align-items: end; padding-bottom: 0; column-gap: 1rem;
   }
   .hero-in { grid-column: 2; padding-bottom: 3.5rem; }
-  .hero-art {
-    grid-column: 3; grid-row: 1;
-    width: 100%; max-width: 300px;
-    align-self: end; margin: 0;
-  }
+  .hero-art { grid-column: 3; grid-row: 1; width: 100%; max-width: 300px;
+              align-self: end; margin: 0; }
 }
+
+/* ==========================================================================
+   page heads (story, travel)
+   ========================================================================== */
+
+/* The top padding clears the garland, which is about 150px tall at its widest.
+   Less than this and the page title sits inside the blossoms. */
+.page-head {
+  position: relative; overflow: hidden; text-align: center;
+  padding: clamp(4.5rem, 12vw, 9rem) 0 clamp(1rem, 3vw, 2rem);
+}
+.page-head .wrap { position: relative; z-index: 1; }
+.page-head .lede { margin-inline: auto; }
 
 /* ==========================================================================
    sections
    ========================================================================== */
 
-.sec { padding: clamp(3.5rem, 9vw, 6.5rem) 0; }
+.sec { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.sec-top { padding-top: clamp(2rem, 4vw, 3rem); }
 .sec-alt { background: var(--paper-2); }
-.sec > .wrap > .eyebrow { text-align: center; }
-.sec > .wrap > h2 { text-align: center; margin-bottom: 1.2em; }
-.sec > .wrap > .lede { text-align: center; margin-inline: auto; margin-bottom: 2.5rem; }
+.sec > .wrap > .eyebrow,
+.sec > .wrap > h2 { text-align: center; }
+.sec > .wrap > h2 { margin-bottom: 1.1em; }
+.sec > .wrap > .lede { text-align: center; margin-inline: auto; margin-bottom: 2.6rem; }
 
 .draft-note {
-  text-align: center;
-  font-family: var(--ui); font-size: .8rem; color: var(--ink-3);
-  margin: -1em 0 2.5em;
+  text-align: center; font-family: var(--ui); font-size: .79rem;
+  color: var(--ink-3); margin: -1.2em 0 2.8em;
 }
 .draft-note::before {
   content: ""; display: inline-block; width: 5px; height: 5px; rotate: 45deg;
   background: var(--marigold); margin-right: .7em; vertical-align: middle;
 }
 
-/* --- story chapters --- */
-.chapters { display: grid; gap: clamp(2.5rem, 6vw, 4.5rem); }
+.sec-more { text-align: center; margin: 2.4rem 0 0; }
+/* inline-block with padding: bare inline links are ~18px tall on a phone */
+.sec-more a {
+  display: inline-block;
+  font-family: var(--ui); font-size: .78rem; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  padding: .7rem 1rem;
+}
+.sec-more a:hover { text-decoration: underline; }
 
-.chapter { display: grid; gap: 1.6rem; align-items: center; }
-@media (min-width: 820px) {
-  .chapter { grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
+/* ==========================================================================
+   the celebrations
+   ========================================================================== */
+
+.days { display: grid; gap: clamp(2.8rem, 6vw, 3.5rem); }
+@media (min-width: 900px) { .days { grid-template-columns: 1fr 1fr; gap: 3.5rem; } }
+
+/* the day label, centred between two gold hairlines */
+.day-h {
+  display: flex; align-items: center; gap: 1rem;
+  font-family: var(--ui); font-size: .78rem; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink);
+  margin-bottom: 2rem;
+}
+.day-h::before, .day-h::after {
+  content: ""; flex: 1; height: 1px; background: var(--gold-lt);
+}
+
+.ev { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+
+.ev-i {
+  display: grid; grid-template-columns: auto 1fr; gap: 1.1rem;
+  background: var(--card); border: 1px solid var(--rule);
+  border-radius: var(--radius); padding: 1.3rem 1.4rem;
+  transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+}
+.ev-i:hover { border-color: var(--gold-lt); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.ev-ic {
+  display: grid; place-content: center;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--gold-pale); color: var(--gold);
+}
+.ev-ic svg { width: 24px; height: 24px; }
+
+.ev-t {
+  font-family: var(--ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+  margin: 0 0 .25em;
+}
+.ev-b h4 { margin-bottom: .3em; }
+.ev-d { color: var(--ink-2); font-size: .95rem; margin: 0 0 .35em; }
+
+/* inline-block with real padding: as a bare inline link this was a 17px tap
+   target on a phone */
+.ev-cal {
+  display: inline-block; font-family: var(--ui); font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  padding: .55rem 0; margin-top: -.3rem;
+}
+.ev-cal:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   the green band
+   ========================================================================== */
+
+.band {
+  background: var(--ink); color: var(--paper);
+  text-align: center; padding: clamp(3rem, 7vw, 4.5rem) 0;
+}
+.band-line {
+  font-family: var(--display); font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.3;
+  color: var(--paper); margin: 0 0 .5em;
+}
+.band-tag {
+  font-family: var(--display); font-style: italic; font-size: 1.1rem;
+  color: var(--gold-lt); margin: 0 0 2rem;
+}
+
+/* ==========================================================================
+   story chapters
+   ========================================================================== */
+
+.chapters { display: grid; gap: clamp(3rem, 7vw, 5rem); }
+
+.chapter { display: grid; gap: 1.8rem; align-items: center; }
+@media (min-width: 840px) {
+  .chapter { grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 4.5rem); }
   .chapter.flip .chapter-txt { order: 2; }
 }
-.chapter-txt h3 { margin-bottom: .5em; }
+.chapter-n {
+  font-family: var(--ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .22em; color: var(--gold); margin: 0 0 .8em;
+}
+.chapter-txt h2 { font-size: clamp(1.7rem, 3.6vw, 2.3rem); margin-bottom: .45em; }
 .chapter-txt p { color: var(--ink-2); margin: 0; }
 
-.chapter-fig { margin: 0; }
-/* Square, not 4:3. Almost every photograph they have is a phone portrait, and
-   a 4:3 crop of a portrait throws away heads and feet; a square keeps the
-   subject and happens to fit the monogram exactly. */
+.chapter-fig { margin: 0; display: grid; place-items: center; }
+/* No forced aspect ratio. These three illustrations are a square monogram, a
+   tall rainy street and a near-square pair of cups; boxing them all into one
+   shape either crops heads off or strands them in wide empty bars. Letting
+   each keep its own proportions and capping the height instead reads as an
+   edited page rather than a grid of thumbnails. */
 .chapter-fig img {
-  width: 100%; border-radius: var(--radius);
-  aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 38%;
-  box-shadow: var(--shadow);
+  width: auto; max-width: 100%; max-height: 460px;
+  border-radius: var(--radius);
 }
 
-/* the save-the-date clip */
-.std { margin: clamp(3rem, 7vw, 5rem) auto 0; max-width: 320px; text-align: center; }
-.std video {
-  width: 100%; border-radius: var(--radius); box-shadow: var(--shadow);
-  background: var(--card);
-}
-.std figcaption {
-  font-family: var(--display); font-style: italic; font-size: 1.1rem;
-  color: var(--ink-2); margin-top: 1rem;
-}
+/* ==========================================================================
+   travel cards
+   ========================================================================== */
 
-/* --- timeline --- */
-.days { display: grid; gap: clamp(2.5rem, 6vw, 3.5rem); }
-@media (min-width: 860px) { .days { grid-template-columns: 1fr 1fr; gap: 3.5rem; } }
+.cards { display: grid; gap: 1.3rem; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); }
+.card {
+  background: var(--card); border: 1px solid var(--rule);
+  border-radius: var(--radius); padding: 1.8rem 1.6rem;
+}
+.card-ic {
+  display: grid; place-content: center;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--gold-pale); color: var(--gold); margin-bottom: 1.1rem;
+}
+.card-ic svg { width: 24px; height: 24px; }
+.card h3 { font-size: 1.24rem; margin-bottom: .4em; }
+.card p { color: var(--ink-2); font-size: .94rem; margin: 0; }
 
-.day-h {
-  font-family: var(--ui); font-size: .82rem; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase; color: var(--ink);
-  padding-bottom: .9em; margin-bottom: 1.6rem;
-  border-bottom: 1px solid var(--gold-2);
-}
-
-.tl { list-style: none; margin: 0; padding: 0; }
-/* 92px, not 74: "11:30 AM" wraps to two lines in anything narrower, and the
-   times are the column a guest actually scans. */
-.tl-i {
-  display: grid; grid-template-columns: 92px 1fr; gap: 1rem;
-  padding-bottom: 2rem; position: relative;
-}
-/* the connecting hairline, stopped short of the last item */
-.tl-i::before {
-  content: ""; position: absolute; left: 5.5px; top: 1.35em; bottom: -.3rem;
-  width: 1px; background: var(--rule);
-}
-.tl-i:last-child { padding-bottom: 0; }
-.tl-i:last-child::before { display: none; }
-.tl-i::after {
-  content: ""; position: absolute; left: 0; top: 1.05em;
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--paper-2); border: 2px solid var(--gold);
-}
-.sec:not(.sec-alt) .tl-i::after { background: var(--paper); }
-
-.tl-t {
-  padding-left: 26px;
-  font-family: var(--ui); font-size: .78rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
-  padding-top: .9em;
-}
-.tl-b h4 { margin-bottom: .3em; }
-.tl-b p { color: var(--ink-2); font-size: .97rem; margin: 0 0 .6em; }
-/* inline-block with real vertical padding: as a bare inline link this was a
-   17px-tall tap target on a phone, which is a miss waiting to happen */
-.tl-cal {
-  display: inline-block;
-  font-family: var(--ui); font-size: .72rem; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--gold); text-decoration: none;
-  padding: .6rem 0; margin-top: -.35rem;
-}
-.tl-cal:hover { text-decoration: underline; }
-
-@media (max-width: 520px) {
-  .tl-i { grid-template-columns: 1fr; gap: .2rem; }
-  .tl-t { padding-top: 0; padding-left: 26px; }
-  .tl-b { padding-left: 26px; }
-  .tl-i::after { top: .15em; }
-  .tl-i::before { top: .45em; }
-}
-
-/* --- dress code --- */
-.dress {
-  margin-top: clamp(3rem, 7vw, 4.5rem);
-  padding-top: clamp(2.5rem, 6vw, 3.5rem);
-  border-top: 1px solid var(--rule);
+.venue {
+  margin-top: 1.4rem; background: var(--ink); color: var(--paper);
+  border-radius: var(--radius); padding: clamp(2rem, 5vw, 3.2rem);
   text-align: center;
 }
-.dress h3 { margin-bottom: .5em; }
-.dress > p { color: var(--ink-2); max-width: 60ch; margin-inline: auto; }
+.venue h2 { color: var(--paper); font-size: clamp(1.6rem, 3.4vw, 2.1rem); margin-bottom: .5em; }
+.venue p { color: rgba(253,250,244,.78); max-width: 52ch; margin-inline: auto; }
+.venue-ad { font-size: .89rem; color: rgba(253,250,244,.6) !important; margin-bottom: 1.7rem; }
+.venue .btn-ghost { color: var(--paper); border-color: rgba(216,199,156,.45); }
+.venue .btn-ghost:hover { background: rgba(253,250,244,.08); border-color: var(--gold-lt); }
+
+/* ==========================================================================
+   dress code
+   ========================================================================== */
 
 .swatches {
-  list-style: none; margin: 2.2rem 0 0; padding: 0;
-  display: grid; gap: 1.4rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  list-style: none; margin: 2.4rem 0 0; padding: 0; text-align: center;
+  display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
-.sw b {
-  display: block; font-family: var(--display); font-size: 1.15rem; font-weight: 600;
-}
-.sw i {
-  display: block; font-style: normal; font-size: .87rem; color: var(--ink-3);
-}
+.sw b { display: block; font-family: var(--display); font-size: 1.18rem; font-weight: 600; }
+.sw i { display: block; font-style: normal; font-size: .86rem; color: var(--ink-3); }
 .sw-dot {
-  display: block; width: 30px; height: 30px; border-radius: 50%;
-  margin: 0 auto .7rem; border: 1px solid rgba(20,40,29,.12);
+  display: block; width: 32px; height: 32px; border-radius: 50%;
+  margin: 0 auto .8rem; border: 1px solid rgba(20,40,29,.12);
 }
 .sw-mehendi .sw-dot { background: #7C9A63; }
 .sw-haldi   .sw-dot { background: var(--marigold); }
 .sw-sangeet .sw-dot { background: #7E5A9B; }
 .sw-wedding .sw-dot { background: var(--rose); }
 
-/* --- travel cards --- */
-.cards {
-  display: grid; gap: 1.4rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-.card {
-  background: var(--card); border: 1px solid var(--rule);
-  border-radius: var(--radius); padding: 1.7rem 1.5rem;
-}
-.card-ic {
-  display: grid; place-content: center;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: #FBF5E8; color: var(--gold);
-  margin-bottom: 1rem;
-}
-.card-ic svg { width: 22px; height: 22px; }
-.card h3 { font-size: 1.25rem; margin-bottom: .4em; }
-.card p { color: var(--ink-2); font-size: .95rem; margin: 0; }
+/* ==========================================================================
+   faq
+   ========================================================================== */
 
-.venue {
-  margin-top: 1.4rem;
-  background: var(--ink); color: var(--paper);
-  border-radius: var(--radius); padding: clamp(1.8rem, 5vw, 3rem);
-  text-align: center;
-}
-.venue h3 { color: var(--paper); margin-bottom: .5em; }
-.venue p { color: rgba(253,250,244,.78); max-width: 54ch; margin-inline: auto; }
-.venue-ad { font-size: .9rem; color: rgba(253,250,244,.6) !important; margin-bottom: 1.6rem; }
-.venue .btn-ghost { color: var(--paper); border-color: rgba(216,199,156,.5); }
-.venue .btn-ghost:hover { background: rgba(253,250,244,.08); border-color: var(--gold-2); }
-
-/* --- gallery --- */
-.grid {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; gap: .8rem;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
-@media (min-width: 700px) { .grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); } }
-
-.gi-b {
-  display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
-  background: var(--rule); border-radius: var(--radius); overflow: hidden;
-}
-.gi-b img {
-  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
-  transition: transform 450ms cubic-bezier(.2,.7,.3,1), filter var(--t);
-}
-.gi-b:hover img { transform: scale(1.04); filter: saturate(1.06); }
-
-.gal-note {
-  text-align: center; margin: 2rem 0 0;
-  font-family: var(--display); font-style: italic; color: var(--ink-3);
-}
-
-/* --- lightbox --- */
-.lb {
-  position: fixed; inset: 0; z-index: 100;
-  background: rgba(15, 26, 20, .94);
-  display: grid; place-items: center;
-  padding: clamp(1rem, 4vw, 3rem);
-}
-.lb[hidden] { display: none; }
-.lb-f { margin: 0; max-width: 100%; max-height: 100%; text-align: center; }
-.lb-f img {
-  max-width: 100%; max-height: 82vh; width: auto; margin-inline: auto;
-  border-radius: var(--radius);
-}
-.lb-f figcaption {
-  color: rgba(253,250,244,.8);
-  font-family: var(--display); font-style: italic; font-size: 1.05rem;
-  margin-top: 1rem;
-}
-.lb button {
-  position: absolute; background: none; border: 0; cursor: pointer;
-  color: rgba(253,250,244,.75); line-height: 1;
-  transition: color var(--t);
-}
-.lb button:hover { color: var(--paper); }
-.lb-x { top: 1rem; right: 1.2rem; font-size: 2.6rem; }
-.lb-p, .lb-n { top: 50%; translate: 0 -50%; font-size: 3.4rem; padding: .2em .35em; }
-.lb-p { left: .2rem; }
-.lb-n { right: .2rem; }
-
-/* --- faq --- */
 .faq { border-top: 1px solid var(--rule); }
 .qa { border-bottom: 1px solid var(--rule); }
 .qa summary {
-  list-style: none; cursor: pointer;
-  padding: 1.25em 2.4em 1.25em 0; position: relative;
+  list-style: none; cursor: pointer; position: relative;
+  padding: 1.3em 2.4em 1.3em 0;
   font-family: var(--display); font-size: 1.24rem; font-weight: 600;
 }
 .qa summary::-webkit-details-marker { display: none; }
@@ -653,22 +599,21 @@ p  { margin: 0 0 1.05em; }
   transition: rotate var(--t), translate var(--t);
 }
 .qa[open] summary::after { rotate: -135deg; translate: 0 -20%; }
-.qa-a { padding-bottom: 1.3em; }
-.qa-a p { color: var(--ink-2); margin: 0; max-width: 66ch; }
+.qa-a { padding-bottom: 1.4em; }
+.qa-a p { color: var(--ink-2); margin: 0; max-width: 64ch; }
 
 /* ==========================================================================
    RSVP
    ========================================================================== */
 
 .sec-rsvp { background: var(--paper-2); }
-.deadline { margin-bottom: 2.5rem; }
+.deadline { margin-bottom: 2.6rem; }
 .deadline b { color: var(--rose); font-weight: 600; }
 
 .alert {
   text-align: center; max-width: 52ch; margin: 0 auto 2.5rem;
   background: var(--rose-2); color: #8E1345;
-  border-radius: var(--radius); padding: 1.1em 1.4em;
-  font-size: .97rem;
+  border-radius: var(--radius); padding: 1.1em 1.4em; font-size: .96rem;
 }
 
 .rsvp-box {
@@ -677,30 +622,26 @@ p  { margin: 0 0 1.05em; }
   box-shadow: var(--shadow);
 }
 
-/* --- lookup --- */
 .lookup { padding-bottom: 1.7rem; margin-bottom: 1.9rem; border-bottom: 1px solid var(--rule); }
 .lk-l {
-  display: block;
-  font-family: var(--ui); font-size: .78rem; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  display: block; font-family: var(--ui); font-size: .76rem; font-weight: 600;
+  letter-spacing: .11em; text-transform: uppercase; color: var(--ink-3);
   margin-bottom: .8em;
 }
 .lk-row { display: flex; gap: .6rem; flex-wrap: wrap; }
 .lk-row input { flex: 1 1 210px; }
 .lk-row .btn { flex: 0 0 auto; white-space: nowrap; }
-.lk-msg { margin: .9em 0 0; font-size: .92rem; color: var(--ink-2); }
+.lk-msg { margin: .9em 0 0; font-size: .91rem; color: var(--ink-2); }
 .lk-msg span[hidden] { display: none; }
 
-/* --- fields --- */
-.f { margin-bottom: 1.3rem; border: 0; padding: 0; min-width: 0; }
+.f { margin-bottom: 1.35rem; border: 0; padding: 0; min-width: 0; }
 .f2 { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
 @media (min-width: 560px) { .f2 { grid-template-columns: 1fr 1fr; } }
 
 .f label, .f legend {
   display: block; padding: 0;
-  font-family: var(--ui); font-size: .82rem; font-weight: 600;
-  letter-spacing: .04em; color: var(--ink);
-  margin-bottom: .55em;
+  font-family: var(--ui); font-size: .81rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--ink); margin-bottom: .55em;
 }
 
 input[type="text"], input[type="email"], input[type="tel"],
@@ -709,94 +650,69 @@ input[type="number"], input[type="date"], select, textarea {
   font-family: var(--body); font-size: 1rem; color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--rule); border-radius: var(--radius);
-  padding: .78em .95em;
+  padding: .8em .95em;
   transition: border-color var(--t), box-shadow var(--t);
   -webkit-appearance: none; appearance: none;
 }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23B08D3C' stroke-width='1.4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1em center;
-  background-size: 10px;
-  padding-right: 2.6em;
+  background-repeat: no-repeat; background-position: right 1em center;
+  background-size: 10px; padding-right: 2.6em;
 }
 textarea { resize: vertical; min-height: 3.2em; }
 
 input:focus, select:focus, textarea:focus {
-  outline: 0; border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(176,141,60,.16);
+  outline: 0; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(176,141,60,.16);
 }
 input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--rose); }
 
 .hint { font-size: .84rem; color: var(--ink-3); margin: .5em 0 0; }
 
-.err {
-  display: none;
-  font-family: var(--ui); font-size: .82rem; color: var(--rose);
-  margin: .5em 0 0;
-}
+.err { display: none; font-family: var(--ui); font-size: .82rem; color: var(--rose); margin: .5em 0 0; }
 .err.on { display: block; }
 .form-err { text-align: center; margin-top: 1rem; }
 .slow-hint { text-align: center; margin-top: .9rem; }
 .slow-hint[hidden] { display: none; }
 
 /* --- radios and chips ---
-
    These MUST use the direct-child combinator. t() renders every translated
    string as a pair of <span class="l"> inside its element, so a descendant
    selector like `.ch span` also styles the language spans and each pill comes
-   out with a second border and radius drawn inside it. Anywhere a rule targets
-   a bare `span` inside translated content, it wants `>`. */
+   out with a second border and radius drawn inside it. */
 .choice { display: flex; flex-wrap: wrap; gap: .6rem; }
 .ch { flex: 1 1 160px; margin: 0; }
 .ch input { position: absolute; opacity: 0; width: 0; height: 0; }
 .ch > span {
   display: block; text-align: center; cursor: pointer;
-  font-family: var(--ui); font-size: .92rem;
-  border: 1px solid var(--rule); border-radius: 100px;
-  padding: .78em 1.1em;
+  font-family: var(--ui); font-size: .91rem;
+  border: 1px solid var(--rule); border-radius: 100px; padding: .8em 1.1em;
   transition: border-color var(--t), background var(--t), color var(--t);
 }
-.ch input:checked + span {
-  border-color: var(--ink); background: var(--ink); color: var(--paper);
-}
+.ch input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .ch input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
-.ch > span:hover { border-color: var(--gold-2); }
+.ch > span:hover { border-color: var(--gold-lt); }
 
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
 .chip { margin: 0; }
 .chip input { position: absolute; opacity: 0; width: 0; height: 0; }
 .chip > span {
-  display: block; cursor: pointer;
-  font-family: var(--ui); font-size: .86rem;
-  border: 1px solid var(--rule); border-radius: 100px;
-  padding: .5em 1.05em;
+  display: block; cursor: pointer; font-family: var(--ui); font-size: .85rem;
+  border: 1px solid var(--rule); border-radius: 100px; padding: .55em 1.05em;
   transition: border-color var(--t), background var(--t), color var(--t);
 }
-.chip input:checked + span {
-  border-color: var(--gold); background: #FBF5E8; color: #7A5F20;
-}
+.chip input:checked + span { border-color: var(--gold); background: var(--gold-pale); color: #7A5F20; }
 .chip input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-/* the honeypot: reachable by a bot parsing the DOM, invisible and
-   unfocusable for a person */
-.hp {
-  position: absolute !important; left: -9999px !important;
-  width: 1px; height: 1px; overflow: hidden;
-}
+/* the honeypot: reachable by a bot parsing the DOM, invisible to a person */
+.hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
 
-#yes-only { transition: opacity var(--t); }
 #yes-only[hidden] { display: none; }
 
-/* --- confirmation --- */
 .done { text-align: center; padding: 1.5rem 0; }
 .done[hidden] { display: none; }
 .done-mk { display: block; color: var(--gold); margin: 0 auto 1.2rem; width: 46px; }
 .done-mk svg { width: 46px; height: 46px; }
-.done-t {
-  font-family: var(--display); font-size: 1.4rem; line-height: 1.4;
-  max-width: 34ch; margin: 0 auto 1rem;
-}
+.done-t { font-family: var(--display); font-size: 1.42rem; line-height: 1.4; max-width: 34ch; margin: 0 auto 1rem; }
 .done-t span[hidden], .done-s[hidden] { display: none; }
 .done-s { font-size: .9rem; color: var(--ink-3); margin-bottom: 1.6rem; }
 
@@ -805,34 +721,48 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
    ========================================================================== */
 
 .foot {
+  position: relative; overflow: hidden;
   background: var(--ink); color: rgba(253,250,244,.72);
-  padding: clamp(3rem, 8vw, 4.5rem) 0;
+  padding: clamp(3.4rem, 8vw, 5rem) 0 clamp(2.4rem, 5vw, 3rem);
   text-align: center;
 }
-.foot-mono { width: 62px; height: 62px; border-radius: 8px; margin: 0 auto 1.5rem; }
+/* No garland in the footer. Tried it flipped and dimmed as a watermark: the
+   blossoms are mid-pink, and at any opacity that keeps them visible on bottle
+   green they desaturate into grey smudges rather than reading as flowers. The
+   ornament belongs on cream, where it was drawn to sit. */
+.foot .wrap { position: relative; z-index: 1; }
+.foot-mono { width: 62px; height: 62px; border-radius: 9px; margin: 0 auto 1.5rem; }
 .foot-names {
-  font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2rem);
-  color: var(--paper); margin: 0 0 .3em;
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 2.05rem); color: var(--paper); margin: 0 0 .3em;
 }
-/* the script ampersand has almost no right sidebearing of its own */
 .foot-names .amp { padding-inline: .12em .22em; }
-.foot-when { font-size: .93rem; margin: 0 0 1.5rem; }
-.foot-ct { margin: 0 0 1.5rem; }
-.foot-ct a { color: var(--gold-2); text-decoration: none; }
-.foot-ct a:hover { text-decoration: underline; }
-.foot-tag {
-  font-family: var(--display); font-style: italic; font-size: 1.1rem;
-  color: var(--gold-2); margin: 0 0 1.2rem;
+.foot-when { font-size: .92rem; margin: 0 0 1.6rem; }
+
+.foot-nav { display: flex; flex-wrap: wrap; gap: .4rem 1rem; justify-content: center; margin-bottom: 1.2rem; }
+/* real navigation, so it gets a real tap target rather than 20px of text */
+.foot-nav a {
+  display: inline-block; padding: .6rem .7rem;
+  font-family: var(--ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: rgba(253,250,244,.62); text-decoration: none;
 }
-.foot-line { font-size: .85rem; color: rgba(253,250,244,.45); margin: 0; }
-.foot .dot { color: var(--gold-2); }
+.foot-nav a:hover { color: var(--gold-lt); }
+
+.foot-ct { margin: 0 0 1.5rem; }
+.foot-ct a { color: var(--gold-lt); text-decoration: none; }
+.foot-ct a:hover { text-decoration: underline; }
+.foot-tag { font-family: var(--display); font-style: italic; font-size: 1.1rem; color: var(--gold-lt); margin: 0 0 1.2rem; }
+.foot-line { font-size: .84rem; color: rgba(253,250,244,.45); margin: 0; }
+.foot .dot { color: var(--gold-lt); }
 
 /* ==========================================================================
    print — a guest who prints this wants the where and the when, not the art
    ========================================================================== */
 
 @media print {
-  .head, .cta, .count, .hero-art, .lb, .sec-rsvp, .gi-b, .tl-cal { display: none !important; }
+  .head, .cta, .count, .hero-art, .garland, .foot-garland, .sec-rsvp,
+  .ev-cal, .band, .nav-rsvp { display: none !important; }
   body { background: #fff; font-size: 11pt; }
   .sec { padding: 1.2rem 0; }
   .foot { background: #fff; color: #000; }

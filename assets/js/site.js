@@ -82,21 +82,19 @@
     });
   }
 
-  var sections = $$('main section[id]');
-  var navLinks = $$('.nav-a');
-
+  /**
+   * Only the header's hairline. There is deliberately no scrollspy here.
+   *
+   * The previous version was a one-pager whose nav pointed at #story, #travel
+   * and so on, and a scroll handler toggled `.on` to track the section in
+   * view. Now that those are real pages, build.py marks the current one at
+   * render time — and the leftover scrollspy was matching nothing and quietly
+   * *stripping* that server-rendered `.on` off every link, so no page ever
+   * showed as current. Deleted rather than repaired: the active page is a fact
+   * the server already knows.
+   */
   function onScroll() {
     if (head) head.classList.toggle('stuck', window.scrollY > 8);
-
-    // scrollspy: the section whose top is nearest above the header line
-    var line = (head ? head.offsetHeight : 66) + 24;
-    var current = null;
-    sections.forEach(function (s) {
-      if (s.getBoundingClientRect().top <= line) current = s.id;
-    });
-    navLinks.forEach(function (a) {
-      a.classList.toggle('on', a.getAttribute('href') === '#' + current);
-    });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -130,9 +128,20 @@
       minutes: Math.floor(d / 60) % 60,
       seconds: Math.floor(d) % 60
     };
+    // Dates, times and the schedule are all set in Devanagari numerals in
+    // Hindi, so a counter ticking away in 93 / 05 / 40 reads as a bit of the
+    // page nobody translated.
+    var hi = lang() === 'hi';
+    function digits(n) {
+      var s = String(n);
+      return hi ? s.replace(/[0-9]/g, function (d) {
+        return '०१२३४५६७८९'[+d];
+      }) : s;
+    }
+
     Object.keys(parts).forEach(function (k) {
       var el = document.getElementById('c-' + k);
-      if (el) el.textContent = k === 'days' ? parts[k] : ('0' + parts[k]).slice(-2);
+      if (el) el.textContent = digits(k === 'days' ? parts[k] : ('0' + parts[k]).slice(-2));
     });
   }
 
