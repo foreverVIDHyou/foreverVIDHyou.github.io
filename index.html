@@ -32,7 +32,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=58920ded">
+<link rel="stylesheet" href="assets/css/site.css?v=2738882c">
 
 <script>
   try {
@@ -321,12 +321,46 @@ aria-current="page"><span class="l" data-l="en">Invitation</span><span class="l"
                  data-en-placeholder="Enter the email address or phone number you used" data-hi-placeholder="वही ईमेल या फ़ोन नंबर डालें जो पहले इस्तेमाल किया था"
                  placeholder="Enter the email address or phone number you used">
           <button type="button" class="btn btn-ghost" id="lk-go">
-            <span class="l" data-l="en">Find my RSVP</span><span class="l" data-l="hi" lang="hi">मेरा जवाब खोजें</span>
+            <span class="spin" aria-hidden="true"></span>
+            <span class="lk-go-t"><span class="l" data-l="en">Find my RSVP</span><span class="l" data-l="hi" lang="hi">मेरा जवाब खोजें</span></span>
           </button>
         </div>
+
         <p class="lk-msg" id="lk-msg" role="status" aria-live="polite">
-          <span data-m="found" hidden><span class="l" data-l="en">Found it. Your answers are below. Change anything you like.</span><span class="l" data-l="hi" lang="hi">मिल गया। आपके जवाब नीचे हैं, जो चाहें बदल लें।</span></span>
-          <span data-m="new" hidden><span class="l" data-l="en">No RSVP under that yet. Fill the form below and it will be saved.</span><span class="l" data-l="hi" lang="hi">अभी उस पर कोई जवाब दर्ज नहीं है। नीचे फ़ॉर्म भरें, सहेज लिया जाएगा।</span></span>
+          <span data-m="busy" hidden class="lk-busy">
+            <span class="spin" aria-hidden="true"></span>
+            <span class="l" data-l="en">Looking for your reply</span><span class="l" data-l="hi" lang="hi">आपका जवाब खोजा जा रहा है</span><span class="dots" aria-hidden="true"></span>
+          </span>
+          <span data-m="found" hidden class="lk-ok">
+            <span class="lk-ic" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="8.5"/><path d="M6 10.4l2.7 2.7L14 7.6"/>
+              </svg>
+            </span>
+            <span><span class="l" data-l="en">Found your reply. It is loaded below, change anything you like.</span><span class="l" data-l="hi" lang="hi">आपका जवाब मिल गया। वह नीचे भर दिया गया है, जो चाहें बदल लें।</span> <b class="lk-who" id="lk-who"></b></span>
+          </span>
+          <span data-m="new" hidden class="lk-new">
+            <span class="lk-ic" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="8.5"/><path d="M10 6.4v7.2M6.4 10h7.2"/>
+              </svg>
+            </span>
+            <span><span class="l" data-l="en">No reply saved under that yet. Fill in the form below and we will save it.</span><span class="l" data-l="hi" lang="hi">अभी उस पर कोई जवाब दर्ज नहीं है। नीचे फ़ॉर्म भरें, हम उसे सहेज लेंगे।</span></span>
+          </span>
+          <span data-m="error" hidden class="lk-bad">
+            <span class="lk-ic" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="8.5"/><path d="M10 5.8v5M10 13.8h.01"/>
+              </svg>
+            </span>
+            <span><span class="l" data-l="en">We could not reach the guest list just now. Please try once more.</span><span class="l" data-l="hi" lang="hi">अभी सूची तक नहीं पहुँच सके। कृपया एक बार और कोशिश करें।</span></span>
+          </span>
+          <span data-m="empty" hidden class="lk-bad">
+            <span><span class="l" data-l="en">Type the email address or phone number first.</span><span class="l" data-l="hi" lang="hi">पहले ईमेल या फ़ोन नंबर लिखें।</span></span>
+          </span>
         </p>
       </div>
 
@@ -528,6 +562,6 @@ aria-current="page"><span class="l" data-l="en">Invitation</span><span class="l"
   </div>
 </footer>
 
-<script src="assets/js/site.js?v=d3ad9517" defer></script>
+<script src="assets/js/site.js?v=26a219c0" defer></script>
 </body>
 </html>

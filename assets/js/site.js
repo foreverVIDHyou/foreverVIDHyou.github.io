@@ -100,6 +100,81 @@
   onScroll();
 
   // =========================================================================
+  // reveal on scroll
+  // =========================================================================
+
+  /**
+   * Fade and lift elements in as they arrive.
+   *
+   * The `data-reveal` attribute is added **here, in JavaScript**, and the CSS
+   * that hides an element keys off that attribute. So with JavaScript off, or
+   * if this file fails to load, nothing is ever hidden and the page simply
+   * renders. An animation that can leave the invitation blank is not worth
+   * having.
+   *
+   * Each group is staggered by its position among its siblings, so a row of
+   * schedule cards arrives one after another rather than all at once.
+   */
+  var REVEAL_GROUPS = [
+    '.garland, .sprig',
+    '.hero-mono, .hero-in > .eyebrow, .names, .hero-in > .divider, .when, .where, .tag, .cta, .count',
+    '.hero-art',
+    '.page-head .wrap > *',
+    '.sec > .wrap > .eyebrow, .sec > .wrap > h2, .sec > .wrap > .lede, .draft-note',
+    '.day-h',
+    '.ev-i',
+    '.card',
+    '.chapter',
+    '.duet',
+    '.sw',
+    '.qa',
+    '.venue',
+    '.band .wrap > *',
+    '.rsvp-box',
+    '.sec > .wrap > .divider, .sec-more',
+    '.foot .wrap > *'
+  ];
+
+  (function setupReveal() {
+    var reduce = window.matchMedia &&
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+
+    var all = [];
+    REVEAL_GROUPS.forEach(function (sel) {
+      var byParent = {};
+      $$(sel).forEach(function (el) {
+        if (el.hasAttribute('data-reveal')) return;
+        // stagger within the element's own parent, so two columns of schedule
+        // cards each count from one rather than continuing the other's tally
+        var key = sel + '|' + (el.parentNode ? el.parentNode.className : '');
+        byParent[key] = (byParent[key] || 0) + 1;
+        var i = Math.min(byParent[key] - 1, 7);      // cap the wait at 7 steps
+        el.setAttribute('data-reveal', '');
+        el.style.setProperty('--i', i);
+        all.push(el);
+      });
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        io.unobserve(e.target);           // reveal once; do not re-hide on scroll up
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+
+    all.forEach(function (el) { io.observe(el); });
+
+    // Anything still hidden after 4 seconds gets shown regardless. A guest
+    // whose scroll never triggers the observer must not end up with a blank
+    // page.
+    setTimeout(function () {
+      all.forEach(function (el) { el.classList.add('in'); });
+    }, 4000);
+  })();
+
+  // =========================================================================
   // countdown
   // =========================================================================
 
@@ -351,16 +426,33 @@
 
   // --- fill the form from a saved record ----------------------------------
 
+  /**
+   * Coerce whatever the sheet gives back into the yyyy-MM-dd that a date input
+   * will accept.
+   *
+   * Google Sheets silently turns "2026-12-04" into a date cell, so a lookup can
+   * return "2026-12-04T08:00:00.000Z". `<input type="date">` rejects anything
+   * that is not a bare date and fails *silently*, which is why arrival and
+   * departure came back empty. The backend now formats these properly, but a
+   * sheet may still hold rows written before that fix, so accept both here.
+   */
+  function asDate(v) {
+    if (!v) return '';
+    var s = String(v);
+    var m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    return m ? m[1] : '';
+  }
+
   function fill(r) {
     editingId = r.id || null;
     $('#f-name').value = r.name || '';
     $('#f-email').value = r.email || '';
-    $('#f-phone').value = r.phone || '';
+    $('#f-phone').value = r.phone == null ? '' : String(r.phone);
     $('#f-head').value = r.headcount || 1;
     $('#f-party').value = r.party || '';
     $('#f-note').value = r.note || '';
-    $('#f-arr').value = r.arrival || '';
-    $('#f-dep').value = r.departure || '';
+    $('#f-arr').value = asDate(r.arrival);
+    $('#f-dep').value = asDate(r.departure);
     if (r.food) $('#f-food').value = r.food;
 
     var going = String(r.attending || 'yes') === 'yes';
@@ -391,40 +483,59 @@
 
   var lkGo = $('#lk-go'), lkKey = $('#lk-key'), lkMsg = $('#lk-msg');
 
+  /** Show exactly one of the lookup's states, or none at all. */
   function lkSay(which) {
     $$('span[data-m]', lkMsg).forEach(function (s) {
       s.hidden = s.getAttribute('data-m') !== which;
     });
+    lkMsg.classList.toggle('on', !!which);
   }
 
   if (lkGo) {
     lkGo.addEventListener('click', function () {
       var key = lkKey.value.trim();
-      if (!key) return;
+      if (!key) { lkSay('empty'); lkKey.focus(); return; }
       if (!ENDPOINT) { lkSay('new'); return; }
 
+      // The call takes several seconds. Say so, rather than leaving a dead
+      // button: without this the only feedback was the button greying out.
       lkGo.disabled = true;
+      lkGo.classList.add('busy');
+      lkSay('busy');
+
       call({ action: 'lookup', key: key })
         .then(function (res) {
           if (res && res.found && res.rsvp) {
             fill(res.rsvp);
+            var who = $('#lk-who');
+            if (who) who.textContent = res.rsvp.name || '';
             lkSay('found');
-            $('#f-name').focus();
+            // Move focus to the form so a keyboard user carries straight on,
+            // and so the loaded answers are what they land in.
+            $('#f-name').focus({ preventScroll: true });
+            $('#rf').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           } else {
-            // carry what they typed into the right field, so they do not
-            // have to type it a second time
+            // Carry what they typed into the right field, so they do not have
+            // to type it a second time.
             if (key.indexOf('@') > 0) $('#f-email').value = key;
             else $('#f-phone').value = key;
             lkSay('new');
+            $('#f-name').focus({ preventScroll: true });
           }
         })
-        .catch(function () { showErr('e-form', true); })
-        .then(function () { lkGo.disabled = false; });
+        .catch(function () { lkSay('error'); })
+        .then(function () {
+          lkGo.disabled = false;
+          lkGo.classList.remove('busy');
+        });
     });
 
     lkKey.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); lkGo.click(); }
     });
+    // typing again clears the previous verdict, which would otherwise sit there
+    // contradicting what is now in the box
+    lkKey.addEventListener('input', function () { lkSay(null); });
   }
 
   // --- submit -------------------------------------------------------------
