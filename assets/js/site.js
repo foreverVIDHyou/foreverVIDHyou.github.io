@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Vibhakar & Dhwani — site behaviour.
+   Vibhakar & Dhwani, site behaviour.
 
    No framework, no build step, no dependencies. Everything degrades: with
    JavaScript off the page still reads, the schedule is there, and the RSVP
@@ -88,7 +88,7 @@
    * The previous version was a one-pager whose nav pointed at #story, #travel
    * and so on, and a scroll handler toggled `.on` to track the section in
    * view. Now that those are real pages, build.py marks the current one at
-   * render time — and the leftover scrollspy was matching nothing and quietly
+   * render time, and the leftover scrollspy was matching nothing and quietly
    * *stripping* that server-rendered `.on` off every link, so no page ever
    * showed as current. Deleted rather than repaired: the active page is a fact
    * the server already knows.
@@ -297,7 +297,7 @@
    * Two things here are deliberate and easy to get wrong:
    *
    * 1. No Content-Type header. The browser then sends text/plain, which makes
-   *    this a "simple" request with no CORS preflight — and Apps Script cannot
+   *    this a "simple" request with no CORS preflight, and Apps Script cannot
    *    answer an OPTIONS preflight, so setting application/json breaks it.
    *
    * 2. Retries. Apps Script intermittently answers a perfectly good POST with

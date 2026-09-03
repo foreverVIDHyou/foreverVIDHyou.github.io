@@ -1,11 +1,11 @@
 /* ==========================================================================
-   Vibhakar & Dhwani — 5–6 December 2026
+   Vibhakar & Dhwani, 5–6 December 2026
    One stylesheet. Design tokens first; change those and the whole site moves.
 
    The palette is not invented. Every colour is lifted from the couple's own
    artwork: the bottle green and gold are the dV monogram, the rose is the band
    on the save-the-date, the marigold is the umbrella, and the paper is the
-   white the illustrations were drawn on — which is why the site is cream
+   white the illustrations were drawn on, which is why the site is cream
    rather than white, and why the artwork drops onto it without a seam.
    ========================================================================== */
 
@@ -98,7 +98,7 @@ body {
 
 /* height:auto is load-bearing. Images carry width/height attributes so the
    browser can reserve space, but a used width *and* height make `aspect-ratio`
-   inert — tiles then render at the literal attribute height. */
+   inert: tiles then render at the literal attribute height. */
 img, video { max-width: 100%; height: auto; display: block; }
 
 a { color: var(--ink); text-decoration-color: var(--gold-lt); text-underline-offset: .2em; }
@@ -421,7 +421,7 @@ p  { margin: 0 0 1.05em; }
 }
 
 /* Stacked, the illustration is 1.8x taller than it is wide, so at 400px it
-   alone was 720px and pushed the hero to 1549px — nearly two laptop viewports
+   alone was 720px and pushed the hero to 1549px, nearly two laptop viewports
    before a guest reaches the schedule. Bound it by viewport height instead of
    width so it stays proportionate on a short laptop screen. */
 @media (min-width: 760px) and (max-width: 1399px) {
@@ -429,7 +429,7 @@ p  { margin: 0 0 1.05em; }
 }
 
 /* Wide screens put the illustration beside the names rather than under them.
-   A three-column grid — empty gutter, content, art — not absolute positioning,
+   A three-column grid, empty gutter, content, art, not absolute positioning,
    because absolute positioning anchored to the centre scales in lockstep with
    the names and overlaps them at every width by the same amount. A grid column
    cannot be overlapped. Below 1400px there is not room, so it stacks. */
@@ -876,7 +876,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .foot .dot { color: var(--gold-lt); }
 
 /* ==========================================================================
-   print — a guest who prints this wants the where and the when, not the art
+   print: a guest who prints this wants the where and the when, not the art
    ========================================================================== */
 
 @media print {
