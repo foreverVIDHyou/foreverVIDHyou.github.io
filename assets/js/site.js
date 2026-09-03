@@ -404,6 +404,8 @@
     var ok = true;
     ok = showErr('e-name', !name) && ok;
     ok = showErr('e-contact', !email && !phone) && ok;
+    var pair = $('.contact');
+    if (pair) pair.classList.toggle('has-error', !email && !phone);
     ok = showErr('e-form', false) && ok;
 
     var emailBad = email && !validEmail(email);
@@ -466,6 +468,51 @@
     return { code: '', number: s };
   }
 
+  /**
+   * Lock a contact field that already holds a value.
+   *
+   * Email and phone are the lookup keys. If a guest could edit one, they would
+   * strand their own row: the address they remember would no longer find it,
+   * and a typo could collide with somebody else's. So a stored value is
+   * write-once. A blank one stays editable, and filling it in gives them a
+   * second way to find their reply next time.
+   *
+   * `readonly`, not `disabled`: a disabled input is not submitted, and the
+   * value still needs to travel with the form.
+   */
+  function lockContacts(rec) {
+    [['email', $('#f-email')], ['phone', $('#f-phone')]].forEach(function (pair) {
+      var key = pair[0], input = pair[1];
+      if (!input) return;
+      var stored = rec && rec[key] ? String(rec[key]).trim() : '';
+      var wrap = input.closest('.locked-wrap');
+      var note = $('.note-locked[data-note="' + key + '"]');
+      var tpl = document.getElementById(stored ? 'tpl-locked' : 'tpl-addable');
+
+      input.readOnly = !!stored;
+      if (key === 'phone' && $('#f-country')) $('#f-country').disabled = !!stored;
+      if (wrap) wrap.classList.toggle('is-locked', !!stored);
+      if (note && tpl) {
+        note.innerHTML = tpl.innerHTML;
+        note.hidden = false;
+        note.classList.toggle('is-locked-note', !!stored);
+      }
+    });
+  }
+
+  /** Back to a blank, fully editable form. */
+  function unlockContacts() {
+    ['#f-email', '#f-phone'].forEach(function (sel) {
+      var el = $(sel);
+      if (!el) return;
+      el.readOnly = false;
+      var w = el.closest('.locked-wrap');
+      if (w) w.classList.remove('is-locked');
+    });
+    if ($('#f-country')) $('#f-country').disabled = false;
+    $$('.note-locked').forEach(function (n) { n.hidden = true; });
+  }
+
   function fill(r) {
     editingId = r.id || null;
     $('#f-name').value = r.name || '';
@@ -500,6 +547,7 @@
     });
 
     syncAttending();
+    lockContacts(r);
     setBtn('edit');
   }
 
@@ -549,6 +597,7 @@
             // to type it a second time.
             if (key.indexOf('@') > 0) $('#f-email').value = key;
             else $('#f-phone').value = key;
+            unlockContacts();
             lkSay('new');
             $('#f-name').focus({ preventScroll: true });
           }
@@ -611,8 +660,9 @@
       if (slow) slow.hidden = true;
     }
 
-    function showDone(updated) {
+    function showDone(updated, rec) {
       stopSlow();
+      if (rec) lockContacts(rec);
       $$('[data-d]', done).forEach(function (s) {
         s.hidden = s.getAttribute('data-d') !== (going ? 'yes' : 'no');
       });
@@ -626,13 +676,13 @@
     call(payload)
       .then(function (res) {
         if (!res || !res.ok) throw new Error((res && res.error) || 'failed');
-        showDone(res.updated);
+        showDone(res.updated, res.rsvp);
       })
       .catch(function () {
         // The reply did not arrive, which does not mean the row did not.
         return landed(payload).then(function (rec) {
           if (!rec) throw new Error('failed');
-          showDone(rec.created_at !== rec.updated_at);
+          showDone(rec.created_at !== rec.updated_at, rec);
         });
       })
       .catch(function () {

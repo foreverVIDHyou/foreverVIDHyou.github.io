@@ -791,6 +791,44 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 /* sits above the travel questions, explaining why we ask at all */
 .travel-hint { margin: 0 0 1.1rem; }
 
+/* --- email and phone are one question -------------------------------------
+   Boxed together under one legend so the answer to "which of these do I have
+   to fill in?" is visible rather than inferred. */
+.contact {
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1.1rem 1.2rem .4rem;
+  margin-bottom: 1.35rem;
+  transition: border-color var(--t), background var(--t);
+}
+.contact legend {
+  padding: 0 .5em; margin: 0 0 .2em;
+  font-family: var(--ui); font-size: .81rem; font-weight: 600; color: var(--ink);
+}
+.contact-lede { margin: 0 0 1rem; }
+.contact.has-error { border-color: var(--rose); background: #FEF7F9; }
+.contact .err { margin-bottom: .9em; }
+
+/* a field holding a value we must not lose */
+.locked-wrap { position: relative; }
+.lockmark {
+  position: absolute; right: .8em; top: 50%; translate: 0 -50%;
+  width: 15px; height: 15px; color: var(--gold); pointer-events: none;
+}
+.lockmark svg { width: 15px; height: 15px; }
+.locked-wrap.is-locked .lockmark { display: block; }
+.locked-wrap.is-locked input,
+.locked-wrap.is-locked select {
+  background: var(--paper-2); color: var(--ink-2); cursor: default;
+  border-style: dashed;
+}
+.locked-wrap.is-locked input { padding-right: 2.4em; }
+/* the phone pair already ends in an input, so the mark clears the number box */
+.phone-row.is-locked .lockmark { right: .7em; }
+
+.note-locked { margin-top: .45em; }
+.note-locked.is-locked-note { color: var(--gold); }
+.note-locked[hidden] { display: none; }
+
 .err { display: none; font-family: var(--ui); font-size: .82rem; color: var(--rose); margin: .5em 0 0; }
 .err.on { display: block; }
 .form-err { text-align: center; margin-top: 1rem; }
