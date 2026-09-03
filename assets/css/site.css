@@ -649,28 +649,6 @@ p  { margin: 0 0 1.05em; }
 .sw-wedding .sw-dot { background: var(--rose); }
 
 /* ==========================================================================
-   faq
-   ========================================================================== */
-
-.faq { border-top: 1px solid var(--rule); }
-.qa { border-bottom: 1px solid var(--rule); }
-.qa summary {
-  list-style: none; cursor: pointer; position: relative;
-  padding: 1.3em 2.4em 1.3em 0;
-  font-family: var(--display); font-size: 1.24rem; font-weight: 600;
-}
-.qa summary::-webkit-details-marker { display: none; }
-.qa summary::after {
-  content: ""; position: absolute; right: .5em; top: 50%;
-  width: 9px; height: 9px; translate: 0 -60%; rotate: 45deg;
-  border-right: 1.6px solid var(--gold); border-bottom: 1.6px solid var(--gold);
-  transition: rotate var(--t), translate var(--t);
-}
-.qa[open] summary::after { rotate: -135deg; translate: 0 -20%; }
-.qa-a { padding-bottom: 1.4em; }
-.qa-a p { color: var(--ink-2); margin: 0; max-width: 64ch; }
-
-/* ==========================================================================
    RSVP
    ========================================================================== */
 

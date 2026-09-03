@@ -127,7 +127,6 @@
     '.chapter',
     '.duet',
     '.sw',
-    '.qa',
     '.venue',
     '.band .wrap > *',
     '.rsvp-box',
@@ -461,16 +460,10 @@
     $('#f-note').value = r.note || '';
     $('#f-arr').value = asDate(r.arrival);
     $('#f-dep').value = asDate(r.departure);
-    if (r.food) $('#f-food').value = r.food;
 
     var going = String(r.attending || 'yes') === 'yes';
     var radio = form.querySelector('input[name="attending"][value="' + (going ? 'yes' : 'no') + '"]');
     if (radio) radio.checked = true;
-
-    if (r.stay) {
-      var s = form.querySelector('input[name="stay"][value="' + r.stay + '"]');
-      if (s) s.checked = true;
-    }
 
     var evs = String(r.events || '').split(',').map(function (x) { return x.trim(); });
     $$('input[name="events"]', form).forEach(function (c) {
@@ -558,7 +551,6 @@
     }
 
     var going = attending() === 'yes';
-    var stayEl = form.querySelector('input[name="stay"]:checked');
 
     var payload = {
       action: 'save',
@@ -569,10 +561,8 @@
       events: going ? chosenEvents() : [],
       headcount: going ? $('#f-head').value : 0,
       party: going ? $('#f-party').value.trim() : '',
-      food: going ? $('#f-food').value : '',
       arrival: going ? $('#f-arr').value : '',
       departure: going ? $('#f-dep').value : '',
-      stay: going && stayEl ? stayEl.value : '',
       note: $('#f-note').value.trim(),
       lang: lang(),
       hp: $('#hp').value
