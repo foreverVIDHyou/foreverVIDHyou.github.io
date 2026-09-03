@@ -528,7 +528,21 @@ p  { margin: 0 0 1.05em; }
   letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
   margin: 0 0 .25em;
 }
-.ev-b h4 { margin-bottom: .3em; }
+.ev-t i {
+  font-style: normal; font-weight: 400; letter-spacing: .1em;
+  color: var(--ink-3); text-transform: lowercase;
+}
+.ev-b h4 { margin-bottom: .25em; }
+
+/* the room or lawn a function happens in, under its name */
+.ev-v {
+  display: flex; align-items: center; gap: .38em;
+  font-family: var(--ui); font-size: .84rem; color: var(--ink-2);
+  margin: 0 0 .4em;
+}
+.ev-pin { flex: 0 0 auto; width: 14px; height: 14px; color: var(--gold); }
+.ev-pin svg { width: 14px; height: 14px; }
+
 .ev-d { color: var(--ink-2); font-size: .95rem; margin: 0 0 .35em; }
 
 /* inline-block with real padding: as a bare inline link this was a 17px tap
