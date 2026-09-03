@@ -153,14 +153,18 @@ p  { margin: 0 0 1.05em; }
 /* the section divider: a short stave, blossom either side, one flower where a
    note would sit */
 .divider {
-  display: block; margin: 1.5rem auto;
+  display: block; margin: clamp(.35rem, 1.1vh, 1.1rem) auto;
   width: min(300px, 66%); height: auto;
 }
 
-/* the garland arching over the invitation */
+/* The garland arching over the invitation.
+   Sized by HEIGHT, like the couple below it. Sized by width it stayed 219px
+   tall on a 720px-high laptop while the hero centred its content upward, and
+   the blossoms cut straight through the names. Height-based, it shrinks with
+   the viewport and the names always clear it. */
 .garland {
   position: absolute; top: 0; left: 50%; translate: -50% 0;
-  width: min(1400px, 124vw); max-width: none; height: auto;
+  height: clamp(56px, 11.5vh, 205px); width: auto; max-width: none;
   pointer-events: none; user-select: none; z-index: 0;
 }
 
@@ -336,11 +340,21 @@ p  { margin: 0 0 1.05em; }
    hero
    ========================================================================== */
 
+/* The whole invitation, umbrellas included, lands in one screen. `svh` rather
+   than `vh`: on a phone `vh` is measured against the viewport with the browser
+   chrome hidden, so a 100vh hero is taller than what you can actually see and
+   the umbrellas fall below the fold. Spacing below is in `vh`-aware clamps so
+   the column compresses on a short screen instead of overflowing. */
 .hero {
   position: relative;
-  padding: clamp(3.2rem, 8vw, 5.5rem) var(--pad) 0;
-  display: grid; place-items: center; text-align: center;
-  overflow: hidden;
+  /* minus the header: it is sticky, so it still occupies flow space and the
+     hero starts below it. A plain 100svh here puts the hero's last row exactly
+     one header-height below the fold. */
+  min-height: calc(100svh - var(--head-h));
+  padding: clamp(2rem, 5vh, 3.4rem) var(--pad) clamp(1rem, 2.5vh, 2rem);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: clamp(.6rem, 1.6vh, 1.4rem);
+  text-align: center; overflow: hidden;
 }
 .hero::before {
   content: ""; position: absolute; z-index: 0;
@@ -351,20 +365,21 @@ p  { margin: 0 0 1.05em; }
 }
 
 .hero-in { position: relative; z-index: 1; max-width: 780px; }
+.hero-in > * { margin-bottom: 0; }
 
 /* the mark itself, gold on cream, not a dark tile. As a rounded green square
    it read as an app icon stuck onto the invitation. */
 .hero-mono {
-  width: clamp(88px, 12vw, 118px); height: auto;
-  margin: 0 auto 1.4rem;
+  width: clamp(44px, 6.2vh, 84px); height: auto;
+  margin: 0 auto clamp(.35rem, 1.1vh, .9rem);
 }
 
 .names {
   font-family: var(--display);
-  font-size: clamp(3rem, 10.5vw, 5.4rem);
+  font-size: clamp(2.05rem, 6.2vh, 5rem);
   font-weight: 300;
   line-height: 1.02; letter-spacing: -.01em;
-  margin: 0 0 .35em;
+  margin: 0 0 .2em;
   display: flex; flex-direction: column; align-items: center;
 }
 .names .amp { font-size: .5em; line-height: 1; margin: .05em 0; }
@@ -374,34 +389,36 @@ p  { margin: 0 0 1.05em; }
 }
 
 .when {
-  font-family: var(--ui); font-size: clamp(.98rem, 2.2vw, 1.18rem);
+  font-family: var(--ui); font-size: clamp(.9rem, 1.9vh, 1.14rem);
   font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
-  margin: 0 0 .55em;
+  margin: 0 0 .4em;
 }
-.where { font-size: .97rem; color: var(--ink-2); margin: 0 0 1.6rem; }
+.where { font-size: clamp(.86rem, 1.6vh, .97rem); color: var(--ink-2); margin: 0 0 clamp(.6rem, 1.5vh, 1.2rem); }
 .where a { text-decoration: none; }
 .where a:hover { text-decoration: underline; }
 
-.tag { margin: 0 0 2.1rem; }
+.tag { margin: 0 0 clamp(.7rem, 1.8vh, 1.5rem); }
 .tag > span {
   display: inline-block; background: var(--rose-2); color: var(--rose);
-  font-family: var(--display); font-style: italic; font-size: 1.18rem;
-  padding: .4em 1.35em; border-radius: 100px;
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(.95rem, 2vh, 1.18rem);
+  padding: .32em 1.2em; border-radius: 100px;
 }
 
-.cta { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
+.cta { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
+.hero .cta .btn { padding: clamp(.72em, 1.7vh, 1em) clamp(1.3em, 4vw, 2em); }
 
-.count { margin: clamp(2.8rem, 6vw, 4rem) 0 0; }
+.count { margin: clamp(.6rem, 1.8vh, 2rem) 0 0; }
 .count-lbl {
   font-family: var(--ui); font-size: .7rem; font-weight: 600;
   letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3);
-  margin: 0 0 1.1rem;
+  margin: 0 0 clamp(.4rem, 1.2vh, .9rem);
 }
 .count-row { display: flex; justify-content: center; gap: clamp(.7rem, 3.5vw, 2.4rem); }
 .cu { min-width: 62px; }
 .cu b {
   display: block; font-family: var(--display);
-  font-size: clamp(1.9rem, 6vw, 2.9rem); font-weight: 400; line-height: 1;
+  font-size: clamp(1.35rem, 3.4vh, 2.6rem); font-weight: 400; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .cu i {
@@ -411,36 +428,82 @@ p  { margin: 0 0 1.05em; }
 }
 .count.over .count-row { display: none; }
 
+/* --- the three umbrellas -------------------------------------------------
+   Hers, theirs, his. The outer two are links into each side's own running
+   order. Bottom-aligned so the canopies sit at different heights but the
+   handles line up, which is what stops it looking like a row of icons. */
+.brollies {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: clamp(.6rem, 3vw, 2.4rem);
+  width: 100%; margin-top: clamp(.4rem, 1.4vh, 1.2rem);
+}
+
+.brolly {
+  display: flex; flex-direction: column; align-items: center;
+  text-decoration: none; padding: .3rem .5rem .5rem;
+  border-radius: var(--radius);
+  transition: transform var(--t);
+}
+.brolly img {
+  height: clamp(52px, 9.4vh, 96px); width: auto;
+  transition: transform var(--t);
+}
+.brolly:hover { transform: translateY(-3px); }
+.brolly:hover img { transform: rotate(-4deg); }
+.brolly-groom:hover img { transform: rotate(4deg); }
+
+.brolly-t {
+  font-family: var(--ui); font-size: clamp(.62rem, 1.4vh, .76rem);
+  font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  margin-top: .5em;
+}
+.brolly-bride .brolly-t { color: #AE1744; }
+.brolly-groom .brolly-t { color: #16334C; }
+.brolly-n {
+  font-family: var(--display); font-size: clamp(.9rem, 2vh, 1.2rem);
+  color: var(--ink-2); line-height: 1.2;
+}
+
 /* Capped at 280 CSS px because the source illustration is 560px wide: any
-   larger and a 2x screen upscales it. Everything else on the page is either
-   vector or comfortably oversized, so this is the one asset with a ceiling. */
+   larger and a 2x screen upscales it. */
+/* Sized by height, not width. The illustration is 1.8x taller than it is
+   wide, so a width of 260px is a height of 470px, which is what pushed the
+   umbrellas below the fold. Height is the dimension the fold actually cares
+   about. */
 .hero-art {
   position: relative; z-index: 1;
-  width: min(280px, 62vw); height: auto;
-  margin: clamp(1.4rem, 3.5vw, 2.2rem) auto 0;
+  height: clamp(112px, 21vh, 238px); width: auto; margin: 0;
 }
 
 /* Stacked, the illustration is 1.8x taller than it is wide, so at 400px it
    alone was 720px and pushed the hero to 1549px, nearly two laptop viewports
    before a guest reaches the schedule. Bound it by viewport height instead of
    width so it stays proportionate on a short laptop screen. */
-@media (min-width: 760px) and (max-width: 1399px) {
-  .hero-art { max-height: 44vh; width: auto; max-width: 280px; }
-}
+
 
 /* Wide screens put the illustration beside the names rather than under them.
    A three-column grid, empty gutter, content, art, not absolute positioning,
    because absolute positioning anchored to the centre scales in lockstep with
    the names and overlaps them at every width by the same amount. A grid column
    cannot be overlapped. Below 1400px there is not room, so it stacks. */
-@media (min-width: 1400px) {
-  .hero {
-    grid-template-columns: minmax(0, 300px) minmax(0, 1fr) minmax(0, 300px);
-    align-items: end; padding-bottom: 0; column-gap: 1rem;
-  }
-  .hero-in { grid-column: 2; padding-bottom: 3.5rem; }
-  .hero-art { grid-column: 3; grid-row: 1; width: 100%; max-width: 280px;
-              align-self: end; margin: 0; }
+
+
+/* Below this the column simply will not hold everything. The monogram goes
+   first because it is already in the sticky header, and the countdown label
+   second because the numbers say the same thing. */
+/* On a phone the names stack to three lines and eat 170px, so something has
+   to go. The monogram goes first: it is already in the sticky header, two
+   centimetres above. */
+@media (max-width: 560px) {
+  .hero-mono { display: none; }
+}
+/* Shorter than this and the countdown's label is redundant too: the numbers
+   under it already say days, hours, minutes. */
+@media (max-height: 700px) {
+  .hero-mono { display: none; }
+  .count-lbl { display: none; }
+  .count { margin-top: clamp(.4rem, 1.2vh, .9rem); }
 }
 
 /* ==========================================================================
@@ -455,6 +518,7 @@ p  { margin: 0 0 1.05em; }
 }
 .page-head .wrap { position: relative; z-index: 1; }
 .page-head .lede { margin-inline: auto; }
+.side-brolly { width: clamp(58px, 9vw, 84px); height: auto; margin: 0 auto 1rem; }
 
 /* ==========================================================================
    sections
