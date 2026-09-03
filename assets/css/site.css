@@ -777,7 +777,19 @@ input:focus, select:focus, textarea:focus {
 }
 input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--rose); }
 
+/* The dial code sits next to the number rather than above it, so the pair
+   reads as one field. The select is sized to its longest option and the number
+   takes the rest. */
+.phone-row { display: flex; gap: .5rem; }
+.phone-row select { flex: 0 0 auto; width: 6.9em; padding-right: 1.9em; }
+.phone-row input { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 420px) {
+  .phone-row select { width: 6.2em; font-size: .92rem; }
+}
+
 .hint { font-size: .84rem; color: var(--ink-3); margin: .5em 0 0; }
+/* sits above the travel questions, explaining why we ask at all */
+.travel-hint { margin: 0 0 1.1rem; }
 
 .err { display: none; font-family: var(--ui); font-size: .82rem; color: var(--rose); margin: .5em 0 0; }
 .err.on { display: block; }

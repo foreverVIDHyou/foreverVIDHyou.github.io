@@ -450,16 +450,45 @@
     return m ? m[1] : '';
   }
 
+  /**
+   * Split a stored phone back into its dial code and its number.
+   *
+   * Saved as "+91-9876543210". Rows written before the country field existed
+   * hold bare digits, so anything without a hyphen goes into the number box
+   * and the code is left at its default.
+   */
+  function splitPhone(v) {
+    var s = String(v == null ? '' : v).trim();
+    var i = s.indexOf('-');
+    if (s.charAt(0) === '+' && i > 0) {
+      return { code: s.slice(0, i), number: s.slice(i + 1) };
+    }
+    return { code: '', number: s };
+  }
+
   function fill(r) {
     editingId = r.id || null;
     $('#f-name').value = r.name || '';
     $('#f-email').value = r.email || '';
-    $('#f-phone').value = r.phone == null ? '' : String(r.phone);
+
+    var ph = splitPhone(r.phone);
+    $('#f-phone').value = ph.number;
+    var cc = $('#f-country');
+    if (cc && ph.code) {
+      // only switch the selector if we actually offer that code
+      var known = Array.prototype.some.call(cc.options, function (o) {
+        return o.value === ph.code;
+      });
+      if (known) cc.value = ph.code;
+    }
     $('#f-head').value = r.headcount || 1;
     $('#f-party').value = r.party || '';
     $('#f-note').value = r.note || '';
     $('#f-arr').value = asDate(r.arrival);
     $('#f-dep').value = asDate(r.departure);
+    $('#f-arrdet').value = r.arrival_detail || '';
+    var ap = $('#f-arrpt');
+    if (ap && r.arrival_point != null) ap.value = String(r.arrival_point);
 
     var going = String(r.attending || 'yes') === 'yes';
     var radio = form.querySelector('input[name="attending"][value="' + (going ? 'yes' : 'no') + '"]');
@@ -557,12 +586,15 @@
       name: $('#f-name').value.trim(),
       email: $('#f-email').value.trim(),
       phone: $('#f-phone').value.trim(),
+      country: ($('#f-country') && $('#f-country').value) || '',
       attending: going ? 'yes' : 'no',
       events: going ? chosenEvents() : [],
       headcount: going ? $('#f-head').value : 0,
       party: going ? $('#f-party').value.trim() : '',
       arrival: going ? $('#f-arr').value : '',
       departure: going ? $('#f-dep').value : '',
+      arrival_point: going ? $('#f-arrpt').value : '',
+      arrival_detail: going ? $('#f-arrdet').value.trim() : '',
       note: $('#f-note').value.trim(),
       lang: lang(),
       hp: $('#hp').value
