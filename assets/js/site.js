@@ -162,7 +162,15 @@
         e.target.classList.add('in');
         io.unobserve(e.target);           // reveal once; do not re-hide on scroll up
       });
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+      // -30px, not -6%. A percentage is measured against the viewport, so on a
+      // 950px screen it shrinks the trigger area by 57px, and the last element
+      // on the page then sits permanently inside that dead band: once the
+      // document is fully scrolled it can never move any higher, so it never
+      // intersects and never reveals. The footer's closing line was stuck
+      // invisible until the four-second failsafe fired. A small fixed inset is
+      // smaller than the footer's own bottom padding, so the last line still
+      // lands inside the root.
+    }, { rootMargin: '0px 0px -30px 0px', threshold: 0.08 });
 
     all.forEach(function (el) { io.observe(el); });
 
