@@ -2,8 +2,9 @@
    Vibhakar & Dhwani, site behaviour.
 
    No framework, no build step, no dependencies. Everything degrades: with
-   JavaScript off the page still reads, the schedule is there, and the RSVP
-   form tells the guest to phone instead of silently failing.
+   JavaScript off the page still reads, the gate is open rather than shut, the
+   schedule is there, and the RSVP form tells the guest to phone rather than
+   silently failing.
    ========================================================================== */
 
 (function () {
@@ -11,6 +12,9 @@
 
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var REDUCED = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // =========================================================================
   // language
@@ -22,24 +26,23 @@
    * Attributes cannot hold two spans the way text can, so anything that lives
    * in an attribute is carried as data-en-* / data-hi-* and swapped here.
    */
-  function applyLangAttrs(lang) {
-    var other = lang === 'hi' ? 'en' : 'hi';
-    $$('[data-' + lang + '-placeholder], [data-' + other + '-placeholder]').forEach(function (el) {
-      var v = el.getAttribute('data-' + lang + '-placeholder');
+  function applyLangAttrs(l) {
+    var other = l === 'hi' ? 'en' : 'hi';
+    $$('[data-' + l + '-placeholder], [data-' + other + '-placeholder]').forEach(function (el) {
+      var v = el.getAttribute('data-' + l + '-placeholder');
       if (v !== null) el.setAttribute('placeholder', v);
     });
-    $$('[data-' + lang + '-aria-label], [data-' + other + '-aria-label]').forEach(function (el) {
-      var v = el.getAttribute('data-' + lang + '-aria-label');
+    $$('[data-' + l + '-aria-label], [data-' + other + '-aria-label]').forEach(function (el) {
+      var v = el.getAttribute('data-' + l + '-aria-label');
       if (v !== null) el.setAttribute('aria-label', v);
     });
   }
 
-  function setLang(lang) {
-    document.documentElement.lang = lang;
-    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
-    applyLangAttrs(lang);
+  function setLang(l) {
+    document.documentElement.lang = l;
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    applyLangAttrs(l);
     renderCountdown();
-    renderLightboxCaption();
   }
 
   var langBtn = $('#lang');
@@ -52,13 +55,19 @@
 
   function lang() { return document.documentElement.lang === 'hi' ? 'hi' : 'en'; }
 
+  /** Devanagari digits, because every other number on the page is set in them. */
+  function digits(n) {
+    var s = String(n);
+    return lang() === 'hi'
+      ? s.replace(/[0-9]/g, function (d) { return '०१२३४५६७८९'[+d]; })
+      : s;
+  }
+
   // =========================================================================
-  // header: stuck state, mobile drawer, scrollspy
+  // header
   // =========================================================================
 
-  var head = $('#head');
-  var nav = $('#nav');
-  var burger = $('#burger');
+  var head = $('#head'), nav = $('#nav'), burger = $('#burger');
 
   function measureHead() {
     if (head) {
@@ -83,21 +92,77 @@
   }
 
   /**
-   * Only the header's hairline. There is deliberately no scrollspy here.
-   *
-   * The previous version was a one-pager whose nav pointed at #story, #travel
-   * and so on, and a scroll handler toggled `.on` to track the section in
-   * view. Now that those are real pages, build.py marks the current one at
-   * render time, and the leftover scrollspy was matching nothing and quietly
-   * *stripping* that server-rendered `.on` off every link, so no page ever
-   * showed as current. Deleted rather than repaired: the active page is a fact
-   * the server already knows.
+   * Only the header's hairline. There is deliberately no scrollspy: the pages
+   * are real pages now and build.py marks the current one at render time, so a
+   * scroll handler tracking sections would only strip that `.on` back off.
    */
-  function onScroll() {
+  window.addEventListener('scroll', function () {
     if (head) head.classList.toggle('stuck', window.scrollY > 8);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  }, { passive: true });
+
+  // =========================================================================
+  // the gate
+  // =========================================================================
+
+  /**
+   * The gate is shut only on a first visit, and only when JavaScript runs.
+   *
+   * CSS holds the leaves *open* as their resting state and `.gate-shut` on the
+   * body is what closes them, so a browser with no JS, or a guest who prefers
+   * reduced motion, sees an open doorway rather than a locked one. Nothing
+   * here can leave anybody looking at a shut gate they cannot open.
+   *
+   * The visit is remembered, so someone coming back on the morning of the
+   * wedding to check what time the baraat leaves is not made to sit through a
+   * one-and-a-half second animation first.
+   */
+  (function gate() {
+    var stage = $('#stage');
+    if (!stage || !document.body.classList.contains('p-home')) return;
+
+    var GATE_KEY = 'vidh-gate';
+    // The head script already made this call before first paint and left its
+    // answer on <html>. Reading it back rather than asking localStorage again
+    // guarantees the two agree, so the gate cannot open here having never been
+    // drawn shut, or the reverse.
+    var early = document.documentElement.classList.contains('gate-shut-early');
+    var seen = !early;
+
+    var openBtn = $('#gate-open');
+
+    function openGate() {
+      document.body.classList.remove('gate-shut');
+      document.documentElement.classList.remove('gate-shut-early');
+      document.body.classList.add('gate-open-done');
+      if (openBtn) openBtn.hidden = true;
+      try { localStorage.setItem(GATE_KEY, '1'); } catch (e) {}
+    }
+
+    if (seen || REDUCED) {
+      document.body.classList.add('gate-open-done');
+      document.documentElement.classList.remove('gate-shut-early');
+      return;
+    }
+
+    document.body.classList.add('gate-shut');
+    if (openBtn) openBtn.hidden = false;
+
+    // Opens on its own after a beat. The button is for anyone who does not
+    // want to wait, and it is also the escape hatch if the timer never fires.
+    var auto = setTimeout(openGate, 1500);
+    if (openBtn) {
+      openBtn.addEventListener('click', function () {
+        clearTimeout(auto);
+        openGate();
+      });
+    }
+    // Any attempt to scroll means they want to get on with it.
+    window.addEventListener('scroll', function once() {
+      clearTimeout(auto);
+      openGate();
+      window.removeEventListener('scroll', once);
+    }, { passive: true });
+  })();
 
   // =========================================================================
   // reveal on scroll
@@ -106,78 +171,40 @@
   /**
    * Fade and lift elements in as they arrive.
    *
-   * The `data-reveal` attribute is added **here, in JavaScript**, and the CSS
-   * that hides an element keys off that attribute. So with JavaScript off, or
-   * if this file fails to load, nothing is ever hidden and the page simply
-   * renders. An animation that can leave the invitation blank is not worth
-   * having.
-   *
-   * Each group is staggered by its position among its siblings, so a row of
-   * schedule cards arrives one after another rather than all at once.
+   * `.js-reveal` is added to <html> **here**, and the CSS that hides anything
+   * keys off it. So with JavaScript off, or if this file fails to parse, not
+   * one element is ever hidden. A decorative animation must never be able to
+   * blank the page.
    */
-  var REVEAL_GROUPS = [
-    '.garland, .sprig',
-    '.hero-mono, .hero-in > .eyebrow, .names, .hero-in > .divider, .when, .where, .tag, .cta, .count',
-    '.hero-art',
-    '.page-head .wrap > *',
-    '.sec > .wrap > .eyebrow, .sec > .wrap > h2, .sec > .wrap > .lede, .draft-note',
-    '.day-h',
-    '.ev-i',
-    '.card',
-    '.chapter',
-    '.duet',
-    '.sw',
-    '.venue',
-    '.band .wrap > *',
-    '.rsvp-box',
-    '.sec > .wrap > .divider, .sec-more',
-    '.foot .wrap > *'
-  ];
+  (function reveal() {
+    var items = $$('[data-reveal]');
+    if (!items.length) return;
+    if (!('IntersectionObserver' in window) || REDUCED) return;
 
-  (function setupReveal() {
-    var reduce = window.matchMedia &&
-                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || !('IntersectionObserver' in window)) return;
-
-    var all = [];
-    REVEAL_GROUPS.forEach(function (sel) {
-      var byParent = {};
-      $$(sel).forEach(function (el) {
-        if (el.hasAttribute('data-reveal')) return;
-        // stagger within the element's own parent, so two columns of schedule
-        // cards each count from one rather than continuing the other's tally
-        var key = sel + '|' + (el.parentNode ? el.parentNode.className : '');
-        byParent[key] = (byParent[key] || 0) + 1;
-        var i = Math.min(byParent[key] - 1, 7);      // cap the wait at 7 steps
-        el.setAttribute('data-reveal', '');
-        el.style.setProperty('--i', i);
-        all.push(el);
-      });
-    });
+    document.documentElement.classList.add('js-reveal');
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('in');
-        io.unobserve(e.target);           // reveal once; do not re-hide on scroll up
+        io.unobserve(e.target);
       });
-      // -30px, not -6%. A percentage is measured against the viewport, so on a
-      // 950px screen it shrinks the trigger area by 57px, and the last element
-      // on the page then sits permanently inside that dead band: once the
-      // document is fully scrolled it can never move any higher, so it never
-      // intersects and never reveals. The footer's closing line was stuck
-      // invisible until the four-second failsafe fired. A small fixed inset is
-      // smaller than the footer's own bottom padding, so the last line still
-      // lands inside the root.
-    }, { rootMargin: '0px 0px -30px 0px', threshold: 0.08 });
+    }, {
+      // -30px, not a percentage. A percentage is measured against the
+      // viewport, so on a 950px screen -6% shrinks the trigger area by 57px,
+      // and the last element on the page then sits permanently inside that
+      // dead band: once the document is fully scrolled it can never rise any
+      // further, so it never intersects and never reveals. The footer's
+      // closing line stayed invisible until the failsafe fired.
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.08
+    });
+    items.forEach(function (el) { io.observe(el); });
 
-    all.forEach(function (el) { io.observe(el); });
-
-    // Anything still hidden after 4 seconds gets shown regardless. A guest
-    // whose scroll never triggers the observer must not end up with a blank
-    // page.
+    // Anything still hidden after four seconds is shown regardless. A guest
+    // whose scroll never trips the observer must not end up with a blank page.
     setTimeout(function () {
-      all.forEach(function (el) { el.classList.add('in'); });
+      items.forEach(function (el) { el.classList.add('in'); });
     }, 4000);
   })();
 
@@ -185,106 +212,92 @@
   // countdown
   // =========================================================================
 
-  var count = $('#count');
+  var cd = $('#cd');
 
   function renderCountdown() {
-    if (!count) return;
+    if (!cd) return;
 
-    // IST explicitly: a guest opening this in Pittsburgh should see the time
-    // remaining until the wedding starts in Goa, not until 9am wherever they are.
-    var start = Date.parse(count.dataset.start + 'T09:00:00+05:30');
-    var end   = Date.parse(count.dataset.end + 'T23:59:59+05:30');
-    var now   = Date.now();
+    // The target carries its own +05:30, so a guest opening this in Pittsburgh
+    // sees the time left until the pheras in Goa, not until 7pm where they are.
+    var target = Date.parse(cd.dataset.target);
+    if (!target) return;
 
-    var phase = now < start ? 'before' : (now <= end ? 'during' : 'after');
-    $$('[data-c]', count).forEach(function (el) {
-      el.hidden = el.getAttribute('data-c') !== phase;
-    });
-    count.classList.toggle('over', phase !== 'before');
-    if (phase !== 'before') return;
+    var left = (target - Date.now()) / 1000;
+    var doneEl = $('.cd-done', cd);
+    var row = $('.cd-row', cd);
 
-    var d = Math.max(0, start - now) / 1000;
-    var parts = {
-      days: Math.floor(d / 86400),
-      hours: Math.floor(d / 3600) % 24,
-      minutes: Math.floor(d / 60) % 60,
-      seconds: Math.floor(d) % 60
-    };
-    // Dates, times and the schedule are all set in Devanagari numerals in
-    // Hindi, so a counter ticking away in 93 / 05 / 40 reads as a bit of the
-    // page nobody translated.
-    var hi = lang() === 'hi';
-    function digits(n) {
-      var s = String(n);
-      return hi ? s.replace(/[0-9]/g, function (d) {
-        return '०१२३४५६७८९'[+d];
-      }) : s;
+    if (left <= 0) {
+      if (doneEl) doneEl.hidden = false;
+      if (row) row.hidden = true;
+      return;
     }
+    if (doneEl) doneEl.hidden = true;
+    if (row) row.hidden = false;
 
+    var parts = {
+      d: Math.floor(left / 86400),
+      h: Math.floor(left / 3600) % 24,
+      m: Math.floor(left / 60) % 60,
+      s: Math.floor(left) % 60
+    };
     Object.keys(parts).forEach(function (k) {
-      var el = document.getElementById('c-' + k);
-      if (el) el.textContent = digits(k === 'days' ? parts[k] : ('0' + parts[k]).slice(-2));
+      var el = $('[data-cd="' + k + '"]', cd);
+      if (el) {
+        el.textContent = digits(k === 'd' ? parts[k] : ('0' + parts[k]).slice(-2));
+      }
     });
   }
 
-  renderCountdown();
-  setInterval(renderCountdown, 1000);
+  if (cd) {
+    renderCountdown();
+    setInterval(renderCountdown, 1000);
+  }
 
   // =========================================================================
-  // gallery lightbox
+  // the record
   // =========================================================================
 
-  var lb = $('#lb'), lbImg = $('#lb-img'), lbCap = $('#lb-cap');
-  var shots = $$('.gi-b');
-  var at = 0, lastFocus = null;
+  /**
+   * A turning disc with an audio file behind it.
+   *
+   * The file may not be there yet, so a failed load is a normal state rather
+   * than an error: the disc stops, a line says the record is still being cut,
+   * and nothing looks broken.
+   *
+   * Autoplay is never attempted. Every browser blocks it, and an invitation
+   * that starts playing music at somebody in an open plan office is a bad
+   * invitation. `preload="none"` means the file is not even fetched until a
+   * guest asks for it, which matters on a phone on mobile data.
+   */
+  (function music() {
+    var btn = $('#mu-btn');
+    if (!btn) return;
 
-  function renderLightboxCaption() {
-    if (!lb || lb.hidden || !shots.length) return;
-    lbCap.textContent = shots[at].getAttribute('data-cap-' + lang()) || '';
-  }
+    var audio = new Audio('assets/audio/theme.m4a');
+    audio.loop = true;
+    audio.preload = 'none';
+    var miss = $('#mu-miss');
 
-  function openLb(i) {
-    if (!shots.length) return;
-    at = (i + shots.length) % shots.length;
-    lastFocus = document.activeElement;
-    lbImg.src = shots[at].dataset.full;
-    lbImg.alt = shots[at].getAttribute('data-cap-en') || '';
-    // Unhide first: renderLightboxCaption() bails out while the lightbox is
-    // hidden (so the language toggle does not poke a closed one), so calling
-    // it before this line left the first photo with no caption.
-    lb.hidden = false;
-    renderLightboxCaption();
-    document.body.style.overflow = 'hidden';
-    $('#lb-x').focus();
-  }
-
-  function closeLb() {
-    if (!lb) return;
-    lb.hidden = true;
-    lbImg.src = '';
-    document.body.style.overflow = '';
-    if (lastFocus) lastFocus.focus();
-  }
-
-  shots.forEach(function (b, i) {
-    b.addEventListener('click', function () { openLb(i); });
-  });
-
-  if (lb) {
-    $('#lb-x').addEventListener('click', closeLb);
-    $('#lb-p').addEventListener('click', function () { openLb(at - 1); });
-    $('#lb-n').addEventListener('click', function () { openLb(at + 1); });
-    // clicking the backdrop closes; clicking the photo itself does not
-    lb.addEventListener('click', function (e) {
-      if (e.target === lb || e.target.classList.contains('lb-f')) closeLb();
+    audio.addEventListener('error', function () {
+      btn.classList.remove('spinning');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.disabled = true;
+      if (miss) miss.hidden = false;
     });
-    document.addEventListener('keydown', function (e) {
-      if (lb.hidden) return;
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft') openLb(at - 1);
-      if (e.key === 'ArrowRight') openLb(at + 1);
+
+    btn.addEventListener('click', function () {
+      if (audio.paused) {
+        var p = audio.play();
+        if (p && p.catch) p.catch(function () { /* blocked, or no file */ });
+        btn.classList.add('spinning');
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        audio.pause();
+        btn.classList.remove('spinning');
+        btn.setAttribute('aria-pressed', 'false');
+      }
     });
-  }
+  })();
 
   // =========================================================================
   // RSVP
@@ -353,10 +366,9 @@
    *
    * This is the important one. Apps Script regularly answers a POST with an
    * HTML error page and a 404 **after having run the script and written the
-   * row**. Measured here at roughly 16 seconds per call with a failure rate
-   * high enough to hit real guests. Telling someone their RSVP failed when it
-   * is sitting in the sheet is the worst outcome available: they either give
-   * up, or they submit again and worry.
+   * row**. Telling someone their RSVP failed when it is sitting in the sheet
+   * is the worst outcome available: they either give up, or they submit again
+   * and worry.
    *
    * So before showing an error, ask the sheet. If a record for this guest
    * exists and was written in the last few minutes, the save worked and the
@@ -387,14 +399,72 @@
   function validEmail(v) { return !v || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
   function validPhone(v) { return !v || (v.replace(/\D/g, '').length >= 7); }
 
+  // --- the staircase ------------------------------------------------------
+
+  var yesOnly = $('#yes-only');
+  var sideOnly = $('#side-only');
+
   function attending() {
     var r = form.querySelector('input[name="attending"]:checked');
-    return r ? r.value : 'yes';
+    return r ? r.value : '';
+  }
+
+  function chosenSide() {
+    var r = form.querySelector('input[name="side"]:checked');
+    return r ? r.value : '';
   }
 
   function chosenEvents() {
-    return $$('input[name="events"]:checked', form).map(function (c) { return c.value; });
+    // Only what is visible counts. A guest who ticked four of Dhwani's
+    // functions and then switched to Vibhakar's side must not submit both
+    // sets, so the hidden panel's checkboxes are ignored on the way out.
+    return $$('input[name="events"]:checked', form)
+      .filter(function (c) {
+        var panel = c.closest('.evpick');
+        return panel && !panel.hidden;
+      })
+      .map(function (c) { return c.value; });
   }
+
+  /**
+   * Show the next question only once the previous one is answered.
+   *
+   * Nothing is destroyed on the way: switching sides hides one list of
+   * functions and shows the other, and switching back finds the first list
+   * exactly as it was left. That matters because a guest coming for both sides
+   * will flip between them to see what is on.
+   */
+  function syncSteps() {
+    var going = attending() === 'yes';
+    if (yesOnly) yesOnly.hidden = !going;
+
+    var side = chosenSide();
+    if (sideOnly) sideOnly.hidden = !going || !side;
+
+    $$('.evpick', form).forEach(function (p) {
+      p.hidden = p.dataset.side !== side;
+    });
+    if (going && side) showErr('e-side', false);
+  }
+
+  $$('input[name="attending"]', form).forEach(function (r) {
+    r.addEventListener('change', syncSteps);
+  });
+  $$('input[name="side"]', form).forEach(function (r) {
+    r.addEventListener('change', function () {
+      syncSteps();
+      // Bring the newly revealed list into view, rather than leaving it below
+      // the fold with no sign that anything happened.
+      if (sideOnly && !sideOnly.hidden && !REDUCED) {
+        sideOnly.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  });
+  $$('input[name="events"]', form).forEach(function (c) {
+    c.addEventListener('change', function () {
+      if (chosenEvents().length) showErr('e-events', false);
+    });
+  });
 
   function validate() {
     var name = $('#f-name').value.trim();
@@ -415,23 +485,19 @@
     if (emailBad || phoneBad) ok = false;
 
     if (attending() === 'yes') {
-      ok = showErr('e-events', chosenEvents().length === 0) && ok;
+      ok = showErr('e-side', !chosenSide()) && ok;
+      ok = showErr('e-events', !!chosenSide() && chosenEvents().length === 0) && ok;
+    } else if (!attending()) {
+      // Neither yes nor no has been answered yet.
+      ok = false;
+      var yn = $('#step-yes');
+      if (yn) yn.classList.add('needs');
     } else {
+      showErr('e-side', false);
       showErr('e-events', false);
     }
     return ok;
   }
-
-  // --- "not coming" hides the logistics -----------------------------------
-
-  var yesOnly = $('#yes-only');
-  function syncAttending() {
-    if (yesOnly) yesOnly.hidden = attending() !== 'yes';
-  }
-  $$('input[name="attending"]', form).forEach(function (r) {
-    r.addEventListener('change', syncAttending);
-  });
-  syncAttending();
 
   // --- fill the form from a saved record ----------------------------------
 
@@ -447,8 +513,7 @@
    */
   function asDate(v) {
     if (!v) return '';
-    var s = String(v);
-    var m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    var m = String(v).match(/^(\d{4}-\d{2}-\d{2})/);
     return m ? m[1] : '';
   }
 
@@ -488,10 +553,12 @@
       var wrap = input.closest('.locked-wrap');
       var note = $('.note-locked[data-note="' + key + '"]');
       var tpl = document.getElementById(stored ? 'tpl-locked' : 'tpl-addable');
+      var mark = wrap ? $('.lockmark', wrap) : null;
 
       input.readOnly = !!stored;
       if (key === 'phone' && $('#f-country')) $('#f-country').disabled = !!stored;
       if (wrap) wrap.classList.toggle('is-locked', !!stored);
+      if (mark) mark.hidden = !stored;
       if (note && tpl) {
         note.innerHTML = tpl.innerHTML;
         note.hidden = false;
@@ -510,6 +577,7 @@
       if (w) w.classList.remove('is-locked');
     });
     if ($('#f-country')) $('#f-country').disabled = false;
+    $$('.lockmark').forEach(function (mk) { mk.hidden = true; });
     $$('.note-locked').forEach(function (n) { n.hidden = true; });
   }
 
@@ -542,11 +610,26 @@
     if (radio) radio.checked = true;
 
     var evs = String(r.events || '').split(',').map(function (x) { return x.trim(); });
+
+    // A row written before sides existed carries no `side`, so infer it from
+    // the functions the guest picked: every stored key is prefixed with a side.
+    var side = String(r.side || '').trim();
+    if (!side) {
+      for (var i = 0; i < evs.length; i++) {
+        var cut = evs[i].indexOf('-');
+        if (cut > 0) { side = evs[i].slice(0, cut); break; }
+      }
+    }
+    if (side) {
+      var sr = form.querySelector('input[name="side"][value="' + side + '"]');
+      if (sr) sr.checked = true;
+    }
+
     $$('input[name="events"]', form).forEach(function (c) {
       c.checked = evs.indexOf(c.value) !== -1;
     });
 
-    syncAttending();
+    syncSteps();
     lockContacts(r);
     setBtn('edit');
   }
@@ -578,7 +661,7 @@
       // The call takes several seconds. Say so, rather than leaving a dead
       // button: without this the only feedback was the button greying out.
       lkGo.disabled = true;
-      lkGo.classList.add('busy');
+      lkGo.classList.add('is-busy');
       lkSay('busy');
 
       call({ action: 'lookup', key: key })
@@ -591,7 +674,7 @@
             // Move focus to the form so a keyboard user carries straight on,
             // and so the loaded answers are what they land in.
             $('#f-name').focus({ preventScroll: true });
-            $('#rf').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            form.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           } else {
             // Carry what they typed into the right field, so they do not have
             // to type it a second time.
@@ -605,7 +688,7 @@
         .catch(function () { lkSay('error'); })
         .then(function () {
           lkGo.disabled = false;
-          lkGo.classList.remove('busy');
+          lkGo.classList.remove('is-busy');
         });
     });
 
@@ -623,7 +706,7 @@
     e.preventDefault();
     if (!ENDPOINT) { showErr('e-form', true); return; }
     if (!validate()) {
-      var bad = form.querySelector('.err.on');
+      var bad = form.querySelector('.err.on') || form.querySelector('.needs');
       if (bad) bad.scrollIntoView({ block: 'center', behavior: 'smooth' });
       return;
     }
@@ -637,6 +720,7 @@
       phone: $('#f-phone').value.trim(),
       country: ($('#f-country') && $('#f-country').value) || '',
       attending: going ? 'yes' : 'no',
+      side: going ? chosenSide() : '',
       events: going ? chosenEvents() : [],
       headcount: going ? $('#f-head').value : 0,
       party: going ? $('#f-party').value.trim() : '',
@@ -703,4 +787,6 @@
       form.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
   }
+
+  syncSteps();
 })();
