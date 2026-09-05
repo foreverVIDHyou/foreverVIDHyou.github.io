@@ -476,7 +476,13 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
   overflow:hidden;padding-bottom:clamp(150px,20vw,250px)}
 .cd-scene{position:absolute;left:0;bottom:0;width:100%;
   height:clamp(150px,20vw,250px);object-fit:cover;object-position:50% 100%;
-  pointer-events:none}
+  pointer-events:none;
+  /* The SVG fades its own top toward the band colour, but the two never match
+     exactly once the image is cropped, so a hairline seam shows where the
+     scene starts. Masking the top 14% of the element removes it whatever the
+     crop turns out to be. */
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 14%);
+  mask-image:linear-gradient(to bottom, transparent 0, #000 14%)}
 .sec-count::before{content:"";position:absolute;inset:0;
   background:
     radial-gradient(90% 120% at 50% 0%, rgba(232,160,32,.14), transparent 68%);
