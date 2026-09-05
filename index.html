@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=2c233dcb">
+<link rel="stylesheet" href="assets/css/site.css?v=a27f75e8">
 
 <script>
   try {
@@ -89,12 +89,12 @@
     Dhwani Mundra, 5 – 6 December 2026,
     Club Mahindra Assonora</h1>
 
-  <div class="flat" id="flat">
+  <div class="lintel" aria-hidden="true">
+    <img class="lintel-g" src="assets/art/ganesh.svg" alt="" width="200" height="208">
+    <p class="lintel-om" lang="hi">॥ श्री गणेशाय नमः ॥</p>
+  </div>
 
-    <div class="ob ob-ganesh" aria-hidden="true">
-      <img src="assets/art/ganesh.svg" alt="" width="200" height="208">
-      <p class="ob-om" lang="hi">॥ श्री गणेशाय नमः ॥</p>
-    </div>
+  <div class="flat" id="flat">
 
       <a class="ob ob-invite ob-link" href="invite.html"
          style="--i:0">
@@ -118,10 +118,6 @@
          style="--i:2">
         <img class="ob-art" src="assets/art/ob-rsvp-card.svg"
              alt="" width="300" height="420">
-        <span class="ob-tag">
-          <span class="ob-l"><span class="l" data-l="en">The reply card</span><span class="l" data-l="hi" lang="hi">उत्तर पत्र</span></span>
-          <span class="ob-n"><span class="l" data-l="en">Please, by 1 October</span><span class="l" data-l="hi" lang="hi">१ अक्टूबर तक ज़रूर</span></span>
-        </span>
       </a>
       <a class="ob ob-story ob-link" href="story.html"
          style="--i:3">
@@ -141,23 +137,18 @@
           <span class="ob-n"><span class="l" data-l="en">Getting to Goa</span><span class="l" data-l="hi" lang="hi">गोवा पहुँचना</span></span>
         </span>
       </a>
-      <div class="ob ob-beads ob-prop" aria-hidden="true"
-           style="--i:5">
-        <img class="ob-art" src="assets/art/ob-bead-strand.svg"
-             alt="" width="300" height="420" loading="lazy">
-      </div>
       <div class="ob ob-garland ob-prop" aria-hidden="true"
-           style="--i:6">
+           style="--i:5">
         <img class="ob-art" src="assets/art/ob-marigold-garland.svg"
              alt="" width="300" height="420" loading="lazy">
       </div>
       <div class="ob ob-petals ob-prop" aria-hidden="true"
-           style="--i:7">
+           style="--i:6">
         <img class="ob-art" src="assets/art/ob-petals.svg"
              alt="" width="300" height="420" loading="lazy">
       </div>
       <div class="ob ob-seal ob-prop" aria-hidden="true"
-           style="--i:8">
+           style="--i:7">
         <img class="ob-art" src="assets/art/ob-wax-seal.svg"
              alt="" width="300" height="420" loading="lazy">
       </div>
@@ -167,11 +158,11 @@
               data-say='{"tap":"Music",
                          "on":"Playing",
                          "off":"Paused",
-                         "missing":"The record is still being cut."}'
+                         "missing":""}'
               data-say-hi='{"tap":"\u0938\u0902\u0917\u0940\u0924",
                             "on":"\u092c\u091c \u0930\u0939\u093e \u0939\u0948",
                             "off":"\u0930\u0941\u0915\u093e \u0939\u0941\u0906",
-                            "missing":"\u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0905\u092d\u0940 \u0924\u0948\u092f\u093e\u0930 \u0939\u094b \u0930\u0939\u093e \u0939\u0948\u0964"}'>
+                            "missing":""}'>
         <img class="ob-art" src="assets/art/vinyl.svg" alt="" width="280" height="280">
         <span class="mu-play" aria-hidden="true"></span>
         <span class="ob-tag">
@@ -192,12 +183,15 @@
   </div>
 
   <audio id="mu-audio" loop preload="auto">
+    <source src="assets/audio/theme.mp3" type="audio/mpeg">
+    <source src="assets/audio/theme.ogg" type="audio/ogg">
   </audio>
 
   <p class="flat-hint">
     <span class="flat-hint-t"><span class="l" data-l="en">Everything is on the table</span><span class="l" data-l="hi" lang="hi">सब कुछ मेज़ पर रखा है</span></span>
-    <span class="flat-hint-w"><span class="l" data-l="en">Club Mahindra Assonora</span><span class="l" data-l="hi" lang="hi">क्लब महिंद्रा असनोरा</span><span class="dot">·</span><span class="l" data-l="en">Assonora, North Goa</span><span class="l" data-l="hi" lang="hi">असनोरा, उत्तरी गोवा</span></span>
-    <span class="flat-hint-n">#foreverVIDHyou</span>
+    <span class="flat-hint-l">
+      <span class="flat-hint-w"><span class="l" data-l="en">Club Mahindra Assonora</span><span class="l" data-l="hi" lang="hi">क्लब महिंद्रा असनोरा</span></span><span class="flat-hint-n">#foreverVIDHyou</span>
+    </span>
   </p>
 </section>
 
@@ -312,6 +306,6 @@
   </div>
 </footer>
 
-<script src="assets/js/site.js?v=28744279" defer></script>
+<script src="assets/js/site.js?v=b318966f" defer></script>
 </body>
 </html>

@@ -224,7 +224,7 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
    ========================================================================== */
 .flat-stage{
   min-height:calc(100svh - var(--head-h));
-  display:grid;grid-template-rows:1fr auto;justify-items:center;
+  display:grid;grid-template-rows:auto 1fr auto;justify-items:center;
   align-items:center;
   padding:6px 10px 12px;
   background:
@@ -237,8 +237,11 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
      was leaving 140px of empty table down each side of a 1440px screen. 1.714
      is 1200/700. Width is whichever is smaller: all of it, or as much as the
      leftover height can carry at that ratio. */
-  aspect-ratio:1200/670;
-  width:min(100%, calc((100svh - var(--head-h) - 92px) * 1.791));
+  /* 188px is the lintel above and the caption below, measured. Giving
+     Ganeshji a row of his own is what guarantees nothing can reach him, and
+     the cost is that height; a wider design space wins most of it back. */
+  aspect-ratio:1200/620;
+  width:min(100%, calc((100svh - var(--head-h) - 188px) * 1.935));
   max-width:1700px;
 }
 
@@ -285,26 +288,26 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 .ob-link:hover .ob-n,.ob-link:focus-visible .ob-n{opacity:1}
 
 /* --- where everything lies ------------------------------------------------ */
-.ob-ganesh{--x:50;--y:7;--w:9;--r:0;text-align:center}
-.ob-ganesh img{width:100%;height:auto;opacity:.92}
-.ob-om{font:400 clamp(9px,.95vw,13px)/1.4 var(--deva);color:var(--gold-600);
+/* the lintel: Ganeshji, above the table and always centred */
+.lintel{text-align:center;padding:0 0 4px}
+.lintel-g{width:clamp(46px,4.8vw,72px);height:auto;margin:0 auto;opacity:.94}
+.lintel-om{font:400 clamp(9.5px,.95vw,13px)/1.35 var(--deva);color:var(--gold-600);
   margin-top:4px;white-space:nowrap}
 
-.ob-invite   {--x:50;--y:53;--w:28;--r:-3;z-index:4}
-.ob-programme{--x:20;--y:44;--w:22;--r:8;z-index:3}
-.ob-rsvp     {--x:80;--y:40;--w:23;--r:-7;z-index:3}
-.ob-story    {--x:25;--y:81;--w:24;--r:-11;z-index:2}
-.ob-travel   {--x:78;--y:79;--w:11;--r:13;z-index:3}
+.ob-invite   {--x:50;--y:50;--w:29;--r:-3;z-index:4}
+.ob-programme{--x:19;--y:38;--w:23;--r:8;z-index:3}
+.ob-rsvp     {--x:81;--y:34;--w:24;--r:-7;z-index:3}
+.ob-story    {--x:24;--y:81;--w:25;--r:-11;z-index:2}
+.ob-travel   {--x:79;--y:78;--w:11;--r:13;z-index:3}
 
-.ob-beads    {--x:13;--y:20;--w:26;--r:6;z-index:1;opacity:.95}
-.ob-garland  {--x:87;--y:74;--w:26;--r:-8;z-index:1}
-.ob-petals   {--x:58;--y:91;--w:19;--r:4;z-index:1;opacity:.92}
-.ob-seal     {--x:70;--y:17;--w:8;--r:-14;z-index:2}
+.ob-garland  {--x:88;--y:71;--w:27;--r:-8;z-index:1}
+.ob-petals   {--x:59;--y:91;--w:19;--r:4;z-index:1;opacity:.92}
+.ob-seal     {--x:14;--y:10;--w:8;--r:-14;z-index:2}
 
 /* the names, printed on the card in the middle. It sits over the invitation
    art and lets clicks through to the link underneath. */
 .ob-name{
-  --x:50;--y:53;--w:28;--r:-3;z-index:5;
+  --x:50;--y:50;--w:29;--r:-3;z-index:5;
   pointer-events:none;text-align:center;
   display:flex;flex-direction:column;justify-content:center;
   /* The card art declares a clear panel at x 34..266, y 96..330 of its
@@ -331,8 +334,8 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
      The expression mirrors how `.flat` itself is sized, so the type tracks the
      stage whether the stage is bounded by width or by height. The `max()` is
      the legibility floor: below it the hashtag was rendering at 4.7px. */
-  font-size:max(30px, min(6vw, 70px,
-    calc((100svh - var(--head-h) - 92px) * .104)));
+  font-size:max(30px, min(6.4vw, 72px,
+    calc((100svh - var(--head-h) - 188px) * .126)));
 }
 .nm-mono{font:300 1em/1 var(--display);color:var(--gold-600);white-space:nowrap}
 .nm-mono .amp{font-size:.54em;color:var(--marigold-dk);vertical-align:.1em}
@@ -344,7 +347,7 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 html[lang="hi"] .nm-names{font-size:.31em}
 
 /* the record, sitting on the table with everything else */
-.ob-record{--x:7;--y:83;--w:12;--r:0;z-index:3;
+.ob-record{--x:6;--y:74;--w:11;--r:0;z-index:3;
   background:none;border:0;padding:0;cursor:pointer;
   transition:rotate .34s var(--ease),scale .34s var(--ease),
              filter .34s var(--ease);
@@ -380,20 +383,21 @@ html[lang="hi"] .nm-names{font-size:.31em}
    resolves against the containing block, not the element. The second sat on
    the row of gold dots under the wordmark, so the usable band is really
    y=106 to y=126 and the text is centred on y=116, which is 52.7%. */
-.ob-by{--x:80;--y:40;--w:23;--r:-7;z-index:5;
+.ob-by{--x:81;--y:34;--w:24;--r:-7;z-index:5;
   pointer-events:none;aspect-ratio:340/220}
 .ob-by p{position:absolute;left:9%;right:9%;top:52.7%;translate:0 -50%;
   font:600 max(9px, min(.98vw, 12.5px))/1.2 var(--ui);
   letter-spacing:.04em;color:var(--red-700);text-align:center;
   white-space:nowrap}
 
-.flat-hint{text-align:center;padding-top:8px}
-.flat-hint-t{display:block;font:300 clamp(17px,2.2vw,25px)/1.3 var(--display);
+.flat-hint{text-align:center;padding-top:4px}
+.flat-hint-t{display:block;font:300 clamp(16px,2vw,23px)/1.25 var(--display);
   color:var(--ink)}
-.flat-hint-w{display:block;font:400 clamp(12.5px,1.25vw,15px)/1.5 var(--ui);
-  color:var(--ink-2);margin-top:5px}
-.flat-hint-n{display:block;font:600 clamp(10.5px,.95vw,12.5px)/1 var(--ui);
-  letter-spacing:.24em;color:var(--marigold-dk);margin-top:10px}
+.flat-hint-l{display:block;margin-top:5px}
+.flat-hint-w{font:400 clamp(11.5px,1.1vw,14px)/1.45 var(--ui);color:var(--ink-2)}
+.flat-hint-n{font:600 clamp(10px,.9vw,12px)/1.45 var(--ui);
+  letter-spacing:.22em;color:var(--marigold-dk)}
+.flat-hint-w::after{content:"·";padding:0 .6em;color:var(--gold-500)}
 
 /* the quote, on its own between the table and the clock */
 .sec-quote{background:var(--paper);padding-bottom:clamp(34px,4vw,56px)}
@@ -403,7 +407,7 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
   font-size:clamp(17px,2.4vw,24px);line-height:1.75;max-width:30ch}
 
 /* the record, sitting on the table with everything else */
-.ob-record{--x:7;--y:83;--w:12;--r:0;z-index:3;
+.ob-record{--x:6;--y:74;--w:11;--r:0;z-index:3;
   background:none;border:0;padding:0;cursor:pointer;
   transition:rotate .34s var(--ease),scale .34s var(--ease),
              filter .34s var(--ease);
@@ -439,20 +443,21 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
    resolves against the containing block, not the element. The second sat on
    the row of gold dots under the wordmark, so the usable band is really
    y=106 to y=126 and the text is centred on y=116, which is 52.7%. */
-.ob-by{--x:80;--y:40;--w:23;--r:-7;z-index:5;
+.ob-by{--x:81;--y:34;--w:24;--r:-7;z-index:5;
   pointer-events:none;aspect-ratio:340/220}
 .ob-by p{position:absolute;left:9%;right:9%;top:52.7%;translate:0 -50%;
   font:600 max(9px, min(.98vw, 12.5px))/1.2 var(--ui);
   letter-spacing:.04em;color:var(--red-700);text-align:center;
   white-space:nowrap}
 
-.flat-hint{text-align:center;padding-top:8px}
-.flat-hint-t{display:block;font:300 clamp(17px,2.2vw,25px)/1.3 var(--display);
+.flat-hint{text-align:center;padding-top:4px}
+.flat-hint-t{display:block;font:300 clamp(16px,2vw,23px)/1.25 var(--display);
   color:var(--ink)}
-.flat-hint-w{display:block;font:400 clamp(12.5px,1.25vw,15px)/1.5 var(--ui);
-  color:var(--ink-2);margin-top:5px}
-.flat-hint-n{display:block;font:600 clamp(10.5px,.95vw,12.5px)/1 var(--ui);
-  letter-spacing:.24em;color:var(--marigold-dk);margin-top:10px}
+.flat-hint-l{display:block;margin-top:5px}
+.flat-hint-w{font:400 clamp(11.5px,1.1vw,14px)/1.45 var(--ui);color:var(--ink-2)}
+.flat-hint-n{font:600 clamp(10px,.9vw,12px)/1.45 var(--ui);
+  letter-spacing:.22em;color:var(--marigold-dk)}
+.flat-hint-w::after{content:"·";padding:0 .6em;color:var(--gold-500)}
 
 /* the quote, and the two of them, between the table and the clock */
 .sec-quote{background:var(--paper);padding-bottom:clamp(34px,4vw,56px)}
@@ -977,28 +982,26 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      pieces run *down* it and only lean off centre; the first phone cut put
      them at the far left and right of a squat box and still read as a
      horizontal scatter shrunk down. */
-  .flat{aspect-ratio:390/720;
-    height:min(calc(100svh - var(--head-h) - 92px), 760px);
+  .flat{aspect-ratio:390/660;
+    height:min(calc(100svh - var(--head-h) - 150px), 720px);
     width:auto;max-width:100%}
   .flat-stage{min-height:auto;padding-bottom:22px}
 
   /* Ganeshji sat at the head of the table and the invitation card, being the
      biggest piece and on a higher layer, covered him completely. He gets his
      own strip at the top now and the card starts below it. */
-  .ob-ganesh   {--x:50;--y:4.5;--w:15;z-index:6}
-  .ob-invite   {--x:37;--y:31;--w:54;--r:-4}
-  .ob-name     {--x:37;--y:31;--w:54;--r:-4}
-  .ob-rsvp     {--x:76;--y:22;--w:44;--r:8;z-index:5}
-  .ob-by       {--x:76;--y:22;--w:44;--r:8;z-index:6;
+  .ob-invite   {--x:37;--y:26;--w:56;--r:-4}
+  .ob-name     {--x:37;--y:26;--w:56;--r:-4}
+  .ob-rsvp     {--x:75;--y:15;--w:45;--r:8;z-index:5}
+  .ob-by       {--x:75;--y:15;--w:45;--r:8;z-index:6;
                 font-size:max(10px,3.1vw)}
-  .ob-programme{--x:26;--y:64;--w:46;--r:6}
-  .ob-story    {--x:72;--y:63;--w:48;--r:-9}
-  .ob-travel   {--x:30;--y:90;--w:18;--r:11}
-  .ob-record   {--x:72;--y:88;--w:22}
-  .ob-beads    {--x:55;--y:9;--w:34;--r:6}
-  .ob-garland  {--x:17;--y:46;--w:34;--r:-8}
-  .ob-petals   {--x:53;--y:78;--w:26;--r:4}
-  .ob-seal     {--x:88;--y:47;--w:11;--r:-14}
+  .ob-programme{--x:26;--y:62;--w:47;--r:6}
+  .ob-story    {--x:72;--y:60;--w:49;--r:-9}
+  .ob-travel   {--x:30;--y:89;--w:18;--r:11}
+  .ob-record   {--x:72;--y:87;--w:22}
+  .ob-garland  {--x:17;--y:43;--w:35;--r:-8}
+  .ob-petals   {--x:53;--y:76;--w:27;--r:4}
+  .ob-seal     {--x:88;--y:42;--w:11;--r:-14}
 
   .ob-name{font-size:max(26px, min(9.4vw, 44px))}
   /* Labels get tight in portrait, so only the name survives and it sits

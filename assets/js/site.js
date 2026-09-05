@@ -288,9 +288,14 @@
       start().catch(function () {
         // Blocked, which is the normal answer. Wait for any sign of life.
         var events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
-        function go() {
-          events.forEach(function (e) {
-            window.removeEventListener(e, go, true);
+        function go(e) {
+          // Not the record itself. The same gesture fires pointerdown and then
+          // click, so arming on the button meant the first press started the
+          // track and its own handler immediately paused it again: one tap,
+          // nothing playing, and no way to tell why.
+          if (e && e.target && e.target.closest && e.target.closest('#mu-btn')) return;
+          events.forEach(function (ev) {
+            window.removeEventListener(ev, go, true);
           });
           start().catch(function () {});
         }
