@@ -226,18 +226,20 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
   min-height:calc(100svh - var(--head-h));
   display:grid;grid-template-rows:1fr auto;justify-items:center;
   align-items:center;
-  padding:10px 12px 14px;
+  padding:6px 10px 12px;
   background:
     radial-gradient(128% 104% at 50% 16%,
       #FCF6E9 0%, #F2E6CE 54%, #E7D5B2 100%);
 }
 .flat{
   position:relative;
-  aspect-ratio:1200/760;
-  /* 1.579 is 1200/760. Width is whichever is smaller: all of it, or as much
-     as the leftover height can carry at that ratio. */
-  width:min(100%, calc((100svh - var(--head-h) - 104px) * 1.579));
-  max-width:1180px;
+  /* Wider design space and a bigger cap than the first cut, because the scene
+     was leaving 140px of empty table down each side of a 1440px screen. 1.714
+     is 1200/700. Width is whichever is smaller: all of it, or as much as the
+     leftover height can carry at that ratio. */
+  aspect-ratio:1200/670;
+  width:min(100%, calc((100svh - var(--head-h) - 92px) * 1.791));
+  max-width:1700px;
 }
 
 .ob{
@@ -283,26 +285,26 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 .ob-link:hover .ob-n,.ob-link:focus-visible .ob-n{opacity:1}
 
 /* --- where everything lies ------------------------------------------------ */
-.ob-ganesh{--x:50;--y:8;--w:8;--r:0;text-align:center}
+.ob-ganesh{--x:50;--y:7;--w:9;--r:0;text-align:center}
 .ob-ganesh img{width:100%;height:auto;opacity:.92}
 .ob-om{font:400 clamp(9px,.95vw,13px)/1.4 var(--deva);color:var(--gold-600);
   margin-top:4px;white-space:nowrap}
 
-.ob-invite   {--x:50;--y:53;--w:26;--r:-3;z-index:4}
-.ob-programme{--x:21;--y:45;--w:20;--r:8;z-index:3}
-.ob-rsvp     {--x:79;--y:41;--w:21;--r:-7;z-index:3}
-.ob-story    {--x:26;--y:80;--w:22;--r:-11;z-index:2}
-.ob-travel   {--x:77;--y:78;--w:10;--r:13;z-index:3}
+.ob-invite   {--x:50;--y:53;--w:28;--r:-3;z-index:4}
+.ob-programme{--x:20;--y:44;--w:22;--r:8;z-index:3}
+.ob-rsvp     {--x:80;--y:40;--w:23;--r:-7;z-index:3}
+.ob-story    {--x:25;--y:81;--w:24;--r:-11;z-index:2}
+.ob-travel   {--x:78;--y:79;--w:11;--r:13;z-index:3}
 
-.ob-beads    {--x:14;--y:22;--w:24;--r:6;z-index:1;opacity:.95}
-.ob-garland  {--x:86;--y:73;--w:24;--r:-8;z-index:1}
-.ob-petals   {--x:57;--y:90;--w:17;--r:4;z-index:1;opacity:.92}
-.ob-seal     {--x:69;--y:19;--w:7;--r:-14;z-index:2}
+.ob-beads    {--x:13;--y:20;--w:26;--r:6;z-index:1;opacity:.95}
+.ob-garland  {--x:87;--y:74;--w:26;--r:-8;z-index:1}
+.ob-petals   {--x:58;--y:91;--w:19;--r:4;z-index:1;opacity:.92}
+.ob-seal     {--x:70;--y:17;--w:8;--r:-14;z-index:2}
 
 /* the names, printed on the card in the middle. It sits over the invitation
    art and lets clicks through to the link underneath. */
 .ob-name{
-  --x:50;--y:53;--w:26;--r:-3;z-index:5;
+  --x:50;--y:53;--w:28;--r:-3;z-index:5;
   pointer-events:none;text-align:center;
   display:flex;flex-direction:column;justify-content:center;
   /* The card art declares a clear panel at x 34..266, y 96..330 of its
@@ -329,8 +331,8 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
      The expression mirrors how `.flat` itself is sized, so the type tracks the
      stage whether the stage is bounded by width or by height. The `max()` is
      the legibility floor: below it the hashtag was rendering at 4.7px. */
-  font-size:max(30px, min(5.4vw, 62px,
-    calc((100svh - var(--head-h) - 104px) * .086)));
+  font-size:max(30px, min(6vw, 70px,
+    calc((100svh - var(--head-h) - 92px) * .104)));
 }
 .nm-mono{font:300 1em/1 var(--display);color:var(--gold-600);white-space:nowrap}
 .nm-mono .amp{font-size:.54em;color:var(--marigold-dk);vertical-align:.1em}
@@ -340,6 +342,50 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 .nm-when{font:400 .225em/1.4 var(--ui);color:var(--red-700);
   margin-top:.2em;white-space:nowrap}
 html[lang="hi"] .nm-names{font-size:.31em}
+
+/* the record, sitting on the table with everything else */
+.ob-record{--x:7;--y:83;--w:12;--r:0;z-index:3;
+  background:none;border:0;padding:0;cursor:pointer;
+  transition:rotate .34s var(--ease),scale .34s var(--ease),
+             filter .34s var(--ease);
+  filter:drop-shadow(0 6px 16px rgba(58,21,18,.22))}
+.ob-record:hover,.ob-record:focus-visible{scale:1.05;
+  filter:drop-shadow(0 14px 28px rgba(58,21,18,.3))}
+.ob-record:focus-visible{outline:2px solid var(--red-700);outline-offset:6px}
+.ob-record .ob-art{border-radius:50%}
+/* 33 1/3 rpm is 1.8s a turn */
+.ob-record.spinning .ob-art{animation:spin 1.8s linear infinite}
+@keyframes spin{to{rotate:360deg}}
+.ob-record .mu-play{position:absolute;left:50%;top:50%;
+  width:32%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  background:rgba(250,243,228,.92);display:grid;place-items:center;
+  transition:opacity .2s}
+.ob-record .mu-play::before{content:"";border-left:0.9em solid var(--red-800);
+  border-top:0.58em solid transparent;border-bottom:0.58em solid transparent;
+  margin-left:.24em;font-size:min(1.2vw,13px)}
+.ob-record.spinning .mu-play::before{border:0;width:.34em;height:.9em;margin:0;
+  border-left:.3em solid var(--red-800);border-right:.3em solid var(--red-800);
+  font-size:min(1.6vw,17px)}
+.ob-record .ob-tag{top:calc(100% + 7px)}
+
+/* The deadline, set on the reply card so it is read before anything is
+   clicked.
+
+   The card art prints its wordmark with the baseline at y=84 and its first
+   ruled line at y=130 of a 340x220 box, which leaves a clear band from y=92
+   to y=122. The text is pinned to the middle of that band, at 48.6% of the
+   card's height. The first attempt centred it in the card with percentage
+   padding and it landed straight on the rule and read as struck through,
+   which is the same trap the invitation card fell into: percentage padding
+   resolves against the containing block, not the element. The second sat on
+   the row of gold dots under the wordmark, so the usable band is really
+   y=106 to y=126 and the text is centred on y=116, which is 52.7%. */
+.ob-by{--x:80;--y:40;--w:23;--r:-7;z-index:5;
+  pointer-events:none;aspect-ratio:340/220}
+.ob-by p{position:absolute;left:9%;right:9%;top:52.7%;translate:0 -50%;
+  font:600 max(9px, min(.98vw, 12.5px))/1.2 var(--ui);
+  letter-spacing:.04em;color:var(--red-700);text-align:center;
+  white-space:nowrap}
 
 .flat-hint{text-align:center;padding-top:8px}
 .flat-hint-t{display:block;font:300 clamp(17px,2.2vw,25px)/1.3 var(--display);
@@ -356,9 +402,81 @@ html[lang="hi"] .nm-names{font-size:.31em}
 html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
   font-size:clamp(17px,2.4vw,24px);line-height:1.75;max-width:30ch}
 
-/* the clock */
+/* the record, sitting on the table with everything else */
+.ob-record{--x:7;--y:83;--w:12;--r:0;z-index:3;
+  background:none;border:0;padding:0;cursor:pointer;
+  transition:rotate .34s var(--ease),scale .34s var(--ease),
+             filter .34s var(--ease);
+  filter:drop-shadow(0 6px 16px rgba(58,21,18,.22))}
+.ob-record:hover,.ob-record:focus-visible{scale:1.05;
+  filter:drop-shadow(0 14px 28px rgba(58,21,18,.3))}
+.ob-record:focus-visible{outline:2px solid var(--red-700);outline-offset:6px}
+.ob-record .ob-art{border-radius:50%}
+/* 33 1/3 rpm is 1.8s a turn */
+.ob-record.spinning .ob-art{animation:spin 1.8s linear infinite}
+@keyframes spin{to{rotate:360deg}}
+.ob-record .mu-play{position:absolute;left:50%;top:50%;
+  width:32%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  background:rgba(250,243,228,.92);display:grid;place-items:center;
+  transition:opacity .2s}
+.ob-record .mu-play::before{content:"";border-left:0.9em solid var(--red-800);
+  border-top:0.58em solid transparent;border-bottom:0.58em solid transparent;
+  margin-left:.24em;font-size:min(1.2vw,13px)}
+.ob-record.spinning .mu-play::before{border:0;width:.34em;height:.9em;margin:0;
+  border-left:.3em solid var(--red-800);border-right:.3em solid var(--red-800);
+  font-size:min(1.6vw,17px)}
+.ob-record .ob-tag{top:calc(100% + 7px)}
+
+/* The deadline, set on the reply card so it is read before anything is
+   clicked.
+
+   The card art prints its wordmark with the baseline at y=84 and its first
+   ruled line at y=130 of a 340x220 box, which leaves a clear band from y=92
+   to y=122. The text is pinned to the middle of that band, at 48.6% of the
+   card's height. The first attempt centred it in the card with percentage
+   padding and it landed straight on the rule and read as struck through,
+   which is the same trap the invitation card fell into: percentage padding
+   resolves against the containing block, not the element. The second sat on
+   the row of gold dots under the wordmark, so the usable band is really
+   y=106 to y=126 and the text is centred on y=116, which is 52.7%. */
+.ob-by{--x:80;--y:40;--w:23;--r:-7;z-index:5;
+  pointer-events:none;aspect-ratio:340/220}
+.ob-by p{position:absolute;left:9%;right:9%;top:52.7%;translate:0 -50%;
+  font:600 max(9px, min(.98vw, 12.5px))/1.2 var(--ui);
+  letter-spacing:.04em;color:var(--red-700);text-align:center;
+  white-space:nowrap}
+
+.flat-hint{text-align:center;padding-top:8px}
+.flat-hint-t{display:block;font:300 clamp(17px,2.2vw,25px)/1.3 var(--display);
+  color:var(--ink)}
+.flat-hint-w{display:block;font:400 clamp(12.5px,1.25vw,15px)/1.5 var(--ui);
+  color:var(--ink-2);margin-top:5px}
+.flat-hint-n{display:block;font:600 clamp(10.5px,.95vw,12.5px)/1 var(--ui);
+  letter-spacing:.24em;color:var(--marigold-dk);margin-top:10px}
+
+/* the quote, and the two of them, between the table and the clock */
+.sec-quote{background:var(--paper);padding-bottom:clamp(34px,4vw,56px)}
+.qz{display:flex;align-items:center;justify-content:center;
+  gap:clamp(20px,4vw,58px);max-width:860px;margin-inline:auto}
+.qz-art{width:clamp(130px,20vw,250px);height:auto;flex:0 0 auto}
+.qz-t{min-width:0}
+.quote{font:300 italic clamp(20px,3.1vw,32px)/1.5 var(--display);
+  color:var(--ink-2);max-width:22ch}
+html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
+  font-size:clamp(17px,2.4vw,24px);line-height:1.75;max-width:28ch}
+.qz .divider{margin-inline:0}
+@media (max-width:700px){
+  .qz{flex-direction:column;text-align:center}
+  .quote{max-width:26ch;margin-inline:auto}
+  .qz .divider{margin-inline:auto}
+}
+
+/* the clock, standing over the Assonora skyline at dusk */
 .sec-count{background:var(--red-800);color:var(--ivory);position:relative;
-  overflow:hidden}
+  overflow:hidden;padding-bottom:clamp(150px,20vw,250px)}
+.cd-scene{position:absolute;left:0;bottom:0;width:100%;
+  height:clamp(150px,20vw,250px);object-fit:cover;object-position:50% 100%;
+  pointer-events:none}
 .sec-count::before{content:"";position:absolute;inset:0;
   background:
     radial-gradient(90% 120% at 50% 0%, rgba(232,160,32,.14), transparent 68%);
@@ -848,30 +966,40 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   /* Full width here. Capping the stage by viewport height left 84px of a
      390px screen empty and shrank the card until the hashtag was under 5px.
      A phone scrolls; the scene does not have to fit one screen. */
-  .flat{aspect-ratio:390/1060;width:100%}
+  /* Sized by HEIGHT on a phone, not width, so the whole table lands inside
+     one screen. Width follows from the ratio. A phone is a column, so the
+     pieces run *down* it and only lean off centre; the first phone cut put
+     them at the far left and right of a squat box and still read as a
+     horizontal scatter shrunk down. */
+  .flat{aspect-ratio:390/720;
+    height:min(calc(100svh - var(--head-h) - 92px), 760px);
+    width:auto;max-width:100%}
   .flat-stage{min-height:auto;padding-bottom:22px}
 
   /* Ganeshji sat at the head of the table and the invitation card, being the
      biggest piece and on a higher layer, covered him completely. He gets his
      own strip at the top now and the card starts below it. */
-  .ob-ganesh   {--x:50;--y:5.5;--w:18;z-index:6}
-  .ob-invite   {--x:50;--y:30;--w:62;--r:-3}
-  .ob-name     {--x:50;--y:30;--w:62;--r:-3}
-  .ob-programme{--x:28;--y:52;--w:40;--r:8}
-  .ob-rsvp     {--x:72;--y:64;--w:44;--r:-7}
-  .ob-story    {--x:32;--y:78;--w:47;--r:-10}
-  .ob-travel   {--x:78;--y:88;--w:18;--r:12}
-  .ob-beads    {--x:20;--y:14;--w:36;--r:6}
-  .ob-garland  {--x:79;--y:42;--w:40;--r:-8}
-  .ob-petals   {--x:38;--y:95;--w:31;--r:4}
-  .ob-seal     {--x:82;--y:18;--w:10;--r:-14}
+  .ob-ganesh   {--x:50;--y:4.5;--w:15;z-index:6}
+  .ob-invite   {--x:37;--y:31;--w:54;--r:-4}
+  .ob-name     {--x:37;--y:31;--w:54;--r:-4}
+  .ob-rsvp     {--x:76;--y:22;--w:44;--r:8;z-index:5}
+  .ob-by       {--x:76;--y:22;--w:44;--r:8;z-index:6;
+                font-size:max(10px,3.1vw)}
+  .ob-programme{--x:26;--y:64;--w:46;--r:6}
+  .ob-story    {--x:72;--y:63;--w:48;--r:-9}
+  .ob-travel   {--x:30;--y:90;--w:18;--r:11}
+  .ob-record   {--x:72;--y:88;--w:22}
+  .ob-beads    {--x:55;--y:9;--w:34;--r:6}
+  .ob-garland  {--x:17;--y:46;--w:34;--r:-8}
+  .ob-petals   {--x:53;--y:78;--w:26;--r:4}
+  .ob-seal     {--x:88;--y:47;--w:11;--r:-14}
 
-  .ob-name{font-size:max(30px, min(11.6vw, 52px))}
+  .ob-name{font-size:max(26px, min(9.4vw, 44px))}
   /* Labels get tight in portrait, so only the name survives and it sits
      closer in. The second line was already hover-only, which a phone has no
      way to reach. */
-  .ob-tag{top:calc(100% + 5px);max-width:130px}
-  .ob-l{font-size:10.5px;letter-spacing:.09em}
+  .ob-tag{top:calc(100% + 3px);max-width:112px}
+  .ob-l{font-size:9.5px;letter-spacing:.06em}
   .ob-n{display:none}
   .flat-hint-t{font-size:19px}
 }

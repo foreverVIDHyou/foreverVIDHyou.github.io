@@ -43,6 +43,7 @@
     try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
     applyLangAttrs(l);
     renderCountdown();
+    document.dispatchEvent(new CustomEvent('vidh:lang'));
   }
 
   var langBtn = $('#lang');
@@ -194,45 +195,122 @@
   // =========================================================================
 
   /**
-   * A turning disc with an audio file behind it.
+   * A turning record with an instrumental behind it, starting by itself, quiet.
    *
-   * The file may not be there yet, so a failed load is a normal state rather
-   * than an error: the disc stops, a line says the record is still being cut,
-   * and nothing looks broken.
+   * **It cannot simply autoplay and no amount of code changes that.** Chrome,
+   * Safari and Firefox all refuse `play()` on a page the visitor has never
+   * interacted with, and they refuse it silently by rejecting the promise. So
+   * this tries, and when the browser says no it arms a one-shot listener on
+   * the first pointer, key, touch or scroll and starts then. In practice that
+   * means the music begins the moment a guest does anything at all, which is
+   * as close to "on open" as the web allows.
    *
-   * Autoplay is never attempted. Every browser blocks it, and an invitation
-   * that starts playing music at somebody in an open plan office is a bad
-   * invitation. `preload="none"` means the file is not even fetched until a
-   * guest asks for it, which matters on a phone on mobile data.
+   * Volume starts at 0.22. A wedding invitation that opens at full volume at
+   * somebody in an office is a bad invitation.
+   *
+   * A guest who presses pause is remembered for the session, so it does not
+   * start itself again on the next page. Being able to stop it and have it
+   * stay stopped matters more than the music does.
    */
   (function music() {
     var btn = $('#mu-btn');
     if (!btn) return;
 
-    var audio = new Audio('assets/audio/theme.m4a');
-    audio.loop = true;
-    audio.preload = 'none';
-    var miss = $('#mu-miss');
+    var label = $('#mu-state');
+    function say() {
+      var attr = lang() === 'hi' ? 'data-say-hi' : 'data-say';
+      try { return JSON.parse(btn.getAttribute(attr) || '{}'); } catch (e) { return {}; }
+    }
+    var STOP_KEY = 'vidh-music-off';
 
-    audio.addEventListener('error', function () {
+    var audio = $('#mu-audio');
+    if (!audio) return;
+    audio.volume = 0.22;
+
+    var missing = false;
+    function noFile() {
+      if (missing) return;
+      // No file yet. That is a normal state while the couple pick a track, not
+      // an error worth shouting about: the disc simply stops being a control.
+      missing = true;
       btn.classList.remove('spinning');
-      btn.setAttribute('aria-pressed', 'false');
       btn.disabled = true;
-      if (miss) miss.hidden = false;
-    });
+      btn.setAttribute('aria-pressed', 'false');
+      if (label) label.textContent = say().missing || '';
+    }
+    // A <source> that 404s fires its own error, and with three candidates two
+    // of them are *expected* to fail. Only the media element giving up counts,
+    // so anything whose target is a <source> is ignored. Capture phase,
+    // because source errors do not bubble.
+    audio.addEventListener('error', function (e) {
+      if (e.target === audio) noFile();
+    }, true);
+    // If every <source> failed, readyState never leaves 0 and networkState
+    // settles on NO_SOURCE. Checked once, late, because a slow connection
+    // should not be mistaken for a missing file.
+    setTimeout(function () {
+      if (audio.networkState === 3 /* NETWORK_NO_SOURCE */) noFile();
+    }, 2500);
+
+    function paint() {
+      // `missing` wins: paint() runs last on load and would otherwise write
+      // "Paused" over the line explaining that there is no record yet.
+      if (missing) {
+        if (label) label.textContent = say().missing || '';
+        return;
+      }
+      var on = !audio.paused;
+      btn.classList.toggle('spinning', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      var t = say();
+      if (label) label.textContent = (on ? t.on : t.off) || t.tap || '';
+    }
+    audio.addEventListener('play', paint);
+    audio.addEventListener('pause', paint);
+    document.addEventListener('vidh:lang', paint);
+
+    function start() {
+      if (missing) return Promise.reject();
+      var p = audio.play();
+      return (p && p.catch) ? p : Promise.resolve();
+    }
+
+    // No <source> at all means build.py found no track on disk. With no
+    // children the element sits in NETWORK_EMPTY rather than NO_SOURCE, so the
+    // check below never fires and the disc would sit there claiming to be
+    // paused with nothing behind it.
+    if (!audio.querySelector('source')) noFile();
+
+    var stopped = false;
+    try { stopped = sessionStorage.getItem(STOP_KEY) === '1'; } catch (e) {}
+
+    if (!stopped && !REDUCED && !missing) {
+      start().catch(function () {
+        // Blocked, which is the normal answer. Wait for any sign of life.
+        var events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+        function go() {
+          events.forEach(function (e) {
+            window.removeEventListener(e, go, true);
+          });
+          start().catch(function () {});
+        }
+        events.forEach(function (e) {
+          window.addEventListener(e, go, { once: true, capture: true, passive: true });
+        });
+      });
+    }
 
     btn.addEventListener('click', function () {
       if (audio.paused) {
-        var p = audio.play();
-        if (p && p.catch) p.catch(function () { /* blocked, or no file */ });
-        btn.classList.add('spinning');
-        btn.setAttribute('aria-pressed', 'true');
+        try { sessionStorage.removeItem(STOP_KEY); } catch (e) {}
+        start().catch(function () {});
       } else {
         audio.pause();
-        btn.classList.remove('spinning');
-        btn.setAttribute('aria-pressed', 'false');
+        try { sessionStorage.setItem(STOP_KEY, '1'); } catch (e) {}
       }
     });
+
+    paint();
   })();
 
   // =========================================================================
