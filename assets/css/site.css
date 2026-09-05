@@ -359,16 +359,26 @@ html[lang="hi"] .nm-names{font-size:.31em}
 /* 33 1/3 rpm is 1.8s a turn */
 .ob-record.spinning .ob-art{animation:spin 1.8s linear infinite}
 @keyframes spin{to{rotate:360deg}}
-.ob-record .mu-play{position:absolute;left:50%;top:50%;
-  width:32%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
-  background:rgba(250,243,228,.92);display:grid;place-items:center;
-  transition:opacity .2s}
-.ob-record .mu-play::before{content:"";border-left:0.9em solid var(--red-800);
-  border-top:0.58em solid transparent;border-bottom:0.58em solid transparent;
-  margin-left:.24em;font-size:min(1.2vw,13px)}
-.ob-record.spinning .mu-play::before{border:0;width:.34em;height:.9em;margin:0;
-  border-left:.3em solid var(--red-800);border-right:.3em solid var(--red-800);
-  font-size:min(1.6vw,17px)}
+/* The play mark. A circle sized against the disc, with the glyph drawn as SVG
+   inside it rather than out of CSS borders.
+
+   Borders were tried and they distort: the triangle was sized in `em` off a
+   `vw` font-size, so it shrank to five pixels on a phone while the circle
+   stayed put. And the circle itself was coming out an ellipse, because a dead
+   `.mu-play` rule left over from the old standalone music section still said
+   `height: 34px`, which beats `aspect-ratio` every time. */
+.ob-record .mu-play{
+  position:absolute;left:50%;top:50%;
+  width:34%;aspect-ratio:1;translate:-50% -50%;
+  border-radius:50%;background:rgba(250,243,228,.94);
+  display:grid;place-items:center;
+  box-shadow:0 1px 4px rgba(26,8,10,.35)}
+.ob-record .mu-play svg{width:42%;height:auto;color:var(--red-800);display:block}
+/* the triangle nudges right, so it looks centred rather than measures centred */
+.ob-record .mu-play .g-play{translate:6% 0}
+.ob-record .mu-play .g-pause{display:none}
+.ob-record.spinning .mu-play .g-play{display:none}
+.ob-record.spinning .mu-play .g-pause{display:block;translate:0 0}
 .ob-record .ob-tag{top:calc(100% + 7px)}
 
 /* The deadline, set on the reply card so it is read before anything is
@@ -419,16 +429,6 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
 /* 33 1/3 rpm is 1.8s a turn */
 .ob-record.spinning .ob-art{animation:spin 1.8s linear infinite}
 @keyframes spin{to{rotate:360deg}}
-.ob-record .mu-play{position:absolute;left:50%;top:50%;
-  width:32%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
-  background:rgba(250,243,228,.92);display:grid;place-items:center;
-  transition:opacity .2s}
-.ob-record .mu-play::before{content:"";border-left:0.9em solid var(--red-800);
-  border-top:0.58em solid transparent;border-bottom:0.58em solid transparent;
-  margin-left:.24em;font-size:min(1.2vw,13px)}
-.ob-record.spinning .mu-play::before{border:0;width:.34em;height:.9em;margin:0;
-  border-left:.3em solid var(--red-800);border-right:.3em solid var(--red-800);
-  font-size:min(1.6vw,17px)}
 .ob-record .ob-tag{top:calc(100% + 7px)}
 
 /* The deadline, set on the reply card so it is read before anything is
@@ -503,44 +503,6 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
   color:rgba(250,243,228,.56);margin-top:10px}
 html[lang="hi"] .cd-k{letter-spacing:.04em;text-transform:none;font-size:13px}
 .cd-done{font:300 clamp(24px,4vw,36px)/1.3 var(--display);color:var(--gold-200)}
-
-/* the record */
-.mu{display:flex;align-items:center;gap:clamp(20px,4vw,44px);justify-content:center}
-.mu-disc{position:relative;flex:0 0 auto;width:clamp(112px,17vw,168px);
-  background:none;border:0;padding:0;cursor:pointer;border-radius:50%;
-  transition:transform .3s var(--ease)}
-.mu-disc:hover{transform:scale(1.03)}
-.mu-disc img{width:100%;height:auto;border-radius:50%;
-  box-shadow:0 10px 34px rgba(11,26,18,.3)}
-/* 33 1/3 rpm is 1.8s a turn */
-.mu-disc.spinning img{animation:spin 1.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.mu-play{position:absolute;left:50%;top:50%;width:34px;height:34px;
-  transform:translate(-50%,-50%);border-radius:50%;
-  background:rgba(250,243,228,.9);display:grid;place-items:center;
-  transition:opacity .2s}
-.mu-play::before{content:"";border-left:11px solid var(--red-800);
-  border-top:7px solid transparent;border-bottom:7px solid transparent;
-  margin-left:3px}
-.mu-disc.spinning .mu-play::before{border:0;width:10px;height:12px;margin:0;
-  border-left:3.4px solid var(--red-800);border-right:3.4px solid var(--red-800)}
-.mu-b{text-align:left;min-width:0}
-.mu-t{font:300 clamp(20px,2.8vw,28px)/1.3 var(--display);margin-top:2px}
-.mu-miss{font:400 14px/1.6 var(--ui);color:var(--red-700);margin-top:8px}
-
-/* the ask */
-.sec-band{background:var(--red-800);color:var(--ivory);position:relative;
-  overflow:hidden}
-.sec-band::before{content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(90% 130% at 50% 100%, rgba(232,160,32,.16), transparent 70%)}
-.sec-band .wrap{position:relative}
-.band-l{font:300 clamp(23px,3.6vw,36px)/1.35 var(--display);color:var(--gold-200);
-  margin-bottom:26px}
-.sec-band .btn-primary{background:var(--gold-500);color:var(--red-900);
-  border-color:var(--gold-500)}
-.sec-band .btn-primary:hover{background:var(--gold-400)}
-.band-by{font:400 14px/1.6 var(--ui);color:rgba(250,243,228,.6);margin-top:16px}
 
 /* the polaroids, laid out like a handful of photographs on the table */
 .sec-pol{background:var(--ivory-2)}
@@ -961,8 +923,6 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   .picks{grid-template-columns:1fr}
   .cd-row{gap:8px}
   .cd-u{min-width:52px}
-  .mu{flex-direction:column;text-align:center}
-  .mu-b{text-align:center}
   .pol{width:calc(50% - 10px)}
   .pol figcaption{min-height:calc(2 * 1.4em + 20px);font-size:11.5px;
     padding-bottom:11px}
@@ -1036,7 +996,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   .js-reveal [data-reveal],
   .js-reveal [data-reveal] [data-reveal-item]{opacity:1;translate:none}
   .ob-link{transition:none}
-  .mu-disc.spinning img{animation:none}
+  .ob-record.spinning .ob-art{animation:none}
 }
 
 /* ==========================================================================
