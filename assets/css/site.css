@@ -149,11 +149,6 @@ html[lang="hi"] .btn{letter-spacing:.04em;text-transform:none;font-size:15px}
 .btn-wide{width:100%;padding:17px 26px;margin-top:8px}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 .btn:active{transform:translateY(1px)}
-.dark .btn-ghost{border-color:rgba(211,180,99,.4);color:var(--gold-200)}
-.dark .btn-ghost:hover{background:rgba(211,180,99,.12)}
-.dark .btn-primary{background:var(--gold-500);color:var(--red-900);
-  border-color:var(--gold-500)}
-.dark .btn-primary:hover{background:var(--gold-400)}
 
 /* ==========================================================================
    header and footer
@@ -294,15 +289,18 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 .lintel-om{font:400 clamp(9.5px,.95vw,13px)/1.35 var(--deva);color:var(--gold-600);
   margin-top:4px;white-space:nowrap}
 
+/* Four ways in, set at the corners of the invitation rather than scattered
+   round it. With the envelope gone the bottom left was empty and the whole
+   table leaned right; a piece at each corner of the centre card reads as an
+   arrangement rather than as a scatter with a hole in it. */
 .ob-invite   {--x:50;--y:50;--w:29;--r:-3;z-index:4}
-.ob-programme{--x:19;--y:38;--w:23;--r:8;z-index:3}
-.ob-rsvp     {--x:81;--y:34;--w:24;--r:-7;z-index:3}
-.ob-story    {--x:24;--y:81;--w:25;--r:-11;z-index:2}
-.ob-travel   {--x:79;--y:78;--w:11;--r:13;z-index:3}
+.ob-programme{--x:21;--y:36;--w:24;--r:8;z-index:3}
+.ob-rsvp     {--x:80;--y:34;--w:24;--r:-7;z-index:3}
+.ob-travel   {--x:78;--y:76;--w:12;--r:13;z-index:3}
 
-.ob-garland  {--x:88;--y:71;--w:27;--r:-8;z-index:1}
-.ob-petals   {--x:59;--y:91;--w:19;--r:4;z-index:1;opacity:.92}
-.ob-seal     {--x:14;--y:10;--w:8;--r:-14;z-index:2}
+.ob-garland  {--x:89;--y:65;--w:26;--r:-8;z-index:1}
+.ob-petals   {--x:56;--y:90;--w:18;--r:4;z-index:1;opacity:.92}
+.ob-seal     {--x:12;--y:12;--w:8;--r:-14;z-index:2}
 
 /* the names, printed on the card in the middle. It sits over the invitation
    art and lets clicks through to the link underneath. */
@@ -347,7 +345,7 @@ html[lang="hi"] .ob-l{letter-spacing:.02em;text-transform:none;font-size:14px}
 html[lang="hi"] .nm-names{font-size:.31em}
 
 /* the record, sitting on the table with everything else */
-.ob-record{--x:6;--y:74;--w:11;--r:0;z-index:3;
+.ob-record{--x:22;--y:78;--w:13;--r:0;z-index:3;
   background:none;border:0;padding:0;cursor:pointer;
   transition:rotate .34s var(--ease),scale .34s var(--ease),
              filter .34s var(--ease);
@@ -417,7 +415,7 @@ html[lang="hi"] .quote{font-family:var(--deva);font-style:normal;
   font-size:clamp(17px,2.4vw,24px);line-height:1.75;max-width:30ch}
 
 /* the record, sitting on the table with everything else */
-.ob-record{--x:6;--y:74;--w:11;--r:0;z-index:3;
+.ob-record{--x:22;--y:78;--w:13;--r:0;z-index:3;
   background:none;border:0;padding:0;cursor:pointer;
   transition:rotate .34s var(--ease),scale .34s var(--ease),
              filter .34s var(--ease);
@@ -630,7 +628,7 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
 .side-groom .day-h{border-bottom-color:color-mix(in srgb, var(--groom) 34%, transparent)}
 .side-bride .ev-ic{color:var(--bride)}
 .side-groom .ev-ic{color:var(--groom)}
-.prog-acts,.story-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+.prog-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
   margin-top:40px}
 
 /* ==========================================================================
@@ -822,30 +820,6 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 .done .btn{margin-top:24px}
 
 /* ==========================================================================
-   our story, the dark page
-   ========================================================================== */
-.sec-story{background:
-  radial-gradient(110% 70% at 50% 0%, #16241C 0%, var(--red-900) 62%);
-  color:var(--ivory)}
-.sec-story .eyebrow{color:var(--gold-400)}
-.sec-story .lede{color:rgba(250,243,228,.72)}
-.chapters{display:grid;gap:clamp(44px,7vw,86px);margin-top:clamp(30px,5vw,54px)}
-.chapter{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
-  gap:clamp(24px,4.6vw,54px);align-items:center}
-.chapter.flip .chapter-fig{order:2}
-.chapter-fig{margin:0}
-.oval{display:block;position:relative;padding:11px;
-  background:linear-gradient(150deg,var(--gold-400),var(--gold-600) 46%,var(--gold-400));
-  border-radius:50% / 42%;
-  box-shadow:0 12px 40px rgba(0,0,0,.45)}
-.oval img{width:100%;height:auto;aspect-ratio:5/6;object-fit:cover;
-  border-radius:50% / 42%;background:var(--red-800)}
-.chapter-n{font:300 clamp(38px,6vw,64px)/1 var(--display);color:rgba(211,180,99,.32)}
-.chapter-txt h2{margin-top:6px;color:var(--gold-200)}
-.chapter-txt p{margin-top:14px;color:rgba(250,243,228,.78);font-size:17px;
-  line-height:1.78}
-
-/* ==========================================================================
    travel
    ========================================================================== */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
@@ -891,9 +865,6 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
    narrow
    ========================================================================== */
 @media (max-width:900px){
-  .chapter{grid-template-columns:1fr;gap:22px}
-  .chapter.flip .chapter-fig{order:0}
-  .oval{max-width:330px;margin:0 auto}
   .ev{grid-template-columns:32px 1fr;gap:12px}
   .ev-t{grid-column:2;padding-top:0}
   .ev-b{grid-column:2}
@@ -934,43 +905,98 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
    and the pieces re-scatter down it. Same objects, same idea, different
    composition; this is not a fallback stack. */
 @media (max-width:760px){
-  /* Full width here. Capping the stage by viewport height left 84px of a
-     390px screen empty and shrank the card until the hashtag was under 5px.
-     A phone scrolls; the scene does not have to fit one screen. */
   /* Sized by HEIGHT on a phone, not width, so the whole table lands inside
      one screen. Width follows from the ratio. A phone is a column, so the
      pieces run *down* it and only lean off centre; the first phone cut put
      them at the far left and right of a squat box and still read as a
      horizontal scatter shrunk down. */
+
+  /* One name for the scene's height, because three other rules have to agree
+     with it exactly. Anything printed *on* a piece has to be sized off this
+     and not off `vw`: the scene is driven by height here, so a `vw` font-size
+     stays put while its card shrinks. That is how the couple's names came to
+     wrap over four lines and the deadline to run off the reply card on a
+     short phone; both were sized in `vw` against a card that was not.
+
+     The 178px is everything the scene is not: 68.6 of lintel, 77.1 of hint
+     and 26 of the stage's own padding, all measured, and a few px of slack
+     because the header is really 58 tall where JS rounds `--head-h` to 57.
+     It was 150 against a chrome of 158, so the table hung 8px past the fold
+     on every phone measured, before the hint was given any air at all. Raise
+     it if the lintel or the hint grows. */
+  :root{--flat-h:min(calc(100svh - var(--head-h) - 178px), 700px)}
   .flat{aspect-ratio:390/660;
-    height:min(calc(100svh - var(--head-h) - 150px), 720px);
+    height:var(--flat-h);
     width:auto;max-width:100%}
-  .flat-stage{min-height:auto;padding-bottom:22px}
+  .flat-stage{min-height:auto;padding-bottom:20px}
 
   /* Ganeshji sat at the head of the table and the invitation card, being the
      biggest piece and on a higher layer, covered him completely. He gets his
      own strip at the top now and the card starts below it. */
-  .ob-invite   {--x:37;--y:26;--w:56;--r:-4}
-  .ob-name     {--x:37;--y:26;--w:56;--r:-4}
-  .ob-rsvp     {--x:75;--y:15;--w:45;--r:8;z-index:5}
-  .ob-by       {--x:75;--y:15;--w:45;--r:8;z-index:6;
-                font-size:max(10px,3.1vw)}
-  .ob-programme{--x:26;--y:62;--w:47;--r:6}
-  .ob-story    {--x:72;--y:60;--w:49;--r:-9}
-  .ob-travel   {--x:30;--y:89;--w:18;--r:11}
-  .ob-record   {--x:72;--y:87;--w:22}
-  .ob-garland  {--x:17;--y:43;--w:35;--r:-8}
-  .ob-petals   {--x:53;--y:76;--w:27;--r:4}
-  .ob-seal     {--x:88;--y:42;--w:11;--r:-14}
+  /* Every caption hangs off the bottom of its own piece, so the vertical gaps
+     are not free space: each one is carrying a line of type. The middle row
+     moved down and the invitation shrank a little to open the band under it,
+     where THE INVITATION was landing on the corner of the programme. */
+  .ob-invite   {--x:37;--y:25;--w:53;--r:-4}
+  .ob-name     {--x:37;--y:25;--w:53;--r:-4}
+  .ob-rsvp     {--x:75;--y:14;--w:44;--r:8;z-index:5}
+  .ob-by       {--x:75;--y:14;--w:44;--r:8;z-index:6}
+  /* The envelope used to hold the middle right. The programme takes the
+     middle of the column now and the tag comes up beside it, so the run down
+     the page stays even instead of skipping a beat. */
+  .ob-programme{--x:33;--y:60;--w:48;--r:6}
+  .ob-travel   {--x:78;--y:58;--w:19;--r:11}
+  .ob-record   {--x:70;--y:86;--w:23}
+  /* The garland was at 17/42 and the invitation card had grown over it, so
+     all that showed was a two-flower stub at the left edge that read as a
+     rendering fault rather than as a thing lying on a table. It moves down
+     into the empty corner under the programme, where the whole curve of it
+     is on the page. */
+  .ob-garland  {--x:20;--y:85;--w:34;--r:-8}
+  /* The petals used to lie at 53/76, which is the middle of the caption band:
+     they ran into THE LETTER above them and THE PROGRAMME beside them. They
+     drop into the pocket between the luggage tag and the record, which is the
+     one part of the table no caption crosses. */
+  .ob-petals   {--x:47;--y:91;--w:19;--r:4}
+  .ob-seal     {--x:88;--y:36;--w:11;--r:-14}
 
-  .ob-name{font-size:max(26px, min(9.4vw, 44px))}
+  .ob-name{font-size:max(21px, min(9.4vw, calc(var(--flat-h) * .0545)))}
+  /* The date is the smallest thing on the card and the first to disappear. */
+  .nm-when{font-size:max(7.5px, .225em)}
+
+  /* The deadline has to be sized on `.ob-by p` and not on `.ob-by`: the
+     paragraph carries a `font` shorthand of its own, so the font-size that
+     used to sit on the parent here never reached it and the date rendered at
+     a flat 9px on every phone, however small the card got. 9px is 23 units of
+     a 220-unit card, and there are only 21 units of clear paper between the
+     row of dots and the ruled line, so the date printed across the rule. The
+     band is y 103 to 124, whose middle is 51.4% and not the 52.7% the desktop
+     card uses. */
+  .ob-by p{top:51.4%;
+    font-size:max(7.5px, min(9px, calc(var(--flat-h) * .0148)))}
+
   /* Labels get tight in portrait, so only the name survives and it sits
      closer in. The second line was already hover-only, which a phone has no
      way to reach. */
-  .ob-tag{top:calc(100% + 3px);max-width:112px}
-  .ob-l{font-size:9.5px;letter-spacing:.06em}
+  /* 3px put the label on top of whatever lay under the piece. The label is
+     ink like everything else and needs a gap on both sides of it. */
+  .ob-tag{top:calc(100% + 6px);max-width:120px}
+  /* Grows with the table, so a label is the same size relative to the piece
+     it names on every phone. The floor is the old fixed 9.5px, which is as
+     small as this wants to be read. */
+  .ob-l{font-size:max(9.5px, min(10.5px, calc(var(--flat-h) * .0155)));
+    letter-spacing:.06em}
+  /* Devanagari needs the extra size, but it was inheriting the desktop 14px
+     through `html[lang="hi"] .ob-l` beating a plain `.ob-l`, which is half
+     again the English label and ran the luggage tag's caption into the hint. */
+  html[lang="hi"] .ob-l{font-size:max(11px, min(12px, calc(var(--flat-h) * .018)))}
   .ob-n{display:none}
   .flat-hint-t{font-size:19px}
+  /* "Everything is on the table" was sitting on the luggage tag's caption,
+     which hangs below the table's bottom edge: 6.5px apart in English and
+     touching in Hindi. This is the gap between them, and the reserve above
+     pays for it out of the table's height. */
+  .flat-hint{padding-top:20px}
 }
 
 @media (max-width:420px){
@@ -984,6 +1010,16 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 @media (max-height:560px) and (orientation:landscape){
   .flat{width:min(100%, 900px)}
   .flat-stage{min-height:auto}
+}
+/* Under 760px the portrait scatter is still the one in force, and there the
+   rule above set a definite width against a definite height. Two definite
+   sides make `aspect-ratio` drop out entirely: the table came out 647 by 85
+   with every piece piled on top of the next. Drive the height off the width
+   instead, which keeps the scene's shape and lets the page scroll, and is
+   what the rule above was after in the first place. 1.6923 is 660/390. */
+@media (max-height:560px) and (orientation:landscape) and (max-width:760px){
+  :root{--flat-h:calc(min(100vw - 20px, 380px) * 1.6923)}
+  .flat{width:auto;height:var(--flat-h);max-width:100%}
 }
 
 /* ==========================================================================
