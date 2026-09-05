@@ -2,9 +2,9 @@
    Vibhakar & Dhwani, site behaviour.
 
    No framework, no build step, no dependencies. Everything degrades: with
-   JavaScript off the page still reads, the gate is open rather than shut, the
-   schedule is there, and the RSVP form tells the guest to phone rather than
-   silently failing.
+   JavaScript off the page still reads, every piece on the table is still a
+   working link, the schedule is there, and the RSVP form tells the guest to
+   phone rather than silently failing.
    ========================================================================== */
 
 (function () {
@@ -99,70 +99,6 @@
   window.addEventListener('scroll', function () {
     if (head) head.classList.toggle('stuck', window.scrollY > 8);
   }, { passive: true });
-
-  // =========================================================================
-  // the gate
-  // =========================================================================
-
-  /**
-   * The gate is shut only on a first visit, and only when JavaScript runs.
-   *
-   * CSS holds the leaves *open* as their resting state and `.gate-shut` on the
-   * body is what closes them, so a browser with no JS, or a guest who prefers
-   * reduced motion, sees an open doorway rather than a locked one. Nothing
-   * here can leave anybody looking at a shut gate they cannot open.
-   *
-   * The visit is remembered, so someone coming back on the morning of the
-   * wedding to check what time the baraat leaves is not made to sit through a
-   * one-and-a-half second animation first.
-   */
-  (function gate() {
-    var stage = $('#stage');
-    if (!stage || !document.body.classList.contains('p-home')) return;
-
-    var GATE_KEY = 'vidh-gate';
-    // The head script already made this call before first paint and left its
-    // answer on <html>. Reading it back rather than asking localStorage again
-    // guarantees the two agree, so the gate cannot open here having never been
-    // drawn shut, or the reverse.
-    var early = document.documentElement.classList.contains('gate-shut-early');
-    var seen = !early;
-
-    var openBtn = $('#gate-open');
-
-    function openGate() {
-      document.body.classList.remove('gate-shut');
-      document.documentElement.classList.remove('gate-shut-early');
-      document.body.classList.add('gate-open-done');
-      if (openBtn) openBtn.hidden = true;
-      try { localStorage.setItem(GATE_KEY, '1'); } catch (e) {}
-    }
-
-    if (seen || REDUCED) {
-      document.body.classList.add('gate-open-done');
-      document.documentElement.classList.remove('gate-shut-early');
-      return;
-    }
-
-    document.body.classList.add('gate-shut');
-    if (openBtn) openBtn.hidden = false;
-
-    // Opens on its own after a beat. The button is for anyone who does not
-    // want to wait, and it is also the escape hatch if the timer never fires.
-    var auto = setTimeout(openGate, 1500);
-    if (openBtn) {
-      openBtn.addEventListener('click', function () {
-        clearTimeout(auto);
-        openGate();
-      });
-    }
-    // Any attempt to scroll means they want to get on with it.
-    window.addEventListener('scroll', function once() {
-      clearTimeout(auto);
-      openGate();
-      window.removeEventListener('scroll', once);
-    }, { passive: true });
-  })();
 
   // =========================================================================
   // reveal on scroll
