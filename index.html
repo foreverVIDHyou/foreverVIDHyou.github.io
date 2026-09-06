@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=90222ba9">
+<link rel="stylesheet" href="assets/css/site.css?v=5bfcd776">
 
 <script>
   try {
@@ -83,145 +83,85 @@ aria-current="page"><span class="l" data-l="en">Home</span><span class="l" data-
 
 <main id="main">
 
-<section class="flat-stage" id="stage" aria-labelledby="flat-h">
-  <h1 class="vh" id="flat-h">Vibhakar Mohta and
-    Dhwani Mundra, 5 – 6 December 2026,
-    Club Mahindra Assonora</h1>
+<section class="hero" id="hero">
 
-  <div class="lintel" aria-hidden="true">
-    <img class="lintel-g" src="assets/art/ganesh.svg" alt="" width="200" height="208">
-    <p class="lintel-om" lang="hi">॥ श्री गणेशाय नमः ॥</p>
-  </div>
+  <picture class="hero-bg" aria-hidden="true">
+    <source media="(max-width:820px)" srcset="assets/art/resort-tall.svg">
+    <img src="assets/art/resort.svg" alt="" width="1600" height="430"
+         fetchpriority="high" decoding="async">
+  </picture>
 
-  <div class="flat" id="flat">
-
-    <svg class="ob-thread" viewBox="0 0 100 40" preserveAspectRatio="none"
-         aria-hidden="true" fill="none">
-      <path d="M2 30 C 30 30, 44 8, 92 8" stroke="currentColor" stroke-width=".9"
-            stroke-dasharray="3 4" stroke-linecap="round"/>
-      <path d="M85.5 4.2 L93 8 L85.5 11.8" stroke="currentColor" stroke-width=".9"
-            stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-
-      <a class="ob ob-invite ob-link" href="invite.html"
-         style="--i:0">
-        <img class="ob-art" src="assets/art/ob-invite-card.svg"
-             alt="" width="300" height="420">
-        <span class="ob-tag">
-          <span class="ob-l"><span class="l" data-l="en">The invitation</span><span class="l" data-l="hi" lang="hi">निमंत्रण</span></span>
-          <span class="ob-n"><span class="l" data-l="en">Where, when and who</span><span class="l" data-l="hi" lang="hi">कहाँ, कब और कौन</span></span>
-        </span>
-      </a>
-      <a class="ob ob-programme ob-link" href="schedule.html"
-         style="--i:1">
-        <img class="ob-art" src="assets/art/ob-programme.svg"
-             alt="" width="300" height="420">
-        <span class="ob-tag">
-          <span class="ob-l"><span class="l" data-l="en">The programme</span><span class="l" data-l="hi" lang="hi">कार्यक्रम</span></span>
-          <span class="ob-n"><span class="l" data-l="en">Her side and his side</span><span class="l" data-l="hi" lang="hi">दुल्हन और दूल्हे का पक्ष</span></span>
-        </span>
-      </a>
-      <a class="ob ob-rsvp ob-link" href="rsvp.html"
-         style="--i:2">
-        <img class="ob-art" src="assets/art/ob-rsvp-card.svg"
-             alt="" width="300" height="420">
-      </a>
-      <a class="ob ob-travel ob-link" href="travel.html"
-         style="--i:3">
-        <img class="ob-art" src="assets/art/ob-luggage-tag.svg"
-             alt="" width="300" height="420">
-        <span class="ob-tag">
-          <span class="ob-l"><span class="l" data-l="en">Getting there</span><span class="l" data-l="hi" lang="hi">पहुँचना कैसे है</span></span>
-          <span class="ob-n"><span class="l" data-l="en">Mopa, Thivim and the road in</span><span class="l" data-l="hi" lang="hi">मोपा, थिविम और रास्ता</span></span>
-        </span>
-      </a>
-      <div class="ob ob-garland ob-prop" aria-hidden="true"
-           style="--i:4">
-        <img class="ob-art" src="assets/art/ob-marigold-garland.svg"
-             alt="" width="300" height="420" loading="lazy">
-      </div>
-      <div class="ob ob-petals ob-prop" aria-hidden="true"
-           style="--i:5">
-        <img class="ob-art" src="assets/art/ob-petals.svg"
-             alt="" width="300" height="420" loading="lazy">
-      </div>
-      <a class="ob ob-seal ob-link" href="invite.html"
-         style="--i:6">
-        <img class="ob-art" src="assets/art/ob-wax-seal.svg"
-             alt="" width="300" height="420">
-        <span class="ob-tag">
-          <span class="ob-l"><span class="l" data-l="en">Press</span><span class="l" data-l="hi" lang="hi">दबाइए</span></span>
-          <span class="ob-n"><span class="l" data-l="en">Open the invitation</span><span class="l" data-l="hi" lang="hi">निमंत्रण खोलिए</span></span>
-        </span>
-      </a>
-      <button type="button" class="ob ob-record" id="mu-btn" aria-pressed="false"
-              data-en-aria-label="Play the record" data-hi-aria-label="संगीत चलाएँ"
-              aria-label="Play the record"
-              data-say='{"tap":"Music",
-                         "on":"Playing",
-                         "off":"Paused",
-                         "missing":""}'
-              data-say-hi='{"tap":"\u0938\u0902\u0917\u0940\u0924",
-                            "on":"\u092c\u091c \u0930\u0939\u093e \u0939\u0948",
-                            "off":"\u0930\u0941\u0915\u093e \u0939\u0941\u0906",
-                            "missing":""}'>
-        <img class="ob-art" src="assets/art/vinyl.svg" alt="" width="280" height="280">
-        <span class="mu-play" aria-hidden="true">
-          <svg class="g-play" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.4 20.5 12 6 20.6Z"/></svg>
-          <svg class="g-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="5.4" y="3.6" width="4.8" height="16.8" rx="1.2"/><rect x="13.8" y="3.6" width="4.8" height="16.8" rx="1.2"/></svg>
-        </span>
-        <span class="ob-tag">
-          <span class="ob-l" id="mu-state"><span class="l" data-l="en">Music</span><span class="l" data-l="hi" lang="hi">संगीत</span></span>
-        </span>
-      </button>
-
-    <div class="ob ob-by" aria-hidden="true">
-      <p><span class="l" data-l="en">by 1 October 2026</span><span class="l" data-l="hi" lang="hi">१ अक्टूबर २०२६ तक</span></p>
-    </div>
-
-    <div class="ob ob-name" aria-hidden="true">
-      <img class="nm-mark" src="assets/img/mark.png" alt="" width="132" height="138">
-      <p class="nm-names"><span class="l" data-l="en">Dhwani Mundra</span><span class="l" data-l="hi" lang="hi">ध्वनि मूंदड़ा</span>
-        <span class="amp">&amp;</span> <span class="l" data-l="en">Vibhakar Mohta</span><span class="l" data-l="hi" lang="hi">विभाकर मोहता</span></p>
-      <p class="nm-when"><span class="l" data-l="en">5 – 6 December 2026</span><span class="l" data-l="hi" lang="hi">५ – ६ दिसंबर २०२६</span></p>
-    </div>
-  </div>
-
-  <audio id="mu-audio" loop preload="auto">
-    <source src="assets/audio/theme.mp3" type="audio/mpeg">
-    <source src="assets/audio/theme.ogg" type="audio/ogg">
-  </audio>
-
-  <p class="flat-hint">
-    <span class="flat-hint-n">#foreverVIDHyou</span>
-    <span class="flat-hint-l">
-      <span class="flat-hint-t"><span class="l" data-l="en">Everything is on the table</span><span class="l" data-l="hi" lang="hi">सब कुछ मेज़ पर रखा है</span></span><span
-        class="flat-hint-w"><span class="l" data-l="en">Club Mahindra Assonora</span><span class="l" data-l="hi" lang="hi">क्लब महिंद्रा असनोरा</span></span>
+  <button type="button" class="mu" id="mu-btn" aria-pressed="false"
+          data-en-aria-label="Play the record" data-hi-aria-label="संगीत चलाएँ"
+          aria-label="Play the record"
+          data-say='{"tap":"Music",
+                     "on":"Playing",
+                     "off":"Paused",
+                     "missing":""}'
+          data-say-hi='{"tap":"\u0938\u0902\u0917\u0940\u0924",
+                        "on":"\u092c\u091c \u0930\u0939\u093e \u0939\u0948",
+                        "off":"\u0930\u0941\u0915\u093e \u0939\u0941\u0906",
+                        "missing":""}'>
+    <img class="mu-disc" src="assets/art/vinyl.svg" alt="" width="280" height="280">
+    <span class="mu-play" aria-hidden="true">
+      <svg class="g-play" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.4 20.5 12 6 20.6Z"/></svg>
+      <svg class="g-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="5.4" y="3.6" width="4.8" height="16.8" rx="1.2"/><rect x="13.8" y="3.6" width="4.8" height="16.8" rx="1.2"/></svg>
     </span>
-    <a class="flat-more" href="#quote">
-      <span><span class="l" data-l="en">Scroll for more</span><span class="l" data-l="hi" lang="hi">और नीचे देखिए</span></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 5v13M6 12.5l6 6 6-6"/>
-      </svg>
-    </a>
-  </p>
-</section>
+    <span class="vh" id="mu-state"><span class="l" data-l="en">Music</span><span class="l" data-l="hi" lang="hi">संगीत</span></span>
+  </button>
 
-<section class="sec sec-quote" id="quote">
-  <div class="wrap narrow center" data-reveal>
-    <p class="quote"><span class="l" data-l="en">He plays the piano. She plays the violin. It took them a while to notice they were playing the same song.</span><span class="l" data-l="hi" lang="hi">वह पियानो बजाता है। वह वायलिन बजाती है। दोनों को समझने में समय लगा कि धुन एक ही है।</span></p>
-    <img class="divider" src="assets/art/rule.svg" alt="" aria-hidden="true"
-     width="420" height="26" loading="lazy">
-  </div>
-</section>
+  <div class="hero-in">
 
-<section class="sec sec-count" aria-labelledby="cd-h">
-  <img class="cd-scene" src="assets/art/resort.svg" alt="" aria-hidden="true"
-       width="1600" height="430" loading="lazy">
-  <div class="wrap">
-    <div class="cd" data-reveal id="cd" data-target="2026-12-06T19:00:00+05:30">
-      <p class="eyebrow" id="cd-h"><span class="l" data-l="en">Until the pheras</span><span class="l" data-l="hi" lang="hi">फेरों में शेष</span></p>
+    <div class="lintel" aria-hidden="true">
+      <img class="lintel-g" src="assets/art/ganesh.svg" alt="" width="200" height="208">
+      <p class="lintel-om" lang="hi">॥ श्री गणेशाय नमः ॥</p>
+    </div>
+
+    <h1 class="hero-names"><span class="l" data-l="en">Dhwani Mundra</span><span class="l" data-l="hi" lang="hi">ध्वनि मूंदड़ा</span>
+      <span class="amp" aria-hidden="true">&amp;</span>
+      <span class="l" data-l="en">Vibhakar Mohta</span><span class="l" data-l="hi" lang="hi">विभाकर मोहता</span></h1>
+
+    <p class="hero-when"><span class="l" data-l="en">5 – 6 December 2026</span><span class="l" data-l="hi" lang="hi">५ – ६ दिसंबर २०२६</span><span class="dot">·</span><span class="l" data-l="en">Club Mahindra Assonora</span><span class="l" data-l="hi" lang="hi">क्लब महिंद्रा असनोरा</span></p>
+
+    <p class="hero-tag">#foreverVIDHyou</p>
+
+    <nav class="ways" aria-label="Everything you need, in four places">
+      <a class="way way-invite" href="invite.html">
+        <span class="way-ic">
+          <img src="assets/art/ob-invite-card.svg" alt=""
+               width="300" height="420">
+        </span>
+        <span class="way-l"><span class="l" data-l="en">The invitation</span><span class="l" data-l="hi" lang="hi">निमंत्रण</span></span>
+        <span class="way-n"><span class="l" data-l="en">Where, when and who</span><span class="l" data-l="hi" lang="hi">कहाँ, कब और कौन</span></span>
+      </a>
+      <a class="way way-programme" href="schedule.html">
+        <span class="way-ic">
+          <img src="assets/art/ob-programme.svg" alt=""
+               width="300" height="420">
+        </span>
+        <span class="way-l"><span class="l" data-l="en">The programme</span><span class="l" data-l="hi" lang="hi">कार्यक्रम</span></span>
+        <span class="way-n"><span class="l" data-l="en">Her side and his side</span><span class="l" data-l="hi" lang="hi">दुल्हन और दूल्हे का पक्ष</span></span>
+      </a>
+      <a class="way way-rsvp" href="rsvp.html">
+        <span class="way-ic">
+          <img src="assets/art/ob-rsvp-card.svg" alt=""
+               width="300" height="420">
+        </span>
+        <span class="way-l"><span class="l" data-l="en">RSVP</span><span class="l" data-l="hi" lang="hi">उत्तर दें</span></span>
+        <span class="way-n"><span class="l" data-l="en">by 1 October 2026</span><span class="l" data-l="hi" lang="hi">१ अक्टूबर २०२६ तक</span></span>
+      </a>
+      <a class="way way-travel" href="travel.html">
+        <span class="way-ic">
+          <img src="assets/art/ob-luggage-tag.svg" alt=""
+               width="300" height="420">
+        </span>
+        <span class="way-l"><span class="l" data-l="en">Getting there</span><span class="l" data-l="hi" lang="hi">पहुँचना कैसे है</span></span>
+        <span class="way-n"><span class="l" data-l="en">Mopa, Thivim and the road in</span><span class="l" data-l="hi" lang="hi">मोपा, थिविम और रास्ता</span></span>
+      </a>
+    </nav>
+
+    <div class="cd" id="cd" data-target="2026-12-06T19:00:00+05:30">
+      <p class="cd-h"><span class="l" data-l="en">Until the pheras</span><span class="l" data-l="hi" lang="hi">फेरों में शेष</span></p>
       <div class="cd-row">
         <div class="cd-u">
           <span class="cd-n" data-cd="d">--</span>
@@ -242,10 +182,23 @@ aria-current="page"><span class="l" data-l="en">Home</span><span class="l" data-
       </div>
       <p class="cd-done" hidden><span class="l" data-l="en">They are married.</span><span class="l" data-l="hi" lang="hi">विवाह संपन्न हुआ।</span></p>
     </div>
+
+    <a class="flat-more" href="#gallery">
+      <span><span class="l" data-l="en">Scroll for more</span><span class="l" data-l="hi" lang="hi">और नीचे देखिए</span></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 5v13M6 12.5l6 6 6-6"/>
+      </svg>
+    </a>
   </div>
+
+  <audio id="mu-audio" loop preload="auto">
+    <source src="assets/audio/theme.mp3" type="audio/mpeg">
+    <source src="assets/audio/theme.ogg" type="audio/ogg">
+  </audio>
 </section>
 
-<section class="sec sec-pol" aria-labelledby="pol-h">
+<section class="sec sec-pol" id="gallery" aria-labelledby="pol-h">
   <div class="wrap">
     <p class="eyebrow center" id="pol-h"><span class="l" data-l="en">The two of them</span><span class="l" data-l="hi" lang="hi">वे दोनों</span></p>
     <div class="pols" data-reveal>
