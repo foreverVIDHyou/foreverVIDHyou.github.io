@@ -295,7 +295,8 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
   margin-top:4px;white-space:nowrap}
 
 .hero-names{font:300 clamp(28px,4.6vw,58px)/1.14 var(--display);
-  color:var(--ink);text-wrap:balance;max-width:16ch}
+  color:var(--ink);max-width:18ch}
+.nm-1,.nm-2{white-space:nowrap}
 .hero-names .amp{font-family:var(--script);color:var(--marigold-dk);
   font-size:.82em;padding:0 .06em}
 html[lang="hi"] .hero-names{font-family:var(--deva);
@@ -518,8 +519,8 @@ html[lang="hi"] .band-l{font-family:var(--deva);
 .card-in{position:relative}
 /* Ganeshji heads the card, above the invocation, the way he heads a
    printed invitation. */
-.card-gan{display:block;width:clamp(54px,6vw,76px);height:auto;
-  margin:0 auto 8px}
+.card-gan{display:block;width:clamp(34px,3.4vw,44px);height:auto;
+  margin:0 auto 6px}
 .card-om{font:400 15px/1.4 var(--deva);color:var(--gold-600);letter-spacing:.05em}
 .card-eb{font:600 11.5px/1.5 var(--ui);letter-spacing:.2em;text-transform:uppercase;
   color:var(--gold-600);margin-top:22px}
