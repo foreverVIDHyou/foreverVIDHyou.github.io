@@ -924,7 +924,18 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      It was 150 against a chrome of 158, so the table hung 8px past the fold
      on every phone measured, before the hint was given any air at all. Raise
      it if the lintel or the hint grows. */
-  :root{--flat-h:min(calc(100svh - var(--head-h) - 178px), 700px)}
+  /* A FLOOR as well as a ceiling. Squeezing nine pieces and five captions
+     into whatever a 553px viewport leaves does not work: the pieces shrink
+     with the box but the captions are type and stay put, so below about 430px
+     of scene the invitation's caption lands on the programme and the
+     programme lands on the luggage tag's. Measured at 375x553, 390x664 and
+     360x568, all three.
+
+     So the scene stops shrinking at 430 and the page scrolls a little on the
+     shortest phones. Fitting one screen was the goal, but not at the price of
+     text sitting on text. Every phone with 610px or more of viewport still
+     gets the whole table without scrolling. */
+  :root{--flat-h:clamp(430px, calc(100svh - var(--head-h) - 178px), 700px)}
   .flat{aspect-ratio:390/660;
     height:var(--flat-h);
     width:auto;max-width:100%}
@@ -937,28 +948,33 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      are not free space: each one is carrying a line of type. The middle row
      moved down and the invitation shrank a little to open the band under it,
      where THE INVITATION was landing on the corner of the programme. */
-  .ob-invite   {--x:37;--y:25;--w:53;--r:-4}
-  .ob-name     {--x:37;--y:25;--w:53;--r:-4}
-  .ob-rsvp     {--x:75;--y:14;--w:44;--r:8;z-index:5}
-  .ob-by       {--x:75;--y:14;--w:44;--r:8;z-index:6}
+  /* Three bands with real air between them, rather than an even scatter down
+     the column. Band one is the invitation and the reply card, band two the
+     programme and the tag side by side, band three the record and the loose
+     things. Each caption gets the gap under its own piece and the next band
+     starts below that. */
+  .ob-invite   {--x:38;--y:24;--w:46;--r:-4}
+  .ob-name     {--x:38;--y:24;--w:46;--r:-4}
+  .ob-rsvp     {--x:76;--y:10;--w:42;--r:8;z-index:5}
+  .ob-by       {--x:76;--y:10;--w:42;--r:8;z-index:6}
   /* The envelope used to hold the middle right. The programme takes the
      middle of the column now and the tag comes up beside it, so the run down
      the page stays even instead of skipping a beat. */
-  .ob-programme{--x:33;--y:60;--w:48;--r:6}
-  .ob-travel   {--x:78;--y:58;--w:19;--r:11}
-  .ob-record   {--x:70;--y:86;--w:23}
+  .ob-programme{--x:29;--y:63;--w:43;--r:6}
+  .ob-travel   {--x:81;--y:56;--w:16;--r:11}
+  .ob-record   {--x:72;--y:88;--w:20}
   /* The garland was at 17/42 and the invitation card had grown over it, so
      all that showed was a two-flower stub at the left edge that read as a
      rendering fault rather than as a thing lying on a table. It moves down
      into the empty corner under the programme, where the whole curve of it
      is on the page. */
-  .ob-garland  {--x:20;--y:85;--w:34;--r:-8}
+  .ob-garland  {--x:22;--y:87;--w:31;--r:-8}
   /* The petals used to lie at 53/76, which is the middle of the caption band:
      they ran into THE LETTER above them and THE PROGRAMME beside them. They
      drop into the pocket between the luggage tag and the record, which is the
      one part of the table no caption crosses. */
-  .ob-petals   {--x:47;--y:91;--w:19;--r:4}
-  .ob-seal     {--x:88;--y:36;--w:11;--r:-14}
+  .ob-petals   {--x:49;--y:95;--w:17;--r:4}
+  .ob-seal     {--x:90;--y:31;--w:10;--r:-14}
 
   .ob-name{font-size:max(21px, min(9.4vw, calc(var(--flat-h) * .0545)))}
   /* The date is the smallest thing on the card and the first to disappear. */
