@@ -36,6 +36,12 @@
       var v = el.getAttribute('data-' + l + '-aria-label');
       if (v !== null) el.setAttribute('aria-label', v);
     });
+    // The reply card has its date drawn into the artwork, so the whole
+    // drawing swaps rather than a string inside it.
+    $$('[data-' + l + '-src], [data-' + other + '-src]').forEach(function (el) {
+      var v = el.getAttribute('data-' + l + '-src');
+      if (v !== null && el.getAttribute('src') !== v) el.setAttribute('src', v);
+    });
   }
 
   function setLang(l) {

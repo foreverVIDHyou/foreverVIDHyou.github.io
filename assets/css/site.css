@@ -266,7 +266,6 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 .lintel     {animation:settle .85s var(--ease) .05s both}
 .hero-names {animation:rise .75s var(--ease) .22s both}
 .hero-when  {animation:rise .75s var(--ease) .36s both}
-.hero-by    {animation:rise .75s var(--ease) .44s both}
 .hero-tag   {animation:rise .75s var(--ease) .54s both}
 .cd         {animation:rise .75s var(--ease) .92s both}
 .flat-more  {animation:rise .75s var(--ease) 1.06s both}
@@ -301,11 +300,8 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 /* Each part stays whole, and the line breaks between them rather than through
    "Club Mahindra Assonora", which reads as a mistake rather than as a wrap. */
 .hw-i{white-space:nowrap}
-/* The ask, in the quietest voice on the page. It is the one thing a guest has
-   to do something about, so it is there; it is also not what they came for,
-   so it is small. */
-.hero-by{font:400 clamp(11px,1.02vw,13px)/1.5 var(--ui);color:var(--ink-2);
-  letter-spacing:.01em;margin-top:-2px}
+/* No notes under the icons. The reply card prints its own date on its face,
+   which is where a reply card's date belongs. */
 
 /* Thane Mummy's note. It is the line the family repeat back to each other, so
    it is set like a name and not like a caption. */
@@ -377,7 +373,7 @@ html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
 /* "Until the pheras" is gone: with the resort behind it the row needed less
    on it, not more, and four numbers under a rule say what they are. */
 .cd-h{display:none}
-.cd-row{display:flex;justify-content:center;gap:clamp(8px,1.6vw,18px)}
+.cd-row{display:flex;justify-content:center}
 .cd-u{display:flex;flex-direction:column;align-items:center;min-width:48px}
 .cd-n{font:600 clamp(26px,4.2vw,48px)/1 var(--display);color:var(--red-900);
   font-variant-numeric:tabular-nums lining-nums}
@@ -424,8 +420,18 @@ html[lang="hi"] .cd-k{letter-spacing:.02em;text-transform:none;font-size:11px}
 /* --- the way down --------------------------------------------------------- */
 .flat-more{display:inline-flex;align-items:center;gap:7px;
   font:600 11px/1 var(--ui);letter-spacing:.15em;text-transform:uppercase;
-  color:var(--red-800);text-decoration:none;padding:6px 2px;
-  margin-top:clamp(2px,.8vh,10px);transition:color .22s}
+  color:var(--red-800);text-decoration:none;
+  padding:11px 18px;border-radius:8px;
+  margin-top:clamp(2px,.8vh,10px);
+  transition:color .22s,background .22s;
+  background:rgba(250,243,228,.52);
+  border:1px solid rgba(176,141,60,.22);
+  backdrop-filter:blur(10px) saturate(1.06);
+  -webkit-backdrop-filter:blur(10px) saturate(1.06)}
+@supports not (backdrop-filter:blur(1px)){
+  .flat-more{background:rgba(250,243,228,.88)}
+}
+.flat-more:hover{background:rgba(250,243,228,.72)}
 .flat-more:hover,.flat-more:focus-visible{color:var(--red-800)}
 .flat-more svg{width:15px;height:15px;animation:nudge 2.4s var(--ease) infinite}
 html[lang="hi"] .flat-more{letter-spacing:.02em;text-transform:none;font-size:13px}
@@ -999,8 +1005,12 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
     gap:clamp(14px,4vw,24px) clamp(14px,6vw,30px)}
   .way-ic{height:clamp(46px,13vw,64px)}
   .way{gap:9px;padding:4px 2px}
-  .cd-row{gap:8px}
-  .cd-blk{gap:clamp(10px,4.5vw,26px);padding:9px 12px}
+  /* The cue was sitting 11px under the clock with 59px of empty pool below
+     it. It drops into that space, which is the emptiest part of the drawing
+     and the obvious place for it. */
+  .flat-more{margin-top:38px}
+  .hero{padding-bottom:clamp(46px,14vw,110px)}
+  .cd-blk{gap:clamp(10px,4.5vw,26px);padding:9px 14px}
   .cd-u{min-width:40px}
 }
 
