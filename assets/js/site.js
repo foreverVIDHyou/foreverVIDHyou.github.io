@@ -119,7 +119,16 @@
    * one element is ever hidden. A decorative animation must never be able to
    * blank the page.
    */
-  (function reveal() {
+  var revealIO = null;
+  var revealTimer = null;
+
+  function mountReveal() {
+    // A soft navigation replaces <main>, so the previous observer is watching
+    // elements that no longer exist. Disconnect before building another, or
+    // one accumulates per page visited.
+    if (revealIO) { revealIO.disconnect(); revealIO = null; }
+    if (revealTimer) { clearTimeout(revealTimer); revealTimer = null; }
+
     var items = $$('[data-reveal]');
     if (!items.length) return;
     if (!('IntersectionObserver' in window) || REDUCED) return;
@@ -143,19 +152,31 @@
       threshold: 0.08
     });
     items.forEach(function (el) { io.observe(el); });
+    revealIO = io;
 
     // Anything still hidden after four seconds is shown regardless. A guest
     // whose scroll never trips the observer must not end up with a blank page.
-    setTimeout(function () {
+    revealTimer = setTimeout(function () {
       items.forEach(function (el) { el.classList.add('in'); });
     }, 4000);
-  })();
+  }
 
   // =========================================================================
   // countdown
   // =========================================================================
 
-  var cd = $('#cd');
+  var cd = null;
+  var cdTimer = null;
+
+  function mountCountdown() {
+    if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
+    cd = $('#cd');
+    if (!cd) return;
+    renderCountdown();
+    // One interval, replaced on each mount. Without the clear above, every
+    // page a guest visits would leave another ticking.
+    cdTimer = setInterval(renderCountdown, 1000);
+  }
 
   function renderCountdown() {
     if (!cd) return;
@@ -191,10 +212,6 @@
     });
   }
 
-  if (cd) {
-    renderCountdown();
-    setInterval(renderCountdown, 1000);
-  }
 
   // =========================================================================
   // the record
@@ -386,6 +403,15 @@
   // RSVP
   // =========================================================================
 
+  /**
+   * Everything the reply page needs, as one mountable unit.
+   *
+   * It used to run straight through the outer IIFE and bail with `return` when
+   * `#rsvp-box` was absent. Wrapped in a function, the same `return` becomes a
+   * guard and the whole thing can be set up again after a soft navigation,
+   * with its closures fresh over the new DOM.
+   */
+  function mountRsvp() {
   var box = $('#rsvp-box');
   if (!box) return;
 
@@ -872,4 +898,139 @@
   }
 
   syncSteps();
+  }
+
+  // =========================================================================
+  // mounting a page
+  // =========================================================================
+
+  /**
+   * Everything that depends on the contents of <main>.
+   *
+   * Called once on load, and again by the navigation layer each time it swaps
+   * a page in. Everything bound to the shell — the language button, the
+   * burger, the header measurement, the record — is set up outside this and
+   * is never touched again, which is the whole point: the <audio> element
+   * survives, so the music does not stop.
+   */
+  function mountPage() {
+    mountReveal();
+    mountCountdown();
+    mountRsvp();
+    applyLangAttrs(lang());
+  }
+
+  mountPage();
+
+  // =========================================================================
+  // soft navigation
+  // =========================================================================
+
+  /**
+   * Move between pages without loading a new document.
+   *
+   * This exists for one reason: the music. An <audio> element cannot survive a
+   * navigation, so on a site of separate documents the track stops at every
+   * link and starts again on the other side. Remembering the playhead got the
+   * position back but not the second of silence, and Vibhakar could hear it.
+   *
+   * So links are intercepted, the target is fetched, and only <main> is
+   * replaced. The shell — header, footer, the record, the script itself — is
+   * never touched, so the audio element plays straight through. Then
+   * mountPage() sets up whatever the new <main> needs.
+   *
+   * It degrades honestly. Anything that is not a plain left-click on a
+   * same-origin page — a new tab, a modifier held, an external link, a
+   * download, an anchor on this page — falls through to the browser, and if
+   * the fetch fails for any reason at all the click becomes an ordinary
+   * navigation. Nothing here is load-bearing for getting around the site.
+   */
+  (function softNav() {
+    if (!window.history || !window.history.pushState || !window.fetch) return;
+
+    var main = $('#main');
+    if (!main) return;
+    var busy = false;
+
+    function samePage(href) {
+      return href.split('#')[0] === location.href.split('#')[0];
+    }
+
+    function swap(html, url, push) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var fresh = doc.querySelector('#main');
+      if (!fresh) return false;                 // not one of ours; let it load
+
+      main.innerHTML = fresh.innerHTML;
+      document.title = doc.title;
+      document.body.className = doc.body.className;
+
+      // the header's current-page marker lives outside <main>
+      var here = (doc.querySelector('body').className.match(/p-([\w-]+)/) || [])[1];
+      $$('.nav-a').forEach(function (a) {
+        var on = a.getAttribute('href') === url.split('/').pop();
+        a.classList.toggle('on', on);
+        if (on) { a.setAttribute('aria-current', 'page'); }
+        else { a.removeAttribute('aria-current'); }
+      });
+
+      if (push) history.pushState({ soft: 1 }, '', url);
+      // <html> carries `scroll-behavior: smooth` for the in-page anchors, and
+      // that would animate this jump too: arriving on a new page by watching
+      // the old one scroll past. Off for the jump, back on straight after.
+      var root = document.documentElement;
+      var was = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      root.style.scrollBehavior = was;
+      if (nav) nav.classList.remove('open');
+      if (burger) burger.setAttribute('aria-expanded', 'false');
+      mountPage();
+      // Move focus to the top of the new page, or a keyboard user stays where
+      // the old document left them and a screen reader announces nothing.
+      main.setAttribute('tabindex', '-1');
+      main.focus({ preventScroll: true });
+      return true;
+    }
+
+    function go(url, push) {
+      if (busy) return;
+      busy = true;
+      document.documentElement.classList.add('is-navigating');
+      fetch(url, { credentials: 'same-origin' })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.text();
+        })
+        .then(function (html) {
+          if (!swap(html, url, push)) location.href = url;
+        })
+        .catch(function () { location.href = url; })
+        .then(function () {
+          busy = false;
+          document.documentElement.classList.remove('is-navigating');
+        });
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a');
+      if (!a || !a.href) return;
+      if (a.target && a.target !== '_self') return;
+      if (a.hasAttribute('download')) return;
+      if (a.origin !== location.origin) return;
+      if (!/\.html$/.test(a.pathname) && a.pathname !== '/'
+          && !/\/$/.test(a.pathname)) return;
+      if (a.hash && samePage(a.href)) return;      // an anchor on this page
+      e.preventDefault();
+      go(a.href, true);
+    });
+
+    window.addEventListener('popstate', function () {
+      go(location.href, false);
+    });
+  })();
+
+  window.__vidhMount = mountPage;
 })();
