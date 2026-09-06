@@ -175,7 +175,7 @@ html[lang="hi"] .btn{letter-spacing:.04em;text-transform:none;font-size:15px}
 html[lang="hi"] .nav-a{letter-spacing:.03em;text-transform:none;font-size:14px}
 .nav-a:hover{color:var(--gold-200);background:rgba(211,180,99,.1)}
 .nav-a.on{color:var(--gold-400)}
-.head-r{display:flex;align-items:center;gap:6px}
+.head-r{display:flex;align-items:center;gap:9px}
 .lang{border:1px solid rgba(211,180,99,.34);background:none;color:var(--gold-200);
   font:600 11.5px/1 var(--ui);letter-spacing:.08em;padding:7px 11px;
   border-radius:var(--r);cursor:pointer;transition:border-color .2s,background .2s}
@@ -279,7 +279,6 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 .hero-bg{animation:wash 1.5s var(--ease) both}
 @keyframes wash{from{opacity:0}to{opacity:1}}
 /* and the record arrives last, from the corner it lives in */
-.mu{animation:settle .7s var(--ease) 1.15s both}
 
 /* Ganeshji, still with a row to himself so nothing can reach him */
 .lintel{text-align:center}
@@ -385,19 +384,19 @@ html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
 html[lang="hi"] .cd-k{letter-spacing:.02em;text-transform:none;font-size:11px}
 .cd-done{font:300 clamp(24px,4vw,36px)/1.3 var(--display);color:var(--red-800)}
 
-/* --- the record, in the corner -------------------------------------------- */
-.mu{position:absolute;top:clamp(10px,1.4vw,20px);right:clamp(10px,1.4vw,22px);
-  z-index:5;width:clamp(38px,3.6vw,52px);aspect-ratio:1;
+/* --- the record, in the header -------------------------------------------- */
+/* It sat in the corner of the hero, which put it on one page out of seven: a
+   guest who opened the invitation lost the music entirely, because the
+   <audio> element went with the page. In the header it is on all of them,
+   beside the other control that belongs to the whole site. Smaller, because
+   a header is not a hero. */
+.mu{position:relative;flex:0 0 auto;
+  width:30px;aspect-ratio:1;
   background:none;border:0;padding:0;cursor:pointer;
-  transition:scale .3s var(--ease),filter .3s var(--ease);
-  filter:drop-shadow(0 3px 9px rgba(58,21,18,.26))}
-/* `settle` animates `scale`, and an animation beats a plain declaration for
-   as long as it runs, so the hover scale is held until the arrival finishes.
-   That is only 1.85s and only on first load, which is the right trade for
-   keeping both effects on the same property. */
-.mu:hover,.mu:focus-visible{scale:1.07;
-  filter:drop-shadow(0 7px 16px rgba(58,21,18,.34))}
-.mu:focus-visible{outline:2px solid var(--red-700);outline-offset:5px}
+  transition:scale .3s var(--ease);
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.4))}
+.mu:hover,.mu:focus-visible{scale:1.09}
+.mu:focus-visible{outline:2px solid var(--gold-400);outline-offset:4px}
 .mu-disc{width:100%;height:auto;border-radius:50%;display:block}
 /* 33 1/3 rpm is 1.8s a turn */
 .mu.spinning .mu-disc{animation:spin 1.8s linear infinite}
@@ -406,11 +405,11 @@ html[lang="hi"] .cd-k{letter-spacing:.02em;text-transform:none;font-size:11px}
    inside it rather than out of CSS borders. Borders distort, and a stale
    `height` on this class once beat `aspect-ratio` and made it an ellipse. */
 .mu-play{position:absolute;left:50%;top:50%;
-  width:40%;aspect-ratio:1;translate:-50% -50%;
+  width:46%;aspect-ratio:1;translate:-50% -50%;
   border-radius:50%;background:rgba(250,243,228,.95);
   display:grid;place-items:center;
   box-shadow:0 1px 3px rgba(26,8,10,.35)}
-.mu-play svg{width:44%;height:auto;color:var(--red-800);display:block}
+.mu-play svg{width:48%;height:auto;color:var(--red-800);display:block}
 /* the triangle nudges right, so it looks centred rather than measures centred */
 .mu-play .g-play{translate:6% 0}
 .mu-play .g-pause{display:none}

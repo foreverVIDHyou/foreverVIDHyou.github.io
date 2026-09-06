@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=5ef41c1f">
+<link rel="stylesheet" href="assets/css/site.css?v=4541e219">
 
 <script>
   try {
@@ -68,6 +68,25 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
     </nav>
 
     <div class="head-r">
+      <button type="button" class="mu" id="mu-btn" aria-pressed="false"
+              data-en-aria-label="Play the record" data-hi-aria-label="संगीत चलाएँ"
+              aria-label="Play the record"
+              data-say='{"tap":"Music",
+                         "on":"Playing",
+                         "off":"Paused",
+                         "missing":""}'
+              data-say-hi='{"tap":"\u0938\u0902\u0917\u0940\u0924",
+                            "on":"\u092c\u091c \u0930\u0939\u093e \u0939\u0948",
+                            "off":"\u0930\u0941\u0915\u093e \u0939\u0941\u0906",
+                            "missing":""}'>
+        <img class="mu-disc" src="assets/art/vinyl.svg" alt="" width="280" height="280">
+        <span class="mu-play" aria-hidden="true">
+          <svg class="g-play" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.4 20.5 12 6 20.6Z"/></svg>
+          <svg class="g-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="5.4" y="3.6" width="4.8" height="16.8" rx="1.2"/><rect x="13.8" y="3.6" width="4.8" height="16.8" rx="1.2"/></svg>
+        </span>
+        <span class="vh" id="mu-state"><span class="l" data-l="en">Music</span><span class="l" data-l="hi" lang="hi">संगीत</span></span>
+      </button>
+
       <button class="lang" id="lang" type="button"
               data-en-aria-label="Read this page in Hindi" data-hi-aria-label="इस पन्ने को अंग्रेज़ी में पढ़ें"
               aria-label="Read this page in Hindi">
@@ -702,6 +721,11 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
   </div>
 </footer>
 
-<script src="assets/js/site.js?v=0783b225" defer></script>
+<audio id="mu-audio" loop preload="metadata">
+  <source src="assets/audio/theme.mp3" type="audio/mpeg">
+  <source src="assets/audio/theme.ogg" type="audio/ogg">
+</audio>
+
+<script src="assets/js/site.js?v=c9ca6de1" defer></script>
 </body>
 </html>

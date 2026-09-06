@@ -217,6 +217,9 @@
    * A guest who presses pause is remembered for the session, so it does not
    * start itself again on the next page. Being able to stop it and have it
    * stay stopped matters more than the music does.
+   *
+   * The playhead is remembered too, so moving between pages continues the
+   * piece rather than restarting it. See `savePos` below.
    */
   (function music() {
     var btn = $('#mu-btn');
@@ -228,10 +231,65 @@
       try { return JSON.parse(btn.getAttribute(attr) || '{}'); } catch (e) { return {}; }
     }
     var STOP_KEY = 'vidh-music-off';
+    var POS_KEY = 'vidh-music-at';
 
     var audio = $('#mu-audio');
     if (!audio) return;
     audio.volume = 0.22;
+
+    /**
+     * Carry the playhead across pages.
+     *
+     * This is a site of separate documents, so every link is a real
+     * navigation and the <audio> element is destroyed and built again. Left
+     * alone the track restarts from the top on each page, which is worse than
+     * silence: a guest who opens the invitation, then the programme, then the
+     * travel notes hears the same eight bars three times.
+     *
+     * So the position is written to sessionStorage as it plays and read back
+     * on the next page. What a guest hears is one continuous piece with a
+     * short gap where the page loads, rather than a piece that starts over.
+     * Truly gapless would need the audio element to survive the navigation,
+     * which means intercepting every link and swapping the page's contents by
+     * hand — a much larger change, and one that would put the RSVP form's
+     * wiring at risk for the sake of a few hundred milliseconds.
+     *
+     * sessionStorage and not localStorage: this should follow a visit, not
+     * outlive it. Coming back tomorrow should start at the beginning.
+     */
+    function savePos() {
+      if (!audio.duration || !isFinite(audio.duration)) return;
+      try { sessionStorage.setItem(POS_KEY, String(audio.currentTime)); } catch (e) {}
+    }
+    function restorePos() {
+      var at;
+      try { at = parseFloat(sessionStorage.getItem(POS_KEY)); } catch (e) {}
+      if (!at || !isFinite(at) || !audio.duration || !isFinite(audio.duration)) return;
+      // The track loops, so any stored position is valid once wrapped. A
+      // second off the end also avoids landing on the very last frame and
+      // firing `ended` before anything is audible.
+      var t = at % audio.duration;
+      if (t > audio.duration - 1) t = 0;
+      try { audio.currentTime = t; } catch (e) {}
+    }
+    if (audio.readyState >= 1) restorePos();
+    audio.addEventListener('loadedmetadata', restorePos, { once: true });
+
+    // Written about once a second while playing rather than on every
+    // `timeupdate`, which fires four times as often for no benefit.
+    var lastSave = 0;
+    audio.addEventListener('timeupdate', function () {
+      var now = Date.now();
+      if (now - lastSave < 1000) return;
+      lastSave = now;
+      savePos();
+    });
+    // `pagehide` is the one that fires on a real navigation, including into
+    // the back/forward cache, where `unload` is unreliable.
+    window.addEventListener('pagehide', savePos);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') savePos();
+    });
 
     var missing = false;
     function noFile() {
