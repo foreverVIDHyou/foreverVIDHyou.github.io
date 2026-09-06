@@ -52,7 +52,7 @@
   --script:"Great Vibes",cursive;
   --deva:"Noto Serif Devanagari",var(--body);
 
-  --head-h:60px;
+  --head-h:50px;
   --wrap:1080px;
   --r:3px;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -167,25 +167,25 @@ html[lang="hi"] .btn{letter-spacing:.04em;text-transform:none;font-size:15px}
   display:flex;align-items:center;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;
   color:var(--gold-200);margin-right:auto}
-.brand-mark{width:38px;height:38px;border-radius:2px}
+.brand-mark{width:30px;height:30px;border-radius:2px}
 .nav{display:flex;align-items:center;gap:4px}
-.nav-a{font:600 12.5px/1 var(--ui);letter-spacing:.13em;text-transform:uppercase;
-  color:rgba(250,243,228,.76);text-decoration:none;padding:10px 12px;
+.nav-a{font:600 12px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(250,243,228,.76);text-decoration:none;padding:8px 11px;
   border-radius:var(--r);transition:color .2s,background .2s}
 html[lang="hi"] .nav-a{letter-spacing:.03em;text-transform:none;font-size:14px}
 .nav-a:hover{color:var(--gold-200);background:rgba(211,180,99,.1)}
 .nav-a.on{color:var(--gold-400)}
 .head-r{display:flex;align-items:center;gap:6px}
 .lang{border:1px solid rgba(211,180,99,.34);background:none;color:var(--gold-200);
-  font:600 12px/1 var(--ui);letter-spacing:.08em;padding:9px 12px;
+  font:600 11.5px/1 var(--ui);letter-spacing:.08em;padding:7px 11px;
   border-radius:var(--r);cursor:pointer;transition:border-color .2s,background .2s}
 .lang:hover{border-color:var(--gold-500);background:rgba(211,180,99,.12)}
-.burger{display:none;background:none;border:0;padding:10px 6px;cursor:pointer}
-.burger span{display:block;width:21px;height:1.6px;background:var(--gold-200);
-  margin:4px 0;transition:transform .26s var(--ease),opacity .2s}
-.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(5.6px) rotate(45deg)}
+.burger{display:none;background:none;border:0;padding:7px 6px;cursor:pointer}
+.burger span{display:block;width:20px;height:1.6px;background:var(--gold-200);
+  margin:3.4px 0;transition:transform .26s var(--ease),opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(5px) rotate(45deg)}
 .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-5.6px) rotate(-45deg)}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 
 .foot{position:relative;background:var(--red-800);color:var(--ivory);
   padding:clamp(48px,6vw,76px) 0 40px;text-align:center;overflow:hidden;
@@ -876,7 +876,8 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 }
 
 @media (max-width:760px){
-  :root{--head-h:56px}
+  :root{--head-h:46px}
+  .brand-mark{width:27px;height:27px}
   body{font-size:16.5px}
   .burger{display:block}
   .nav{
@@ -981,6 +982,34 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
     padding-bottom:11px}
   .chip>.chip-b{grid-template-columns:auto 1fr auto;gap:11px;padding:13px}
   .chip-yes{display:none}
+}
+
+/* Wide but short. The hero's type is sized off the viewport's WIDTH and the
+   room it has is the viewport's HEIGHT, so a 1280x720 laptop asked for 819px
+   of content in 668px of space and pushed "Scroll for more" clean off the
+   bottom — on the one screen size where a cue matters most, because nothing
+   else told you the page continued.
+
+   Everything comes down a step when the screen is short, which is the same
+   fix the phone block makes for the same reason. */
+@media (min-width:821px) and (max-height:900px){
+  .hero{padding-bottom:clamp(56px,7vw,104px)}
+  .hero-in{gap:clamp(5px,.9vh,13px)}
+  .lintel-g{width:clamp(42px,3.4vw,56px)}
+  .hero-names{font-size:clamp(26px,3.3vw,40px)}
+  .hero-tag{font-size:clamp(22px,2.5vw,32px)}
+  .way-ic{height:clamp(40px,4.4vw,60px)}
+  .cd-n{font-size:clamp(24px,2.9vw,36px)}
+  .cd-blk{padding:clamp(8px,1.1vh,13px) clamp(12px,1.6vw,22px)}
+}
+
+@media (min-width:821px) and (max-height:760px){
+  .hero-in{gap:clamp(4px,.7vh,10px)}
+  .hero-names{font-size:clamp(24px,2.9vw,34px)}
+  .hero-tag{font-size:clamp(20px,2.2vw,28px)}
+  .way-ic{height:clamp(36px,3.8vw,52px)}
+  .cd-n{font-size:clamp(22px,2.5vw,30px)}
+  .hero{padding-bottom:clamp(44px,5.5vw,80px)}
 }
 
 /* On a phone the four ways in go two by two rather than four across: at 360px
