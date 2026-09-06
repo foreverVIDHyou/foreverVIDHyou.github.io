@@ -102,6 +102,14 @@ html[lang="hi"] h1,html[lang="hi"] h2,html[lang="hi"] h3{font-family:var(--deva)
 .wrap.narrow{max-width:660px}
 .center{text-align:center}
 .sec{padding:clamp(52px,7vw,92px) 0}
+/* The first section on a page sits right under the bar, and 92px of nothing
+   between the two read as a mistake rather than as air. Half that.
+   `main > .sec:first-child` never matches the landing page, whose first child
+   is the hero — which is exactly the "every page except Home" this wants. The
+   phone block already sets its own, smaller, padding and is left alone. */
+@media (min-width:821px){
+  main > .sec:first-child{padding-top:clamp(30px,3.2vw,46px)}
+}
 .sec-alt{background:var(--paper-2)}
 
 /* --- type ----------------------------------------------------------------- */
@@ -508,6 +516,10 @@ html[lang="hi"] .band-l{font-family:var(--deva);
 .card-palm.l{left:-26px}
 .card-palm.r{right:-26px}
 .card-in{position:relative}
+/* Ganeshji heads the card, above the invocation, the way he heads a
+   printed invitation. */
+.card-gan{display:block;width:clamp(54px,6vw,76px);height:auto;
+  margin:0 auto 8px}
 .card-om{font:400 15px/1.4 var(--deva);color:var(--gold-600);letter-spacing:.05em}
 .card-eb{font:600 11.5px/1.5 var(--ui);letter-spacing:.2em;text-transform:uppercase;
   color:var(--gold-600);margin-top:22px}
@@ -670,7 +682,10 @@ html[lang="hi"] .lgd{letter-spacing:.02em;text-transform:none;font-size:15px}
 .contact .f input,.contact .f select{background:var(--paper)}
 .contact-lede{margin:-4px 0 14px}
 .locked-wrap{position:relative;display:flex;gap:8px;min-width:0}
-.phone-row select{flex:0 0 96px;width:96px;padding-inline:9px}
+/* Sized to its longest option, not to a guess. At a fixed 96px the box
+   held "+1 USA/Canada", which needs more, and cut it off mid-word — on the
+   phone first and then, once the phone was fixed, still on the laptop. */
+.phone-row select{flex:0 0 auto;width:auto;padding-inline:10px}
 .phone-row input{flex:1 1 auto;min-width:0}
 .lockmark{position:absolute;right:11px;top:50%;transform:translateY(-50%);
   width:17px;height:17px;color:var(--gold-600);pointer-events:none}
@@ -808,7 +823,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 .rt:focus-visible{outline:2px solid var(--red-700);outline-offset:3px}
 .rt-ic{display:block;color:var(--gold-600)}
 .rt-ic svg{width:100%;height:auto}
-.rt h2{font-weight:500;text-wrap:balance}
+.rt h2{font-weight:600;text-wrap:balance}
 .rt p{color:var(--ink-2)}
 .rt-go{display:inline-block;font:600 12px/1 var(--ui);letter-spacing:.13em;
   text-transform:uppercase;color:var(--red-700)}
@@ -974,8 +989,6 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 
   /* The dropdown gets the width its longest option actually needs, and the
      number keeps the rest. `flex:0 0 96px` was a guess and it was 34px short. */
-  .phone-row select{flex:0 0 auto;width:auto;min-width:132px;padding-inline:10px}
-  .phone-row input{min-width:0}
 
   .f2{grid-template-columns:1fr;gap:14px}
   .yn,.sides{gap:10px}
@@ -1100,8 +1113,14 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 }
 
 @media (max-width:420px){
-  .pols{gap:12px}
-  .pol{width:100%;max-width:260px;rotate:none}
+  .pols{gap:12px 9px}
+  .pol{width:calc(50% - 5px);padding:7px 7px 0}
+  /* A slightly wider swing than the desktop's 1.15deg. The cards are small
+     here, and at this size a gentle tilt reads as a misalignment rather than
+     as a decision. */
+  .pol{rotate:calc((var(--i) - 2.5) * 1.9deg)}
+  .pol figcaption{font-size:10.5px;line-height:1.4;padding:8px 3px 10px;
+    min-height:calc(2 * 1.4em + 14px)}
 }
 
 /* Landscape phones: 100svh is only about 380px, so a full-height hero leaves
