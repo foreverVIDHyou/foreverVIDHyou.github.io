@@ -368,20 +368,35 @@
     if (!stopped && !REDUCED && !missing) {
       start().catch(function () {
         // Blocked, which is the normal answer. Wait for any sign of life.
-        var events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+        //
+        // The listeners come off when a `play()` actually SUCCEEDS, not when
+        // one is attempted. That distinction is the whole thing: a scroll is a
+        // sign of life but it is not "user activation" as the autoplay policy
+        // defines it, so `play()` refuses. The first version removed every
+        // listener and then attempted, swallowing the rejection — so a guest
+        // who scrolled before touching anything got silence for the rest of
+        // the visit, with nothing left listening to try again.
+        var events = ['pointerdown', 'pointerup', 'click', 'keydown',
+                      'touchstart', 'touchend', 'scroll'];
+        function off() {
+          events.forEach(function (ev) {
+            window.removeEventListener(ev, go, true);
+          });
+        }
         function go(e) {
           // Not the record itself. The same gesture fires pointerdown and then
           // click, so arming on the button meant the first press started the
           // track and its own handler immediately paused it again: one tap,
           // nothing playing, and no way to tell why.
           if (e && e.target && e.target.closest && e.target.closest('#mu-btn')) return;
-          events.forEach(function (ev) {
-            window.removeEventListener(ev, go, true);
-          });
-          start().catch(function () {});
+          // And not if the guest has since pressed pause.
+          try {
+            if (sessionStorage.getItem(STOP_KEY) === '1') { off(); return; }
+          } catch (err) {}
+          start().then(off, function () { /* keep listening */ });
         }
         events.forEach(function (e) {
-          window.addEventListener(e, go, { once: true, capture: true, passive: true });
+          window.addEventListener(e, go, { capture: true, passive: true });
         });
       });
     }
