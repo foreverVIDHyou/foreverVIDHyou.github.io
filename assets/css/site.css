@@ -294,11 +294,18 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 .lintel-om{font:400 clamp(9.5px,.95vw,13px)/1.35 var(--deva);color:var(--red-800);
   margin-top:4px;white-space:nowrap}
 
-.hero-names{font:300 clamp(28px,4.6vw,58px)/1.14 var(--display);
-  color:var(--ink);max-width:18ch}
+/* Three rows: a name, the ampersand alone, a name.
+
+   The type comes down to about 81% of the two-row size so the block ends up
+   the same height it was, which is the point — everything below it on the
+   screen is positioned by what this leaves, and the hero has no room to give
+   away. Two rows of 1.12 plus an ampersand row of .62em at .9 is 2.80 ems
+   against the old 2.28, so 2.28 / 2.80 sets the reduction. */
+.hero-names{display:flex;flex-direction:column;align-items:center;
+  font:300 clamp(23px,3.72vw,47px)/1.12 var(--display);color:var(--ink)}
 .nm-1,.nm-2{white-space:nowrap}
 .hero-names .amp{font-family:var(--script);color:var(--marigold-dk);
-  font-size:.82em;padding:0 .06em}
+  font-size:.62em;line-height:.9;padding:0}
 html[lang="hi"] .hero-names{font-family:var(--deva);
   font-size:clamp(23px,3.7vw,46px);line-height:1.3}
 
@@ -1042,7 +1049,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   .hero{padding-bottom:clamp(56px,7vw,104px)}
   .hero-in{gap:clamp(5px,.9vh,13px)}
   .lintel-g{width:clamp(42px,3.4vw,56px)}
-  .hero-names{font-size:clamp(26px,3.3vw,40px)}
+  .hero-names{font-size:clamp(21px,2.69vw,33px)}
   .hero-tag{font-size:clamp(22px,2.5vw,32px)}
   .way-ic{height:clamp(40px,4.4vw,60px)}
   .cd-n{font-size:clamp(24px,2.9vw,36px)}
@@ -1051,7 +1058,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 
 @media (min-width:821px) and (max-height:760px){
   .hero-in{gap:clamp(4px,.7vh,10px)}
-  .hero-names{font-size:clamp(24px,2.9vw,34px)}
+  .hero-names{font-size:clamp(20px,2.36vw,28px)}
   .hero-tag{font-size:clamp(20px,2.2vw,28px)}
   .way-ic{height:clamp(36px,3.8vw,52px)}
   .cd-n{font-size:clamp(22px,2.5vw,30px)}
@@ -1069,7 +1076,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      cut fitted everything and read as crowded; Vibhakar's note was that it is
      fine to zoom out, so it does. */
   .hero-in{gap:clamp(11px,2vh,20px);max-width:420px}
-  .hero-names{font-size:clamp(25px,7.4vw,34px)}
+  .hero-names{font-size:clamp(20px,6vw,28px)}
   .hero-tag{font-size:clamp(22px,7vw,32px)}
   /* Two clean lines rather than one that wraps after the separator and
      leaves the dot dangling at the end of the first. */
