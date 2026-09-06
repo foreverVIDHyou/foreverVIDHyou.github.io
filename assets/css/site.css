@@ -134,21 +134,27 @@ html[lang="hi"] .eyebrow{letter-spacing:.10em;text-transform:none;font-size:13px
 /* --- buttons -------------------------------------------------------------- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  font:600 14px/1 var(--ui);letter-spacing:.10em;text-transform:uppercase;
-  padding:15px 30px;border-radius:var(--r);border:1px solid transparent;
+  font:600 13px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;
+  padding:17px 34px;border-radius:var(--r);border:1px solid transparent;
   text-decoration:none;cursor:pointer;background:none;
   transition:background .22s var(--ease),color .22s var(--ease),
              border-color .22s var(--ease),transform .22s var(--ease);
 }
 html[lang="hi"] .btn{letter-spacing:.04em;text-transform:none;font-size:15px}
 .btn-primary{background:var(--red-800);color:var(--gold-200);
-  border-color:var(--red-800)}
-.btn-primary:hover{background:var(--red-700);border-color:var(--gold-500)}
+  border-color:var(--red-800);
+  box-shadow:inset 0 0 0 1px rgba(211,180,99,.34),
+             0 6px 18px rgba(58,21,18,.20)}
+.btn-primary:hover,.btn-primary:focus-visible{background:var(--red-700);
+  border-color:var(--red-700);
+  box-shadow:inset 0 0 0 1px rgba(232,200,122,.55),
+             0 10px 26px rgba(58,21,18,.28)}
 .btn-ghost{border-color:var(--line-gold);color:var(--red-800)}
 .btn-ghost:hover{border-color:var(--gold-500);background:rgba(176,141,60,.09)}
 .btn-wide{width:100%;padding:17px 26px;margin-top:8px}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
-.btn:active{transform:translateY(1px)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
 
 /* ==========================================================================
    header and footer
@@ -237,6 +243,45 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
   display:flex;flex-direction:column;align-items:center;
   gap:clamp(9px,1.5vh,20px);width:100%;max-width:960px}
 
+/* --- the page arriving --------------------------------------------------- */
+/* One sequence, in the order a person reads it: Ganeshji, then whose wedding
+   it is, then when and where, then the hashtag, then the four ways in, then
+   the clock and the way down. Nothing bounces and nothing slides sideways;
+   everything rises a few pixels into place, which is what a card being laid
+   on a table does.
+
+   CSS and not JS, so it runs whether or not the script arrives, and `both`
+   fill so each piece is invisible until its turn rather than flashing first.
+   The reduced-motion block near the foot of this file collapses every
+   duration to nothing, and because the fill is `both` they all land on the
+   finished state instead of disappearing. */
+@keyframes rise{
+  from{opacity:0;translate:0 15px}
+  to{opacity:1;translate:0 0}
+}
+@keyframes settle{
+  from{opacity:0;scale:.94}
+  to{opacity:1;scale:1}
+}
+.lintel     {animation:settle .85s var(--ease) .05s both}
+.hero-names {animation:rise .75s var(--ease) .22s both}
+.hero-when  {animation:rise .75s var(--ease) .36s both}
+.hero-by    {animation:rise .75s var(--ease) .44s both}
+.hero-tag   {animation:rise .75s var(--ease) .54s both}
+.cd         {animation:rise .75s var(--ease) .92s both}
+.flat-more  {animation:rise .75s var(--ease) 1.06s both}
+/* the four pieces are dealt out one after another */
+.way        {animation:rise .6s var(--ease) both}
+.way:nth-child(1){animation-delay:.60s}
+.way:nth-child(2){animation-delay:.70s}
+.way:nth-child(3){animation-delay:.80s}
+.way:nth-child(4){animation-delay:.90s}
+/* the view itself washes in under all of it, slowest of anything */
+.hero-bg{animation:wash 1.5s var(--ease) both}
+@keyframes wash{from{opacity:0}to{opacity:1}}
+/* and the record arrives last, from the corner it lives in */
+.mu{animation:settle .7s var(--ease) 1.15s both}
+
 /* Ganeshji, still with a row to himself so nothing can reach him */
 .lintel{text-align:center}
 .lintel-g{width:clamp(52px,5vw,78px);height:auto;margin:0 auto;display:block}
@@ -250,8 +295,17 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 html[lang="hi"] .hero-names{font-family:var(--deva);
   font-size:clamp(23px,3.7vw,46px);line-height:1.3}
 
-.hero-when{font:400 clamp(12.5px,1.25vw,16px)/1.5 var(--ui);color:var(--ink)}
-.hero-when .dot{color:var(--gold-500);padding:0 .6em}
+.hero-when{font:400 clamp(12.5px,1.25vw,16px)/1.7 var(--ui);color:var(--ink);
+  max-width:38ch}
+.hero-when .dot{color:var(--gold-500)}
+/* Each part stays whole, and the line breaks between them rather than through
+   "Club Mahindra Assonora", which reads as a mistake rather than as a wrap. */
+.hw-i{white-space:nowrap}
+/* The ask, in the quietest voice on the page. It is the one thing a guest has
+   to do something about, so it is there; it is also not what they came for,
+   so it is small. */
+.hero-by{font:400 clamp(11px,1.02vw,13px)/1.5 var(--ui);color:var(--ink-2);
+  letter-spacing:.01em;margin-top:-2px}
 
 /* Thane Mummy's note. It is the line the family repeat back to each other, so
    it is set like a name and not like a caption. */
@@ -288,8 +342,6 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 .way:hover .way-ic img{filter:drop-shadow(0 10px 22px rgba(58,21,18,.40))}
 .way-l{font:600 clamp(9.5px,.92vw,12px)/1.25 var(--ui);letter-spacing:.11em;
   text-transform:uppercase;color:var(--red-800);text-wrap:balance}
-.way-n{font:400 clamp(10px,.92vw,12.5px)/1.35 var(--ui);color:var(--ink);
-  text-wrap:balance}
 html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
   font-size:clamp(11px,1.05vw,13.5px)}
 
@@ -298,33 +350,34 @@ html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
    opposite treatment: ink on a light ground, with a rule over it so it reads
    as part of the sheet rather than as a widget dropped on it. */
 .cd{text-align:center;margin-top:clamp(2px,.8vh,12px);
-  padding-top:clamp(13px,2vh,24px);position:relative;width:100%;
-  max-width:560px}
-/* A soft wash of the page's own paper behind the numbers.
+  position:relative;width:100%;max-width:560px}
+/* Two frosted blocks, days-and-hours then minutes-and-seconds.
 
-   Bold alone was not enough. Cormorant is a high-contrast face: at 600 its
-   thick strokes gain weight but its thin ones stay hairlines, and the
-   ridgeline was reading straight through the counters of the figures. This is
-   the printed-invitation answer — the numbers get clean paper to stand on —
-   and it is a radial fade rather than a panel so there is no box edge on a
-   drawing that has none. */
-.cd::after{content:"";position:absolute;inset:-46px -48% -50px;z-index:-1;
-  pointer-events:none;
-  /* The box has to be much larger than the wash so the fade *finishes* inside
-     it. The first cut used a 68% radius on a box barely wider than the
-     numbers, so the gradient was still two-thirds opaque when it hit the
-     edge and drew a rectangle across the ridgeline. Both radii now reach
-     transparent well before their own boundary. */
-  background:radial-gradient(38% 40% at 50% 50%,
-    rgba(250,243,228,.95) 0%, rgba(250,243,228,.88) 34%,
-    rgba(250,243,228,.55) 62%, rgba(250,243,228,0) 88%)}
-.cd::before{content:"";position:absolute;top:0;left:50%;translate:-50% 0;
-  width:min(240px,62%);height:1px;z-index:1;
-  background:linear-gradient(90deg,transparent,var(--line-gold),transparent)}
+   The numbers need clean ground: Cormorant is a high-contrast face, so at 600
+   its thick strokes gain weight but its thin ones stay hairlines, and the
+   ridgeline was reading straight through the counters. A soft circular wash
+   was tried first and Vibhakar asked for squares instead, which is the better
+   answer anyway — a rectangle admits it is a panel, where a radial fade has
+   to hide its own edges and did not, at first, manage it.
+
+   `backdrop-filter` blurs the drawing itself rather than covering it, so the
+   resort still shows through as colour and shape. Browsers without it fall
+   back to the flat tint underneath, which is the same idea more bluntly. */
+.cd-blk{display:flex;gap:clamp(12px,3vw,40px);
+  padding:clamp(10px,1.4vh,16px) clamp(14px,2vw,26px);
+  border-radius:8px;
+  background:rgba(250,243,228,.52);
+  border:1px solid rgba(176,141,60,.22);
+  box-shadow:0 4px 18px rgba(58,21,18,.07);
+  backdrop-filter:blur(10px) saturate(1.06);
+  -webkit-backdrop-filter:blur(10px) saturate(1.06)}
+@supports not (backdrop-filter:blur(1px)){
+  .cd-blk{background:rgba(250,243,228,.88)}
+}
 /* "Until the pheras" is gone: with the resort behind it the row needed less
    on it, not more, and four numbers under a rule say what they are. */
 .cd-h{display:none}
-.cd-row{display:flex;justify-content:center;gap:clamp(12px,3.4vw,44px)}
+.cd-row{display:flex;justify-content:center;gap:clamp(8px,1.6vw,18px)}
 .cd-u{display:flex;flex-direction:column;align-items:center;min-width:48px}
 .cd-n{font:600 clamp(26px,4.2vw,48px)/1 var(--display);color:var(--red-900);
   font-variant-numeric:tabular-nums lining-nums}
@@ -342,6 +395,10 @@ html[lang="hi"] .cd-k{letter-spacing:.02em;text-transform:none;font-size:11px}
   background:none;border:0;padding:0;cursor:pointer;
   transition:scale .3s var(--ease),filter .3s var(--ease);
   filter:drop-shadow(0 3px 9px rgba(58,21,18,.26))}
+/* `settle` animates `scale`, and an animation beats a plain declaration for
+   as long as it runs, so the hover scale is held until the arrival finishes.
+   That is only 1.85s and only on first load, which is the right trade for
+   keeping both effects on the same property. */
 .mu:hover,.mu:focus-visible{scale:1.07;
   filter:drop-shadow(0 7px 16px rgba(58,21,18,.34))}
 .mu:focus-visible{outline:2px solid var(--red-700);outline-offset:5px}
@@ -378,6 +435,28 @@ html[lang="hi"] .flat-more{letter-spacing:.02em;text-transform:none;font-size:13
   86%{translate:0 0}
 }
 @media (prefers-reduced-motion:reduce){.flat-more svg{animation:none}}
+
+/* --- the closing ask ------------------------------------------------------
+   The last thing on every page, and the only place the site asks for
+   anything. A panel of paper with a gold rule over it, in the invitation's
+   own idiom, rather than a button sitting on a section. -------------------- */
+.sec-band{background:var(--ivory-2);padding:clamp(40px,5.5vw,72px) 0}
+.sec-band .wrap{max-width:520px}
+.band-in{position:relative;text-align:center;
+  padding:clamp(28px,4vw,44px) clamp(20px,3vw,38px) clamp(24px,3.4vw,38px);
+  background:var(--paper);border:1px solid var(--line-gold);
+  border-radius:var(--r);
+  box-shadow:0 14px 40px rgba(58,21,18,.09)}
+/* the double rule of the invitation card, at the panel's edge */
+.band-in::before{content:"";position:absolute;inset:5px;border-radius:1px;
+  border:1px solid rgba(176,141,60,.30);pointer-events:none}
+.band-l{font:300 clamp(21px,2.7vw,31px)/1.3 var(--display);color:var(--ink);
+  text-wrap:balance}
+html[lang="hi"] .band-l{font-family:var(--deva);
+  font-size:clamp(17px,2.2vw,25px);line-height:1.6}
+.band-by{font:400 clamp(11.5px,1.05vw,13.5px)/1.5 var(--ui);color:var(--ink-2);
+  margin-top:14px}
+.sec-band .btn{margin-top:clamp(16px,2vw,22px)}
 
 /* the polaroids, laid out like a handful of photographs on the table */
 .sec-pol{background:var(--ivory-2)}
@@ -472,7 +551,13 @@ html[lang="hi"] .card-close{font-family:var(--deva);font-style:normal;font-size:
 .pick-pt{width:clamp(128px,20vw,196px);display:block}
 .pick-pt img{width:100%;height:auto}
 .pick-l{font:300 clamp(23px,3.2vw,32px)/1.2 var(--display);margin-top:18px}
-.pick-w{font:400 14.5px/1.55 var(--ui);color:#7A5A50;margin-top:8px}
+/* the cards must end level. "Vibhakar's family and friends" wrapped to two
+   lines where "Dhwani's" fitted one, so one button sat lower than the
+   other and the pair read as chopped. The line is gone and the taglines
+   carry the cards; `stretch` keeps them the same height regardless. */
+.picks{align-items:stretch}
+.pick{justify-content:flex-start}
+.pick-go{margin-top:auto}
 .pick-go{font:600 12px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;
   margin-top:18px;padding:11px 18px;border-radius:99px;
   border:1px solid var(--line-gold);transition:background .22s}
@@ -800,12 +885,89 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   .nav-a{padding:14px 10px;border-bottom:1px solid rgba(211,180,99,.14)}
   .nav-a:last-child{border-bottom:0}
 
+  /* --- phone typography and rhythm ------------------------------------------
+     Measured at 375px before this block: body 16.5, page ledes 18.5/31, page
+     titles 34, the footer's names 26 and the footer itself 398px tall, with
+     52px of padding over and under every section. All of it was desktop
+     sizing surviving a media query that only ever changed layout.
+
+     Everything here comes down a step and the vertical rhythm tightens with
+     it. Nothing changes above 760px. ------------------------------------- */
+  body{font-size:15.5px;line-height:1.68}
+  .sec{padding:clamp(34px,8vw,48px) 0}
+  .lede{font-size:15px;line-height:1.65;margin-top:12px;max-width:34ch}
+  .eyebrow{font-size:10.5px;letter-spacing:.18em}
+  h1{font-size:clamp(25px,7.2vw,30px)}
+  h2{font-size:clamp(19px,5.4vw,23px)}
+  .divider{margin-top:18px;margin-bottom:18px}
+
+  /* the running order */
+  .day-h{font-size:20px}
+  .ev-b h3{font-size:17.5px}
+  .ev-n{font-size:14.5px}
+  .ev-v{font-size:13.5px}
+  .ev-t{font-size:13px}
+  .pick-note{margin-top:20px;font-size:13.5px;line-height:1.6}
+
+  /* travel */
+  .rt-big h2{font-size:19px}
+  .rt-big p{font-size:15px}
+  .rt-sm h2{font-size:16.5px}
+  .rt-sm p{font-size:14px}
+  .venue-go h2{font-size:19px}
+  .venue-go p{font-size:15px}
+  .vg-ad{font-size:13.5px!important}
+
+  /* the closing ask */
+  .band-l{font-size:19px}
+  .band-by{font-size:12px}
+  .sec-band .btn{margin-top:16px}
+  .btn{font-size:12px;padding:15px 26px;letter-spacing:.13em}
+
+  /* --- the footer -----------------------------------------------------------
+     398px of a 667px screen, with the couple's names set at 26px as though it
+     were a second hero. It is a footer: it should be the quietest thing on
+     the page and it should end. */
+  .foot{padding:34px 0 26px}
+  .foot-mono{width:42px;height:42px;margin-bottom:12px}
+  .foot-names{font-size:18px;line-height:1.3}
+  .foot-when{font-size:12.5px;margin-top:6px}
+  .foot-nav{margin-top:16px;gap:4px 2px}
+  .foot-nav a{font-size:10.5px;letter-spacing:.1em;padding:7px 9px}
+  .foot-ct a{font-size:13.5px}
+  .foot-tag{font-size:16px;margin-top:14px}
+  .foot-palms{bottom:-14px;width:min(520px,140%);opacity:.10}
+
   .f2{grid-template-columns:1fr;gap:14px}
   .yn,.sides{gap:10px}
   .lk-row{flex-wrap:wrap}
   .lk-row .btn{width:100%}
-  .card-when{grid-template-columns:1fr;gap:20px}
-  .picks{grid-template-columns:1fr}
+  /* The invitation card, a size down. On a 375px screen the names ran at
+     30px inside a 331px card and the whole thing pressed against its own
+     border; everything here comes back a step so the card has margins again,
+     which is what makes a printed card look like one. */
+  .card{padding:clamp(26px,7vw,40px) clamp(18px,5vw,28px)}
+  .cn h1{font-size:clamp(25px,7vw,32px)}
+  .cn-amp{font-size:clamp(26px,7vw,34px)}
+  .card-om{font-size:13.5px}
+  .card-eb{font-size:10px;letter-spacing:.16em}
+  .card-req{font-size:15px}
+  .cw-big{font-size:clamp(17px,5vw,20px)}
+  .card-when dt{font-size:9.5px;letter-spacing:.16em}
+  .card-when dd.cw-sm{font-size:13.5px}
+  /* "Your presence is the blessing we are asking for." at 16px italic was one
+     of the two lines Vibhakar picked out as too large. */
+  .card-close{font-size:14px;margin-top:22px}
+  .card-tag{font-size:clamp(19px,6vw,25px)}
+  .card-when{grid-template-columns:1fr;gap:18px}
+  .invite-acts{gap:9px;margin-top:26px}
+  .invite-acts .btn{width:100%}
+  .picks{grid-template-columns:1fr 1fr;gap:10px}
+  .pick{padding:16px 8px 18px}
+  .pick-pt{width:min(100%,124px)}
+  .pick-l{font-size:clamp(16px,4.6vw,21px);margin-top:11px}
+  .pick-go{font-size:9.5px;letter-spacing:.06em;padding:9px 8px;margin-top:12px}
+  html[lang="hi"] .pick-go{font-size:11px}
   .cd-row{gap:8px}
   .cd-u{min-width:52px}
   .pol{width:calc(50% - 10px)}
@@ -819,30 +981,51 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
    a four-column row leaves each icon 78px to live in and wraps its label to
    three lines. Everything else is the same view, smaller. */
 @media (max-width:820px){
-  .hero{padding:clamp(8px,2vw,16px) 14px clamp(74px,22vw,150px);
+  .hero{padding:clamp(14px,3vw,22px) 18px clamp(80px,24vw,150px);
     background:linear-gradient(180deg,
       var(--ivory) 0%, #F6EBD6 52%, #F0E2C6 100%)}
-  .hero-in{gap:clamp(7px,1.2vh,15px);max-width:440px}
-  .ways{grid-template-columns:repeat(2,1fr);max-width:330px;
-    gap:clamp(4px,1.6vw,14px) clamp(10px,4vw,26px)}
-  .way-ic{height:clamp(50px,15vw,72px)}
-  .cd::before{width:min(200px,70%)}
-  .cd-row{gap:clamp(10px,5vw,30px)}
+  /* More air between things and slightly less of each thing. The first phone
+     cut fitted everything and read as crowded; Vibhakar's note was that it is
+     fine to zoom out, so it does. */
+  .hero-in{gap:clamp(11px,2vh,20px);max-width:420px}
+  .hero-names{font-size:clamp(25px,7.4vw,34px)}
+  .hero-tag{font-size:clamp(22px,7vw,32px)}
+  /* Two clean lines rather than one that wraps after the separator and
+     leaves the dot dangling at the end of the first. */
+  .hero-when{font-size:13px;max-width:30ch;line-height:1.5}
+  .hero-when .hw-i{display:block}
+  .hero-when .dot{display:none}
+  .ways{grid-template-columns:repeat(2,1fr);max-width:320px;
+    gap:clamp(14px,4vw,24px) clamp(14px,6vw,30px)}
+  .way-ic{height:clamp(46px,13vw,64px)}
+  .way{gap:9px;padding:4px 2px}
+  .cd-row{gap:8px}
+  .cd-blk{gap:clamp(10px,4.5vw,26px);padding:9px 12px}
   .cd-u{min-width:40px}
 }
 
-/* The shortest phones cannot take the clock as well. It is the one thing on
-   the sheet a guest can work out for themselves, so it is the one that goes,
-   and the four ways in and the hashtag keep the screen. */
-@media (max-width:820px) and (max-height:700px){
-  .cd{display:none}
-  .hero{padding-bottom:clamp(60px,18vw,110px)}
+/* Short phones get a smaller clock, not no clock.
+
+   This used to be `display:none` under 700px of height, and it was wrong twice
+   over. Vibhakar could not find the countdown on his phone at all; and 700 is
+   exactly the band a normal phone drops into once the browser's own toolbars
+   are showing — an iPhone 12 is 844 tall on paper and about 694 in practice —
+   so the countdown would have appeared and vanished again as you scrolled and
+   the toolbar collapsed. Nothing on the page should depend on whether the
+   address bar happens to be visible. */
+@media (max-width:820px) and (max-height:760px){
+  .hero{padding-bottom:clamp(52px,15vw,104px)}
+  .hero-in{gap:clamp(5px,.9vh,12px)}
+  .lintel-g{width:clamp(44px,12vw,60px)}
+  .way-ic{height:clamp(40px,12vw,60px)}
+  .cd{margin-top:0}
+  .cd-n{font-size:clamp(21px,6.6vw,32px)}
+  .cd-k{font-size:8.5px;letter-spacing:.12em;margin-top:4px}
 }
 
 @media (max-width:420px){
   .pols{gap:12px}
   .pol{width:100%;max-width:260px;rotate:none}
-  .cd-n{font-size:34px}
 }
 
 /* Landscape phones: 100svh is only about 380px, so a full-height hero leaves
@@ -850,15 +1033,23 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 @media (max-height:560px) and (orientation:landscape){
   .hero{min-height:auto;padding-bottom:clamp(50px,12vw,90px)}
   .hero-in{gap:8px}
-  .cd{display:none}
+  .cd{margin-top:0}
+  .cd-n{font-size:26px}
 }
 
 /* ==========================================================================
    reduced motion: everything settles into its finished state at once
    ========================================================================== */
 @media (prefers-reduced-motion:reduce){
+  /* `animation-delay` matters as much as duration here. Collapsing the
+     durations alone left the arrival sequence's delays intact, so with
+     reduced motion set the countdown, the scroll cue and the record sat at
+     `opacity:0` for their delay and only then snapped in — up to 1.15s of a
+     page that looked broken, which is the opposite of what the preference
+     asks for. */
   *,*::before,*::after{
     animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    animation-delay:0s !important;
     transition-duration:.001ms !important}
   .js-reveal [data-reveal],
   .js-reveal [data-reveal] [data-reveal-item]{opacity:1;translate:none}
