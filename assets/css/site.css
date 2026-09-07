@@ -302,7 +302,10 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
    away. Two rows of 1.12 plus an ampersand row of .62em at .9 is 2.80 ems
    against the old 2.28, so 2.28 / 2.80 sets the reduction. */
 .hero-names{display:flex;flex-direction:column;align-items:center;
-  font:300 clamp(23px,3.72vw,47px)/1.12 var(--display);color:var(--ink)}
+  font:300 clamp(23px,3.72vw,47px)/1.12 var(--display);color:var(--ink);
+  /* On top of the column's own gap. The names are the one thing on this
+     screen that should not have anything sitting close under it. */
+  margin-bottom:clamp(5px,1.1vh,15px)}
 .nm-1,.nm-2{white-space:nowrap}
 .hero-names .amp{font-family:var(--script);color:var(--marigold-dk);
   font-size:.62em;line-height:.9;padding:0}
