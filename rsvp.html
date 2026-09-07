@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=2515e114">
+<link rel="stylesheet" href="assets/css/site.css?v=a90e23b2">
 
 <script>
   try {
@@ -123,20 +123,53 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
          data-token="vidh-2026"
          id="rsvp-box">
 
-      <!-- ================= find an existing reply ================= -->
-      <aside class="lookup" id="lookup" aria-labelledby="lk-h">
-        <p class="lk-h" id="lk-h"><span class="l" data-l="en">Already replied?</span><span class="l" data-l="hi" lang="hi">पहले उत्तर दे चुके हैं?</span></p>
-        <p class="lk-i"><span class="l" data-l="en">Find your reply with the email or phone number you used, and change anything you like.</span><span class="l" data-l="hi" lang="hi">जिस ईमेल या फ़ोन नंबर से उत्तर दिया था, उससे अपना उत्तर खोजिए और जो चाहें बदल लीजिए।</span></p>
-        <div class="lk-row">
+      <dialog class="lk-dlg" id="lk-dlg" aria-labelledby="lk-h">
+        <div class="lk-dlg-in">
+          <p class="lk-h" id="lk-h"><span class="l" data-l="en">Already replied?</span><span class="l" data-l="hi" lang="hi">पहले उत्तर दे चुके हैं?</span></p>
+          <p class="lk-i"><span class="l" data-l="en">Find your reply with the email address or phone number you used.</span><span class="l" data-l="hi" lang="hi">जो ईमेल या फ़ोन नंबर आपने दिया था, उससे अपना उत्तर खोजिए।</span></p>
+
           <label class="vh" for="lk-key"><span class="l" data-l="en">Already replied? Find your RSVP</span><span class="l" data-l="hi" lang="hi">पहले जवाब दे चुके हैं? अपना आर.एस.वी.पी. खोजें</span></label>
           <input type="text" id="lk-key" autocomplete="off" inputmode="email"
                  data-en-placeholder="Your email or phone number" data-hi-placeholder="आपका ईमेल या फ़ोन नंबर"
                  placeholder="Your email or phone number">
-          <button type="button" class="btn btn-ghost" id="lk-go">
-            <span class="spin" aria-hidden="true"></span>
-            <span class="lk-go-t"><span class="l" data-l="en">Find my RSVP</span><span class="l" data-l="hi" lang="hi">मेरा जवाब खोजें</span></span>
-          </button>
+
+          <p class="lk-err" id="lk-err" role="alert" hidden>
+            <span data-e="empty" hidden><span class="l" data-l="en">Type the email address or phone number first.</span><span class="l" data-l="hi" lang="hi">पहले ईमेल या फ़ोन नंबर लिखें।</span></span>
+            <span data-e="error" hidden><span class="l" data-l="en">We could not reach the guest list just now. Please try once more.</span><span class="l" data-l="hi" lang="hi">अभी सूची तक नहीं पहुँच सके। कृपया एक बार और कोशिश करें।</span></span>
+          </p>
+
+          <div class="lk-acts">
+            <button type="button" class="btn btn-ghost" id="lk-cancel">
+              <span class="l" data-l="en">Cancel</span><span class="l" data-l="hi" lang="hi">रहने दीजिए</span>
+            </button>
+            <button type="button" class="btn btn-primary" id="lk-go">
+              <span class="spin" aria-hidden="true"></span>
+              <span class="lk-go-t"><span class="l" data-l="en">Find my RSVP</span><span class="l" data-l="hi" lang="hi">मेरा जवाब खोजें</span></span>
+            </button>
+          </div>
         </div>
+      </dialog>
+
+      <!-- ========================= the form ======================== -->
+      <form class="rf" id="rf" novalidate>
+        <!-- Bots fill anything they find. Humans never see this. -->
+        <div class="hp" aria-hidden="true">
+          <label>Do not fill this in
+            <input type="text" name="hp" id="hp" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+
+        <h2 class="rf-h"><span class="l" data-l="en">Your reply</span><span class="l" data-l="hi" lang="hi">आपका उत्तर</span></h2>
+
+        <p class="lk-bar">
+          <button type="button" class="lk-open" id="lk-open">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="9" cy="9" r="6.2"/><path d="M13.6 13.6 17.4 17.4"/>
+            </svg>
+            <span class="l" data-l="en">Load a previous RSVP</span><span class="l" data-l="hi" lang="hi">पिछला उत्तर लाएँ</span>
+          </button>
+        </p>
 
         <p class="lk-msg" id="lk-msg" role="status" aria-live="polite">
           <span data-m="busy" hidden class="lk-busy">
@@ -150,43 +183,19 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
                 <circle cx="10" cy="10" r="8.5"/><path d="M6 10.4l2.7 2.7L14 7.6"/>
               </svg>
             </span>
-            <span><span class="l" data-l="en">Found your reply. It is loaded below, change anything you like.</span><span class="l" data-l="hi" lang="hi">आपका जवाब मिल गया। वह नीचे भर दिया गया है, जो चाहें बदल लें।</span> <b class="lk-who" id="lk-who"></b></span>
+            <span><span class="l" data-l="en">Load successful</span><span class="l" data-l="hi" lang="hi">उत्तर मिल गया</span> <b class="lk-who" id="lk-who"></b></span>
           </span>
           <span data-m="new" hidden class="lk-new">
-            <span class="lk-ic" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="10" cy="10" r="8.5"/><path d="M10 6.4v7.2M6.4 10h7.2"/>
-              </svg>
-            </span>
-            <span><span class="l" data-l="en">No reply saved under that yet. Fill in the form below and we will save it.</span><span class="l" data-l="hi" lang="hi">अभी उस पर कोई जवाब दर्ज नहीं है। नीचे फ़ॉर्म भरें, हम उसे सहेज लेंगे।</span></span>
-          </span>
-          <span data-m="error" hidden class="lk-bad">
             <span class="lk-ic" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
                    stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="10" cy="10" r="8.5"/><path d="M10 5.8v5M10 13.8h.01"/>
               </svg>
             </span>
-            <span><span class="l" data-l="en">We could not reach the guest list just now. Please try once more.</span><span class="l" data-l="hi" lang="hi">अभी सूची तक नहीं पहुँच सके। कृपया एक बार और कोशिश करें।</span></span>
-          </span>
-          <span data-m="empty" hidden class="lk-bad">
-            <span><span class="l" data-l="en">Type the email address or phone number first.</span><span class="l" data-l="hi" lang="hi">पहले ईमेल या फ़ोन नंबर लिखें।</span></span>
+            <span><b><span class="l" data-l="en">Unable to find an RSVP</span><span class="l" data-l="hi" lang="hi">कोई उत्तर नहीं मिला</span></b>
+              <span class="l" data-l="en">Fill in the form below and we will save it.</span><span class="l" data-l="hi" lang="hi">नीचे का फ़ॉर्म भरिए, हम इसे सहेज लेंगे।</span></span>
           </span>
         </p>
-        <p class="lk-or"><span><span class="l" data-l="en">or reply for the first time below</span><span class="l" data-l="hi" lang="hi">या नीचे पहली बार उत्तर दीजिए</span></span></p>
-      </aside>
-
-      <!-- ========================= the form ======================== -->
-      <form class="rf" id="rf" novalidate>
-        <!-- Bots fill anything they find. Humans never see this. -->
-        <div class="hp" aria-hidden="true">
-          <label>Do not fill this in
-            <input type="text" name="hp" id="hp" tabindex="-1" autocomplete="off">
-          </label>
-        </div>
-
-        <h2 class="rf-h"><span class="l" data-l="en">Your reply</span><span class="l" data-l="hi" lang="hi">आपका उत्तर</span></h2>
 
         <!-- ---- step 1: who, and one way to reach you ---- -->
         <fieldset class="step" id="step-who">
@@ -200,7 +209,7 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
             <p class="lgd"><span class="l" data-l="en">How can we reach you?</span><span class="l" data-l="hi" lang="hi">आप तक कैसे पहुँचें?</span></p>
             <p class="hint contact-lede"><span class="l" data-l="en">Give us at least one. Whichever you give is also how you come back and change this later.</span><span class="l" data-l="hi" lang="hi">कम से कम एक ज़रूर दें। जो भी आप देंगे, उसी से आप बाद में लौटकर इसे बदल सकेंगे।</span></p>
 
-            <div class="f2">
+            <div class="f2 f2-contact">
               <div class="f">
                 <label for="f-email"><span class="l" data-l="en">Email</span><span class="l" data-l="hi" lang="hi">ईमेल</span></label>
                 <div class="locked-wrap">
@@ -726,6 +735,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
   <source src="assets/audio/theme.ogg" type="audio/ogg">
 </audio>
 
-<script src="assets/js/site.js?v=0e843540" defer></script>
+<script src="assets/js/site.js?v=364e35a9" defer></script>
 </body>
 </html>

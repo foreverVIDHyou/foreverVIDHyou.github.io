@@ -765,38 +765,85 @@
   }
 
   // --- lookup -------------------------------------------------------------
+  //
+  // A dialog, opened from a line under the heading. As a panel above the form
+  // it was the first and largest thing on the page, which put a box that most
+  // guests do not need in front of the thing they came to do.
+  //
+  // The verdict is written on the PAGE, not in the dialog: by the time there
+  // is one the dialog has closed and the guest is looking at the form.
 
+  var lkOpen = $('#lk-open'), lkDlg = $('#lk-dlg'), lkCancel = $('#lk-cancel');
   var lkGo = $('#lk-go'), lkKey = $('#lk-key'), lkMsg = $('#lk-msg');
+  var lkErr = $('#lk-err');
 
-  /** Show exactly one of the lookup's states, or none at all. */
+  /** Show exactly one of the page's lookup states, or none at all. */
   function lkSay(which) {
+    if (!lkMsg) return;
     $$('span[data-m]', lkMsg).forEach(function (s) {
       s.hidden = s.getAttribute('data-m') !== which;
     });
     lkMsg.classList.toggle('on', !!which);
   }
 
+  /** Show exactly one of the dialog's own errors, or none. */
+  function lkFault(which) {
+    if (!lkErr) return;
+    $$('span[data-e]', lkErr).forEach(function (s) {
+      s.hidden = s.getAttribute('data-e') !== which;
+    });
+    lkErr.hidden = !which;
+  }
+
+  function lkShut() {
+    if (!lkDlg) return;
+    // `open` is the fallback path for a browser without showModal; closing has
+    // to undo whichever one opened it.
+    if (lkDlg.close) { try { lkDlg.close(); } catch (e) {} }
+    lkDlg.open = false;
+    lkDlg.removeAttribute('open');
+  }
+
+  if (lkOpen && lkDlg) {
+    lkOpen.addEventListener('click', function () {
+      lkFault(null);
+      lkSay(null);
+      if (lkDlg.showModal) { try { lkDlg.showModal(); } catch (e) { lkDlg.open = true; } }
+      else lkDlg.open = true;
+      if (lkKey) { lkKey.value = ''; lkKey.focus(); }
+    });
+
+    if (lkCancel) lkCancel.addEventListener('click', lkShut);
+    // Clicking the backdrop is the dialog itself; anything inside it is not.
+    lkDlg.addEventListener('click', function (e) {
+      if (e.target === lkDlg) lkShut();
+    });
+  }
+
   if (lkGo) {
     lkGo.addEventListener('click', function () {
       var key = lkKey.value.trim();
-      if (!key) { lkSay('empty'); lkKey.focus(); return; }
-      if (!ENDPOINT) { lkSay('new'); return; }
+      if (!key) { lkFault('empty'); lkKey.focus(); return; }
+      lkFault(null);
 
-      // The call takes several seconds. Say so, rather than leaving a dead
-      // button: without this the only feedback was the button greying out.
+      if (!ENDPOINT) { lkShut(); lkSay('new'); return; }
+
+      // The call takes several seconds. The dialog stays open and busy for it,
+      // so the guest is not left looking at a form that has not changed yet.
       lkGo.disabled = true;
       lkGo.classList.add('is-busy');
       lkSay('busy');
 
       call({ action: 'lookup', key: key })
         .then(function (res) {
+          lkShut();
           if (res && res.found && res.rsvp) {
             fill(res.rsvp);
             var who = $('#lk-who');
-            if (who) who.textContent = res.rsvp.name || '';
+            if (who) who.textContent = res.rsvp.name ? '\u2014 ' + res.rsvp.name : '';
             lkSay('found');
-            // Move focus to the form so a keyboard user carries straight on,
-            // and so the loaded answers are what they land in.
+            // Focus the form so a keyboard user carries straight on, and so
+            // the loaded answers are what they land in.
             $('#f-name').focus({ preventScroll: true });
             form.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           } else {
@@ -809,7 +856,12 @@
             $('#f-name').focus({ preventScroll: true });
           }
         })
-        .catch(function () { lkSay('error'); })
+        .catch(function () {
+          // This one stays in the dialog: it is about the attempt, not the
+          // answer, and the guest may simply want to press it again.
+          lkSay(null);
+          lkFault('error');
+        })
         .then(function () {
           lkGo.disabled = false;
           lkGo.classList.remove('is-busy');
@@ -819,9 +871,7 @@
     lkKey.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); lkGo.click(); }
     });
-    // typing again clears the previous verdict, which would otherwise sit there
-    // contradicting what is now in the box
-    lkKey.addEventListener('input', function () { lkSay(null); });
+    lkKey.addEventListener('input', function () { lkFault(null); });
   }
 
   // --- submit -------------------------------------------------------------
@@ -876,7 +926,6 @@
       });
       $('#done-upd').hidden = !updated;
       form.hidden = true;
-      $('#lookup').hidden = true;
       done.hidden = false;
       done.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
@@ -906,7 +955,7 @@
     again.addEventListener('click', function () {
       done.hidden = true;
       form.hidden = false;
-      $('#lookup').hidden = false;
+      lkSay(null);
       setBtn(editingId ? 'edit' : 'idle');
       form.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
