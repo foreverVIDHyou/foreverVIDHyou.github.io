@@ -237,12 +237,39 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
   min-height:calc(100svh - var(--head-h) - 26px);
   display:grid;align-items:center;justify-items:center;
   padding:clamp(10px,1.6vw,20px) 16px clamp(96px,13vw,150px);
-  background:linear-gradient(180deg,
-    var(--ivory) 0%, #F6EBD6 46%, #F0E2C6 100%);
+  /* Golden hour. Every stop below is sampled off the reference, straight down
+     a column of it clear of the type, and mapped from the reference's own
+     proportions onto this hero's: its sky runs to 68% of the panel and ours
+     meets the drawing at about 52%, so the ramp is compressed to match.
+
+       0%  #DACED2   a cool mauve-grey, which is the thing the first pass got
+                     wrong by starting warm — a real sunset is cool overhead
+      22%  #F7E2CC   rose, warming
+      28%  #FBECCD   the brightest band, where the sun is
+      40%  #F5D2B1
+      52%  #F0CBA2   the horizon, where the drawing takes over
+
+     The glow is placed off-centre because it is off-centre in the reference:
+     the left edge of that sky is measurably rosier than the right. */
+  background:
+    radial-gradient(78% 46% at 63% 31%, rgba(255,244,216,.72) 0%, transparent 64%),
+    radial-gradient(58% 74% at 0% 34%, rgba(238,190,186,.34) 0%, transparent 72%),
+    linear-gradient(180deg,
+      #DACED2 0%, #E8D8D8 8%, #EDD9C6 15%, #F7E2CC 22%, #FBECCD 28%,
+      #FAE3C4 34%, #F4CFAC 40%, #F0C9A0 46%, #EDC59B 52%, #ECC298 100%);
 }
 /* The drawing is anchored to the bottom edge and the type stands on it, which
    is the whole idea. It never scales past its own width, so the ridgeline
    keeps the proportions it was traced at. */
+/* The last 70px of the hero dissolve into the section below it. The drawing
+   ends on whatever it happens to be doing at that height — the dark hedge at
+   the left edge, pale water in the middle — and the gallery starts on ivory,
+   which measured as a 224-unit step straight across the page. This is the
+   same trick as the fade at the drawing's top edge, at the other end. */
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:74px;
+  z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(242,230,206,0) 0%,var(--ivory-2) 92%)}
+
 .hero-bg{position:absolute;left:0;right:0;bottom:0;width:100%;
   pointer-events:none;z-index:0;line-height:0;
   /* The drawing's sky is --ivory exactly, and the page under it is a warm
@@ -407,13 +434,13 @@ html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
 .cd-blk{display:flex;gap:clamp(12px,3vw,40px);
   padding:clamp(10px,1.4vh,16px) clamp(14px,2vw,26px);
   border-radius:8px;
-  background:rgba(250,243,228,.52);
-  border:1px solid rgba(176,141,60,.22);
-  box-shadow:0 4px 18px rgba(58,21,18,.07);
+  background:rgba(253,240,214,.50);
+  border:1px solid rgba(160,120,60,.24);
+  box-shadow:0 4px 18px rgba(94,58,42,.09);
   backdrop-filter:blur(10px) saturate(1.06);
   -webkit-backdrop-filter:blur(10px) saturate(1.06)}
 @supports not (backdrop-filter:blur(1px)){
-  .cd-blk{background:rgba(250,243,228,.88)}
+  .cd-blk{background:rgba(253,240,214,.9)}
 }
 /* "Until the pheras" is gone: with the resort behind it the row needed less
    on it, not more, and four numbers under a rule say what they are. */
@@ -469,8 +496,8 @@ html[lang="hi"] .cd-k{letter-spacing:.02em;text-transform:none;font-size:11px}
   padding:11px 18px;border-radius:8px;
   margin-top:clamp(2px,.8vh,10px);
   transition:color .22s,background .22s;
-  background:rgba(250,243,228,.52);
-  border:1px solid rgba(176,141,60,.22);
+  background:rgba(253,240,214,.5);
+  border:1px solid rgba(160,120,60,.24);
   backdrop-filter:blur(10px) saturate(1.06);
   -webkit-backdrop-filter:blur(10px) saturate(1.06)}
 @supports not (backdrop-filter:blur(1px)){
@@ -1275,8 +1302,12 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
    three lines. Everything else is the same view, smaller. */
 @media (max-width:820px){
   .hero{padding:clamp(14px,3vw,22px) 18px clamp(80px,24vw,150px);
-    background:linear-gradient(180deg,
-      var(--ivory) 0%, #F6EBD6 52%, #F0E2C6 100%)}
+    /* The same ramp, stretched: the drawing takes over lower down a phone. */
+    background:
+      radial-gradient(90% 40% at 60% 30%, rgba(255,244,216,.7) 0%, transparent 64%),
+      linear-gradient(180deg,
+        #DACED2 0%, #E8D8D8 9%, #EDD9C6 17%, #F7E2CC 25%, #FBECCD 32%,
+        #FAE3C4 39%, #F4CFAC 46%, #F0C9A0 53%, #EDC59B 60%, #ECC298 100%)}
   /* More air between things and slightly less of each thing. The first phone
      cut fitted everything and read as crowded; Vibhakar's note was that it is
      fine to zoom out, so it does. */
