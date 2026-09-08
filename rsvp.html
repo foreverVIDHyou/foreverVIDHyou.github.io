@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;600&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=c941f132">
+<link rel="stylesheet" href="assets/css/site.css?v=670975d9">
 
 <script>
   try {
@@ -203,8 +203,7 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
         <fieldset class="step" id="step-who">
           <div class="f">
             <label for="f-name"><span class="l" data-l="en">Your name</span><span class="l" data-l="hi" lang="hi">आपका नाम</span></label>
-            <input type="text" id="f-name" name="name" autocomplete="name" required>
-            <p class="err" id="e-name"><span class="l" data-l="en">Please tell us your name.</span><span class="l" data-l="hi" lang="hi">कृपया अपना नाम बताएं।</span></p>
+            <input type="text" id="f-name" name="name" autocomplete="name">
           </div>
 
           <div class="f contact">
@@ -212,15 +211,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
             <p class="hint contact-lede"><span class="l" data-l="en">A phone number is the one thing we need — it is how we reach you about pickups and timings, and how you come back and change this later.</span><span class="l" data-l="hi" lang="hi">फ़ोन नंबर ही एक ज़रूरी चीज़ है — गाड़ी और समय की बात इसी पर होगी, और बाद में लौटकर जवाब बदलना भी इसी से होगा।</span></p>
 
             <div class="f2 f2-contact">
-              <div class="f">
-                <label for="f-email"><span class="l" data-l="en">Email (optional)</span><span class="l" data-l="hi" lang="hi">ईमेल (वैकल्पिक)</span></label>
-                <div class="locked-wrap">
-                  <input type="email" id="f-email" name="email" autocomplete="email"
-                         inputmode="email">
-                  <span class="lockmark" hidden aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7"/></svg></span>
-                </div>
-                <p class="hint note-locked" data-note="email" hidden></p>
-              </div>
               <div class="f">
                 <label for="f-phone"><span class="l" data-l="en">Phone number</span><span class="l" data-l="hi" lang="hi">फ़ोन नंबर</span><span
                   class="req" aria-hidden="true">*</span></label>
@@ -242,6 +232,15 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
                 </div>
                 <p class="hint note-locked" data-note="phone" hidden></p>
               </div>
+              <div class="f">
+                <label for="f-email"><span class="l" data-l="en">Email (optional)</span><span class="l" data-l="hi" lang="hi">ईमेल (वैकल्पिक)</span></label>
+                <div class="locked-wrap">
+                  <input type="email" id="f-email" name="email" autocomplete="email"
+                         inputmode="email">
+                  <span class="lockmark" hidden aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7"/></svg></span>
+                </div>
+                <p class="hint note-locked" data-note="email" hidden></p>
+              </div>
             </div>
 
             <p class="err" id="e-contact"><span class="l" data-l="en">Please give us a phone number. An email address is welcome too, but not needed.</span><span class="l" data-l="hi" lang="hi">कृपया फ़ोन नंबर दीजिए। ईमेल भी दे सकते हैं, पर ज़रूरी नहीं।</span></p>
@@ -253,7 +252,8 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
 
         <!-- ---- step 2: are you coming ---- -->
         <fieldset class="step" id="step-yes">
-          <legend class="lgd"><span class="l" data-l="en">Will you be there?</span><span class="l" data-l="hi" lang="hi">क्या आप आ रहे हैं?</span></legend>
+          <legend class="lgd"><span class="l" data-l="en">Will you be there?</span><span class="l" data-l="hi" lang="hi">क्या आप आ रहे हैं?</span><span
+            class="req" aria-hidden="true">*</span></legend>
           <div class="yn">
             <label class="ch ch-yes">
               <input type="radio" name="attending" value="yes">
@@ -301,7 +301,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
                 </span>
               </label>
             </div>
-            <p class="err" id="e-side"><span class="l" data-l="en">Please pick a side.</span><span class="l" data-l="hi" lang="hi">कृपया एक पक्ष चुनें।</span></p>
           </fieldset>
 
           <!-- ---- step 4: the rest ---- -->
@@ -680,7 +679,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
                 </div>
               </div>
 
-              <p class="err" id="e-events"><span class="l" data-l="en">Please pick at least one function.</span><span class="l" data-l="hi" lang="hi">कम से कम एक समारोह चुनें।</span></p>
             </fieldset>
 
             <fieldset class="step">
@@ -750,6 +748,14 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
           <span data-s="edit" hidden><span class="l" data-l="en">Update my RSVP</span><span class="l" data-l="hi" lang="hi">मेरा जवाब बदलें</span></span>
           <span data-s="busy" hidden><span class="l" data-l="en">Sending…</span><span class="l" data-l="hi" lang="hi">भेजा जा रहा है…</span></span>
         </button>
+
+        <p class="form-miss" id="f-miss" role="alert" hidden>
+          <span class="fm-h"><span class="l" data-l="en">Before we can save this we still need</span><span class="l" data-l="hi" lang="hi">इसे सहेजने से पहले इतना ज़रूरी है</span></span>
+          <span class="fm-l">
+            <span class="fm-i" data-miss="phone" hidden><span class="l" data-l="en">a phone number</span><span class="l" data-l="hi" lang="hi">फ़ोन नंबर</span></span>
+            <span class="fm-i" data-miss="attending" hidden><span class="l" data-l="en">whether you are coming</span><span class="l" data-l="hi" lang="hi">आप आ रहे हैं या नहीं</span></span>
+          </span>
+        </p>
 
         <p class="hint slow-hint" id="f-slow" role="status" aria-live="polite" hidden>
           <span class="l" data-l="en">Still sending. This can take up to half a minute, so please do not close the page.</span><span class="l" data-l="hi" lang="hi">अभी भेजा जा रहा है। इसमें आधा मिनट तक लग सकता है, कृपया पन्ना बंद न करें।</span>
@@ -836,6 +842,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
   <source src="assets/audio/theme.ogg" type="audio/ogg">
 </audio>
 
-<script src="assets/js/site.js?v=09be1548" defer></script>
+<script src="assets/js/site.js?v=1e2aee35" defer></script>
 </body>
 </html>

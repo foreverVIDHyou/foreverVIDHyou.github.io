@@ -574,12 +574,35 @@
     $$('.evpick', form).forEach(function (p) {
       p.hidden = p.dataset.side !== side;
     });
-    if (going && side) showErr('e-side', false);
   }
 
   $$('input[name="attending"]', form).forEach(function (r) {
-    r.addEventListener('change', syncSteps);
+    r.addEventListener('change', function () {
+      syncSteps();
+      clearMiss('attending');
+    });
   });
+  if ($('#f-phone')) {
+    $('#f-phone').addEventListener('input', function () { clearMiss('phone'); });
+  }
+
+  /** Drop one line from the "still needed" list once it is answered. */
+  function clearMiss(key) {
+    var box = $('#f-miss');
+    if (!box || box.hidden) return;
+    var el = box.querySelector('[data-miss="' + key + '"]');
+    if (el) el.hidden = true;
+    if (key === 'phone') {
+      showErr('e-contact', false);
+      var pair = $('.contact');
+      if (pair) pair.classList.remove('has-error');
+    }
+    if (key === 'attending') {
+      var yn = $('#step-yes');
+      if (yn) yn.classList.remove('needs');
+    }
+    box.hidden = !$$('[data-miss]', box).some(function (e) { return !e.hidden; });
+  }
   $$('input[name="side"]', form).forEach(function (r) {
     r.addEventListener('change', function () {
       syncSteps();
@@ -590,46 +613,50 @@
       }
     });
   });
-  $$('input[name="events"]', form).forEach(function (c) {
-    c.addEventListener('change', function () {
-      if (chosenEvents().length) showErr('e-events', false);
-    });
-  });
 
+  /**
+   * Two things are required and nothing else is.
+   *
+   * A phone number, because it is how anyone reaches a guest on the day and
+   * it is the key that finds their reply again; and yes or no, because that
+   * is the entire question. A name, a side, which functions, the travel
+   * dates — all welcome, none of them worth turning a guest away over.
+   *
+   * When something IS missing, say which. Marking the field red and scrolling
+   * to it tells a guest where to look but not what is wrong, and on a form
+   * where fourteen of sixteen boxes are optional there is no way to guess.
+   */
   function validate() {
-    var name = $('#f-name').value.trim();
-    var email = $('#f-email').value.trim();
     var phone = $('#f-phone').value.trim();
+    var email = $('#f-email').value.trim();
+    var going = attending();
 
-    var ok = true;
-    ok = showErr('e-name', !name) && ok;
-    // The phone number carries this, not the email address: it is how anyone
-    // reaches a guest about a pickup on the day. An email is welcome and gives
-    // them a second way to find this reply, but it is never what is missing.
-    ok = showErr('e-contact', !phone) && ok;
+    var miss = { phone: !phone, attending: !going };
+    var any = miss.phone || miss.attending;
+
+    showErr('e-contact', miss.phone);
     var pair = $('.contact');
-    if (pair) pair.classList.toggle('has-error', !phone);
-    ok = showErr('e-form', false) && ok;
+    if (pair) pair.classList.toggle('has-error', miss.phone);
+    var yn = $('#step-yes');
+    if (yn) yn.classList.toggle('needs', miss.attending);
 
+    var box = $('#f-miss');
+    if (box) {
+      $$('[data-miss]', box).forEach(function (el) {
+        el.hidden = !miss[el.getAttribute('data-miss')];
+      });
+      box.hidden = !any;
+    }
+    showErr('e-form', false);
+
+    // A malformed one is a different complaint from a missing one, and it is
+    // worth making even about the optional address.
     var emailBad = email && !validEmail(email);
     var phoneBad = phone && !validPhone(phone);
     $('#f-email').setAttribute('aria-invalid', emailBad ? 'true' : 'false');
     $('#f-phone').setAttribute('aria-invalid', phoneBad ? 'true' : 'false');
-    if (emailBad || phoneBad) ok = false;
 
-    if (attending() === 'yes') {
-      ok = showErr('e-side', !chosenSide()) && ok;
-      ok = showErr('e-events', !!chosenSide() && chosenEvents().length === 0) && ok;
-    } else if (!attending()) {
-      // Neither yes nor no has been answered yet.
-      ok = false;
-      var yn = $('#step-yes');
-      if (yn) yn.classList.add('needs');
-    } else {
-      showErr('e-side', false);
-      showErr('e-events', false);
-    }
-    return ok;
+    return !any && !emailBad && !phoneBad;
   }
 
   // --- fill the form from a saved record ----------------------------------
@@ -889,7 +916,13 @@
     e.preventDefault();
     if (!ENDPOINT) { showErr('e-form', true); return; }
     if (!validate()) {
-      var bad = form.querySelector('.err.on') || form.querySelector('.needs');
+      // The summary first: it is the thing that says what is wrong. Only if
+      // there isn't one — a malformed address rather than a missing answer —
+      // fall back to the field itself.
+      var miss = $('#f-miss');
+      var bad = (miss && !miss.hidden) ? miss
+              : (form.querySelector('.err.on') || form.querySelector('.needs')
+                 || form.querySelector('[aria-invalid="true"]'));
       if (bad) bad.scrollIntoView({ block: 'center', behavior: 'smooth' });
       return;
     }

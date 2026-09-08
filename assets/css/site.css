@@ -609,6 +609,7 @@ html[lang="hi"] .band-l{font-family:var(--deva);
 .card-frame{position:absolute;inset:0;z-index:0;pointer-events:none;
   display:grid;grid-template-rows:auto 1fr auto}
 .card-frame img{width:100%;display:block}
+.cf-head{display:block}
 .cf-head,.cf-base{height:auto}
 .cf-shaft{height:100%;object-fit:fill}
 
@@ -805,12 +806,26 @@ html[lang="hi"] .lgd{letter-spacing:.02em;text-transform:none;font-size:15px}
    Nothing else on the form is, because nothing else on the form needs to be:
    the name is obvious and everything after it is optional by design. */
 .req{color:var(--red-600);margin-left:3px;font-size:.9em}
+
+/* --- what is still missing ------------------------------------------------
+   Two things on this form are required and fourteen are not, so a guest whose
+   submit does nothing has no way to guess which box was the one that counted.
+   This names it, in words, immediately above the button that would not work. */
+.form-miss{display:block;margin:0 0 14px;padding:14px 16px;
+  background:rgba(155,42,34,.07);border-left:2px solid var(--red-600);
+  border-radius:var(--r)}
+.fm-h{display:block;font:600 13px/1.5 var(--ui);color:var(--red-700)}
+.fm-l{display:block;margin-top:5px}
+.fm-i{display:block;font:400 15px/1.65 var(--body);color:var(--ink)}
+.fm-i::before{content:"\2022";color:var(--red-600);margin-right:8px}
+html[lang="hi"] .fm-h{font-size:14px}
 .f{margin-bottom:18px;min-width:0}
 .f:last-child{margin-bottom:0}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-/* The phone cell carries a country dropdown and a number. Split evenly, the
-   dropdown took 146px of 275 and the number ran under the padlock. */
-.f2-contact{grid-template-columns:1fr 1.32fr}
+/* The phone leads, and it carries a country dropdown as well as a number, so
+   it takes the wider half. Split evenly, the dropdown took 146px of 275 and
+   the number ran under the padlock. */
+.f2-contact{grid-template-columns:1.32fr 1fr}
 .f-narrow{max-width:190px}
 .f label{display:block;font:600 13.5px/1.5 var(--ui);color:var(--red-700);
   margin-bottom:7px}
@@ -1235,10 +1250,23 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
      of them would be standing in a doorway rather than under an arch. The
      head alone crowns the card and the card goes back to being a card. */
   .card{aspect-ratio:auto;padding:0}
-  .card-in{padding:clamp(10px,3vw,18px) clamp(18px,5vw,28px) clamp(26px,7vw,40px)}
+  /* 10.5% a side, not a pixel value. The arch's opening is 81% of the card's
+     width at the height the capitals sit, and at 320px an 18px padding left
+     the content 89% wide — so "with the blessings of our families" ran into
+     the lotus bells on both sides. Measured off the drawing, this keeps every
+     line inside the opening at every phone width. */
+  .card-in{padding:clamp(10px,3vw,18px) 10.5% clamp(26px,7vw,40px)}
   .card-frame{position:static;display:block}
   .card-frame .cf-shaft,
   .card-frame .cf-base{display:none}
+  /* And the card stands INSIDE the arch, not under it. In flow the crown
+     pushed everything below its own full height, so Ganeshji sat well clear
+     of the opening and the arch read as a picture stuck on top of the card
+     with a hole in the middle of it. The negative margin lifts the content
+     back up under the apex, which is where it goes. Percentage margins
+     resolve against the card's width, so this tracks the drawing at any
+     phone size instead of needing a value per breakpoint. */
+  .card-frame .cf-head{margin-bottom:-40%}
   .cn h1{font-size:clamp(25px,7vw,32px)}
   .cn-amp{font-size:clamp(26px,7vw,34px)}
   .card-om{font-size:13.5px}
