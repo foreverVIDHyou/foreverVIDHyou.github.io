@@ -590,7 +590,20 @@ html[lang="hi"] .band-l{font-family:var(--deva);
 .card{
   position:relative;max-width:660px;margin:0 auto;background:var(--paper);
   border-radius:var(--r);box-shadow:0 14px 46px rgba(58,21,18,.10);
-  aspect-ratio:947/1493;padding:0;text-align:center}
+  aspect-ratio:947/1493;padding:0;text-align:center;
+  /* The card is a container, and that is what lets the arch keep its shape on
+     a phone. Everything inside is sized in `cqw` — per cent of the card's own
+     width — so the whole card scales as one object, the way a printed card
+     does when you photograph it smaller. Before this a phone had to drop the
+     columns entirely, because fixed pixels inside a shrinking frame will not
+     fit through a shrinking opening.
+
+     Every rule below states a px value first and the cqw second, so a browser
+     without container queries keeps the old sizes rather than losing the
+     declaration. The small labels take `max(px, cqw)`: the composition scales
+     but "ON" and "AT" would be four pixels tall at 320, and nothing is served
+     by a card nobody can read. */
+  container-type:inline-size}
 
 /* The insets live HERE and not on .card, and that is not a detail. A
    percentage padding resolves against the width of the *containing block*,
@@ -621,36 +634,48 @@ html[lang="hi"] .band-l{font-family:var(--deva);
 .card-gan{margin-top:0}
 /* Ganeshji heads the card, above the invocation, the way he heads a
    printed invitation. */
-.card-gan{display:block;width:clamp(40px,4.4vw,56px);height:auto;
-  margin:0 auto 6px}
-.card-om{font:400 15px/1.4 var(--deva);color:var(--gold-600);letter-spacing:.05em}
+.card-gan{display:block;width:clamp(40px,4.4vw,56px);width:8.5cqw;height:auto;
+  margin:0 auto 6px;margin-bottom:.9cqw}
+.card-om{font:400 15px/1.4 var(--deva);color:var(--gold-600);letter-spacing:.05em;
+  font-size:max(11px,2.27cqw)}
 .card-eb{font:600 11.5px/1.5 var(--ui);letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold-600);margin-top:22px}
-html[lang="hi"] .card-eb{letter-spacing:.06em;text-transform:none;font-size:14px}
-.card-req{font:300 italic 19px/1.6 var(--display);color:var(--ink-2);margin-top:10px}
-html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17px}
-.card .divider{margin:22px auto}
-.card-names{display:flex;flex-direction:column;align-items:center;gap:6px}
-.cn h1{font-size:clamp(30px,5.4vw,48px);color:var(--red-800)}
-.cn-p{font:400 15px/1.6 var(--ui);color:var(--ink-2);margin-top:8px}
-.cn-l{color:var(--gold-600);font-size:13.5px}
-.cn-f{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:2px}
+  color:var(--gold-600);margin-top:22px;
+  font-size:max(9px,1.74cqw);margin-top:3.33cqw}
+html[lang="hi"] .card-eb{letter-spacing:.06em;text-transform:none;font-size:14px;
+  font-size:max(11px,2.12cqw)}
+.card-req{font:300 italic 19px/1.6 var(--display);color:var(--ink-2);margin-top:10px;
+  font-size:max(13px,2.88cqw);margin-top:1.52cqw}
+html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17px;
+  font-size:max(12px,2.58cqw)}
+.card .divider{margin:22px auto;margin-block:3.33cqw}
+.card-names{display:flex;flex-direction:column;align-items:center;gap:6px;gap:.9cqw}
+.cn h1{font-size:clamp(30px,5.4vw,48px);font-size:7.27cqw;color:var(--red-800)}
+.cn-p{font:400 15px/1.6 var(--ui);color:var(--ink-2);margin-top:8px;
+  font-size:max(11px,2.27cqw);margin-top:1.21cqw}
+.cn-l{color:var(--gold-600);font-size:13.5px;font-size:max(10px,2.05cqw)}
+.cn-f{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:2px;
+  font-size:max(10px,2.12cqw)}
 .cn-amp{font:400 clamp(30px,5vw,46px)/1 var(--script);color:var(--gold-500);
-  margin:2px 0}
-.card-when{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0;
+  margin:2px 0;font-size:6.97cqw;margin-block:.3cqw}
+.card-when{display:grid;grid-template-columns:1fr 1fr;gap:16px;gap:2.42cqw;margin:0;
   text-align:center}
 .card-when dt{font:600 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold-600);margin-bottom:10px}
-html[lang="hi"] .card-when dt{letter-spacing:.04em;text-transform:none;font-size:13px}
+  color:var(--gold-600);margin-bottom:10px;
+  font-size:max(9px,1.67cqw);margin-bottom:1.52cqw}
+html[lang="hi"] .card-when dt{letter-spacing:.04em;text-transform:none;font-size:13px;
+  font-size:max(10px,1.97cqw)}
 .card-when dd{margin:0}
 .cw-big{font:300 clamp(18px,2.3vw,22px)/1.3 var(--display);color:var(--red-800);
-  text-wrap:balance}
-.cw-sm{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:4px}
+  text-wrap:balance;font-size:max(11px,3.33cqw)}
+.cw-sm{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:4px;
+  font-size:max(10px,2.12cqw);margin-top:.61cqw}
 .card-close{font:300 italic 18px/1.6 var(--display);color:var(--ink-2);
-  margin-top:30px}
-html[lang="hi"] .card-close{font-family:var(--deva);font-style:normal;font-size:16px}
+  margin-top:30px;font-size:max(12px,2.73cqw);margin-top:4.55cqw}
+html[lang="hi"] .card-close{font-family:var(--deva);font-style:normal;font-size:16px;
+  font-size:max(11px,2.42cqw)}
 .card-tag{font:500 clamp(21px,2.4vw,30px)/1.2 var(--display);
-  letter-spacing:.012em;color:var(--red-700);margin-top:22px}
+  letter-spacing:.012em;color:var(--red-700);margin-top:22px;
+  font-size:4.55cqw;margin-top:3.33cqw}
 .invite-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
   margin-top:36px}
 
@@ -1245,41 +1270,11 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
      30px inside a 331px card and the whole thing pressed against its own
      border; everything here comes back a step so the card has margins again,
      which is what makes a printed card look like one. */
-  /* No columns on a phone. The frame's opening is 82% of the card's width,
-     and 82% of a 346px card is 284px — narrower than the names, so the two
-     of them would be standing in a doorway rather than under an arch. The
-     head alone crowns the card and the card goes back to being a card. */
-  .card{aspect-ratio:auto;padding:0}
-  /* 10.5% a side, not a pixel value. The arch's opening is 81% of the card's
-     width at the height the capitals sit, and at 320px an 18px padding left
-     the content 89% wide — so "with the blessings of our families" ran into
-     the lotus bells on both sides. Measured off the drawing, this keeps every
-     line inside the opening at every phone width. */
-  .card-in{padding:clamp(10px,3vw,18px) 10.5% clamp(26px,7vw,40px)}
-  .card-frame{position:static;display:block}
-  .card-frame .cf-shaft,
-  .card-frame .cf-base{display:none}
-  /* And the card stands INSIDE the arch, not under it. In flow the crown
-     pushed everything below its own full height, so Ganeshji sat well clear
-     of the opening and the arch read as a picture stuck on top of the card
-     with a hole in the middle of it. The negative margin lifts the content
-     back up under the apex, which is where it goes. Percentage margins
-     resolve against the card's width, so this tracks the drawing at any
-     phone size instead of needing a value per breakpoint. */
-  .card-frame .cf-head{margin-bottom:-40%}
-  .cn h1{font-size:clamp(25px,7vw,32px)}
-  .cn-amp{font-size:clamp(26px,7vw,34px)}
-  .card-om{font-size:13.5px}
-  .card-eb{font-size:10px;letter-spacing:.16em}
-  .card-req{font-size:15px}
-  .cw-big{font-size:clamp(17px,5vw,20px)}
-  .card-when dt{font-size:9.5px;letter-spacing:.16em}
-  .card-when dd.cw-sm{font-size:13.5px}
-  /* "Your presence is the blessing we are asking for." at 16px italic was one
-     of the two lines Vibhakar picked out as too large. */
-  .card-close{font-size:14px;margin-top:22px}
-  .card-tag{font-size:clamp(19px,6vw,25px)}
-  .card-when{grid-template-columns:1fr;gap:18px}
+  /* The card needs no phone treatment at all any more. It is one object with
+     a fixed aspect and everything inside sized off its own width, so the full
+     arch — columns, capitals, plinths — holds its shape from 320px up to the
+     660 it was drawn for. What used to be here dropped the columns and
+     re-sized eight kinds of type to get around exactly that. */
   .invite-acts{gap:9px;margin-top:26px}
   .invite-acts .btn{width:100%}
   .picks{grid-template-columns:1fr 1fr;gap:10px}

@@ -582,9 +582,10 @@
       clearMiss('attending');
     });
   });
-  if ($('#f-phone')) {
-    $('#f-phone').addEventListener('input', function () { clearMiss('phone'); });
-  }
+  [['#f-phone', 'phone'], ['#f-name', 'name']].forEach(function (pair) {
+    var el = $(pair[0]);
+    if (el) el.addEventListener('input', function () { clearMiss(pair[1]); });
+  });
 
   /** Drop one line from the "still needed" list once it is answered. */
   function clearMiss(key) {
@@ -597,6 +598,7 @@
       var pair = $('.contact');
       if (pair) pair.classList.remove('has-error');
     }
+    if (key === 'name') showErr('e-name', false);
     if (key === 'attending') {
       var yn = $('#step-yes');
       if (yn) yn.classList.remove('needs');
@@ -615,25 +617,28 @@
   });
 
   /**
-   * Two things are required and nothing else is.
+   * Three things are required and nothing else is.
    *
-   * A phone number, because it is how anyone reaches a guest on the day and
-   * it is the key that finds their reply again; and yes or no, because that
-   * is the entire question. A name, a side, which functions, the travel
-   * dates — all welcome, none of them worth turning a guest away over.
+   * A name, because a reply nobody can put a name to is a row in a sheet and
+   * nothing more; a phone number, because it is how anyone reaches a guest on
+   * the day and it is the key that finds their reply again; and yes or no,
+   * because that is the entire question. Which side, which functions, the
+   * travel dates — all welcome, none worth turning a guest away over.
    *
    * When something IS missing, say which. Marking the field red and scrolling
    * to it tells a guest where to look but not what is wrong, and on a form
    * where fourteen of sixteen boxes are optional there is no way to guess.
    */
   function validate() {
+    var name = $('#f-name').value.trim();
     var phone = $('#f-phone').value.trim();
     var email = $('#f-email').value.trim();
     var going = attending();
 
-    var miss = { phone: !phone, attending: !going };
-    var any = miss.phone || miss.attending;
+    var miss = { name: !name, phone: !phone, attending: !going };
+    var any = miss.name || miss.phone || miss.attending;
 
+    showErr('e-name', miss.name);
     showErr('e-contact', miss.phone);
     var pair = $('.contact');
     if (pair) pair.classList.toggle('has-error', miss.phone);
