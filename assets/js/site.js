@@ -42,6 +42,12 @@
       var v = el.getAttribute('data-' + l + '-src');
       if (v !== null && el.getAttribute('src') !== v) el.setAttribute('src', v);
     });
+    // Alt text is read aloud, so it is one of the two languages like anything
+    // else on the page. Only the wardrobe illustration needs it so far.
+    $$('[data-' + l + '-alt], [data-' + other + '-alt]').forEach(function (el) {
+      var v = el.getAttribute('data-' + l + '-alt');
+      if (v !== null) el.setAttribute('alt', v);
+    });
   }
 
   function setLang(l) {
@@ -597,9 +603,12 @@
 
     var ok = true;
     ok = showErr('e-name', !name) && ok;
-    ok = showErr('e-contact', !email && !phone) && ok;
+    // The phone number carries this, not the email address: it is how anyone
+    // reaches a guest about a pickup on the day. An email is welcome and gives
+    // them a second way to find this reply, but it is never what is missing.
+    ok = showErr('e-contact', !phone) && ok;
     var pair = $('.contact');
-    if (pair) pair.classList.toggle('has-error', !email && !phone);
+    if (pair) pair.classList.toggle('has-error', !phone);
     ok = showErr('e-form', false) && ok;
 
     var emailBad = email && !validEmail(email);
@@ -925,6 +934,18 @@
         s.hidden = s.getAttribute('data-d') !== (going ? 'yes' : 'no');
       });
       $('#done-upd').hidden = !updated;
+
+      // The calendar, at the one moment it is worth offering: they have just
+      // said which side they are on, so there is exactly one right file. A
+      // guest who said no is not asked to diarise a wedding they are missing.
+      var cal = $('#done-cal');
+      if (cal) {
+        var side = going ? chosenSide() : '';
+        $$('[data-cal]', cal).forEach(function (a) {
+          a.hidden = a.getAttribute('data-cal') !== side;
+        });
+        cal.hidden = !side;
+      }
       form.hidden = true;
       done.hidden = false;
       done.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -1016,8 +1037,21 @@
     if (!main) return;
     var busy = false;
 
-    function samePage(href) {
-      return href.split('#')[0] === location.href.split('#')[0];
+    /**
+     * Is this link pointing at the document we are already looking at?
+     *
+     * Comparing the two hrefs as strings is not enough, and that is the bug
+     * behind "Scroll for more does nothing". GitHub Pages serves the landing
+     * page at BOTH `/` and `/index.html`; a guest arriving at the bare domain
+     * has `location.pathname === '/'` while the cue's href resolves to
+     * `/index.html#gallery`. The strings differ, so the link was treated as a
+     * navigation to another page: <main> was replaced with an identical copy
+     * and the window scrolled back to the top, which looks exactly like a
+     * button that does nothing.
+     */
+    function samePage(path) {
+      var norm = function (p) { return p.replace(/(^|\/)index\.html$/, '$1'); };
+      return norm(path) === norm(location.pathname);
     }
 
     function swap(html, url, push) {
@@ -1086,7 +1120,19 @@
       if (a.origin !== location.origin) return;
       if (!/\.html$/.test(a.pathname) && a.pathname !== '/'
           && !/\/$/.test(a.pathname)) return;
-      if (a.hash && samePage(a.href)) return;      // an anchor on this page
+      // An anchor on this page. Scrolled here rather than left to the browser,
+      // because the browser only treats it as an anchor when the path matches
+      // its own idea of the current URL, and `/` and `/index.html` are the
+      // same page but not the same string.
+      if (a.hash && samePage(a.pathname)) {
+        var target = document.getElementById(a.hash.slice(1));
+        if (!target) return;                      // let the browser try
+        e.preventDefault();
+        target.scrollIntoView({
+          block: 'start', behavior: REDUCED ? 'auto' : 'smooth' });
+        history.replaceState(history.state, '', a.hash);
+        return;
+      }
       e.preventDefault();
       go(a.href, true);
     });

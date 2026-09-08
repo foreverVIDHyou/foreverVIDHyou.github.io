@@ -244,12 +244,30 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
    is the whole idea. It never scales past its own width, so the ridgeline
    keeps the proportions it was traced at. */
 .hero-bg{position:absolute;left:0;right:0;bottom:0;width:100%;
-  pointer-events:none;z-index:0;line-height:0}
+  pointer-events:none;z-index:0;line-height:0;
+  /* The drawing's sky is --ivory exactly, and the page under it is a warm
+     wash that has moved on from --ivory by the height the drawing starts at.
+     Butted together that is a 5/9/16 jump in RGB across the full width of the
+     page: a hard horizontal line, which is what Vibhakar saw.
+
+     Matching the two colours cannot be done once and left, because where the
+     drawing's top edge falls depends on the viewport — it lands anywhere
+     between 47% and 53% of the hero. So the top of the drawing dissolves
+     instead. There is no edge to match, at any size, whatever the gradient
+     behind it is doing.
+
+     9% is measured, not guessed: the sky is flat --ivory for the top 38 of
+     the drawing's 430 units, and the first ridge crest starts at 40. The
+     fade is over sky and only sky. */
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 9%)}
 .hero-bg img{width:100%;height:auto;display:block}
 
 .hero-in{position:relative;z-index:2;text-align:center;
   display:flex;flex-direction:column;align-items:center;
   gap:clamp(9px,1.5vh,20px);width:100%;max-width:960px}
+
+
 
 /* --- the page arriving --------------------------------------------------- */
 /* One sequence, in the order a person reads it: Ganeshji, then whose wedding
@@ -307,8 +325,17 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
      screen that should not have anything sitting close under it. */
   margin-bottom:clamp(5px,1.1vh,15px)}
 .nm-1,.nm-2{white-space:nowrap}
+/* The ampersand sits between the two names, not under the first one.
+
+   Dhwani's note: it read as belonging to "Dhwani Mundra". Measured, it did —
+   its ink began 8px above that name's baseline and only 3px above the next
+   one, because `line-height:.9` gave a Great Vibes glyph a line box shorter
+   than the glyph itself, so it spilled upward into the row above. A line box
+   that holds the ink, and a margin split to put the ink's middle exactly
+   between the two names. */
 .hero-names .amp{font-family:var(--script);color:var(--marigold-dk);
-  font-size:.62em;line-height:.9;padding:0}
+  font-size:.62em;line-height:1;padding:0;
+  margin:.10em 0 .02em}
 html[lang="hi"] .hero-names{font-family:var(--deva);
   font-size:clamp(23px,3.7vw,46px);line-height:1.3}
 
@@ -323,7 +350,7 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 
 /* Thane Mummy's note. It is the line the family repeat back to each other, so
    it is set like a name and not like a caption. */
-.hero-tag{font:500 clamp(24px,3.4vw,44px)/1.1 var(--display);
+.hero-tag{font:500 clamp(18px,2.83vw,36px)/1.1 var(--display);
   letter-spacing:.012em;color:var(--red-800)}
 
 /* --- the four ways in ----------------------------------------------------- */
@@ -514,22 +541,59 @@ html[lang="hi"] .band-l{font-family:var(--deva);
    ========================================================================== */
 .sec-invite{background:
   radial-gradient(90% 60% at 50% 0%, var(--paper-2) 0%, var(--paper) 66%)}
+/* ==========================================================================
+   the invitation card, inside the arch
+
+   The arch is a drawing with fixed proportions and the card used to be a box
+   whose height came from whatever the text needed, so one had to give. It is
+   the card: it takes the arch's own 947:1493 and the type sits in the opening,
+   which is how the printed version works and what the reference does.
+
+   Every number here is measured off assets/art/arch-*.png, and every one is a
+   percentage of the card's WIDTH — because that is what percentage padding
+   resolves against, and because with the ratio fixed the height is a function
+   of the width anyway.
+
+     ratio     H = 1.5766 W
+     opening   x 8.9% .. 91.1% of W, so 13.5% of side padding clears it
+     head      0.788 W tall; content starts at 40% of W, which is inside the
+               head's opening, where Ganeshji goes on the reference
+     base      0.347 W tall; 11% at the foot stands clear of the plinths
+   ========================================================================== */
 .card{
   position:relative;max-width:660px;margin:0 auto;background:var(--paper);
-  border:1px solid var(--line-gold);border-radius:var(--r);
-  box-shadow:0 14px 46px rgba(58,21,18,.10);
-  padding:clamp(30px,5.4vw,58px) clamp(20px,4.4vw,52px);
-  overflow:hidden;text-align:center}
-.card::before{content:"";position:absolute;inset:9px;border:1px solid var(--line-gold);
-  opacity:.6;pointer-events:none;border-radius:2px}
+  border-radius:var(--r);box-shadow:0 14px 46px rgba(58,21,18,.10);
+  aspect-ratio:947/1493;padding:0;text-align:center}
+
+/* The insets live HERE and not on .card, and that is not a detail. A
+   percentage padding resolves against the width of the *containing block*,
+   which for the card is .wrap — so `padding:13.5%` on .card was 140px at
+   1440 and 28px at 760, squeezing the names into 380px on a laptop and
+   wrapping the date onto two lines. On .card-in the containing block is the
+   card itself, which is what every number below is measured against. */
+.card-in{padding:40% 13.5% 11%}
+
+/* --- the arch, in three pieces -------------------------------------------
+   `auto 1fr auto`. With the ratio above the shaft comes out at very close to
+   its drawn length, so nothing is stretched; the split earns its keep when
+   the ratio has to give — a long Hindi line, a narrow laptop — because then
+   only a straight ornamented column absorbs it and never the lotus capitals
+   or the plinths. Both cuts fall in plain shaft, so neither join shows. */
+.card-frame{position:absolute;inset:0;z-index:0;pointer-events:none;
+  display:grid;grid-template-rows:auto 1fr auto}
+.card-frame img{width:100%;display:block}
+.cf-head,.cf-base{height:auto}
+.cf-shaft{height:100%;object-fit:fill}
+
 .card-art{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .card-palm{position:absolute;bottom:-30px;width:clamp(120px,22%,190px);opacity:.14}
 .card-palm.l{left:-26px}
 .card-palm.r{right:-26px}
-.card-in{position:relative}
+.card-in{position:relative;z-index:1}
+.card-gan{margin-top:0}
 /* Ganeshji heads the card, above the invocation, the way he heads a
    printed invitation. */
-.card-gan{display:block;width:clamp(34px,3.4vw,44px);height:auto;
+.card-gan{display:block;width:clamp(40px,4.4vw,56px);height:auto;
   margin:0 auto 6px}
 .card-om{font:400 15px/1.4 var(--deva);color:var(--gold-600);letter-spacing:.05em}
 .card-eb{font:600 11.5px/1.5 var(--ui);letter-spacing:.2em;text-transform:uppercase;
@@ -545,13 +609,14 @@ html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17
 .cn-f{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:2px}
 .cn-amp{font:400 clamp(30px,5vw,46px)/1 var(--script);color:var(--gold-500);
   margin:2px 0}
-.card-when{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:0;
+.card-when{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0;
   text-align:center}
 .card-when dt{font:600 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;
   color:var(--gold-600);margin-bottom:10px}
 html[lang="hi"] .card-when dt{letter-spacing:.04em;text-transform:none;font-size:13px}
 .card-when dd{margin:0}
-.cw-big{font:300 clamp(19px,2.9vw,26px)/1.3 var(--display);color:var(--red-800)}
+.cw-big{font:300 clamp(18px,2.3vw,22px)/1.3 var(--display);color:var(--red-800);
+  text-wrap:balance}
 .cw-sm{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:4px}
 .card-close{font:300 italic 18px/1.6 var(--display);color:var(--ink-2);
   margin-top:30px}
@@ -618,8 +683,29 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
 .side-groom .day-h{border-bottom-color:color-mix(in srgb, var(--groom) 34%, transparent)}
 .side-bride .ev-ic{color:var(--bride)}
 .side-groom .ev-ic{color:var(--groom)}
+/* Checkout is on the list so a guest knows when the rooms go, not because
+   there is anything to reply to. The tag says so, quietly. */
+.ev-info{display:inline-block;vertical-align:middle;margin-left:10px;
+  font:600 9.5px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-600);border:1px solid var(--line-gold);border-radius:99px;
+  padding:4px 8px;translate:0 -2px}
+
 .prog-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
   margin-top:40px}
+
+/* --- one calendar, not one per ceremony -----------------------------------
+   Sits directly under the page heading rather than at the foot of the list:
+   the moment a guest has decided this list is theirs is the moment they want
+   it in their phone, and that is before they have read it, not after. */
+.cal-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:8px 16px;margin:0 0 clamp(24px,3.4vw,38px);text-align:center}
+.cal-add{display:inline-flex;align-items:center;gap:9px}
+.cal-add svg{width:18px;height:18px;flex:0 0 auto}
+.cal-note{font:400 13.5px/1.5 var(--ui);color:#7A5A50}
+.side-bride .cal-add{border-color:color-mix(in srgb, var(--bride) 38%, transparent);
+  color:var(--bride)}
+.side-groom .cal-add{border-color:color-mix(in srgb, var(--groom) 38%, transparent);
+  color:var(--groom)}
 
 /* ==========================================================================
    the reply
@@ -688,6 +774,10 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
 .lgd{font:600 13px/1.5 var(--ui);letter-spacing:.09em;text-transform:uppercase;
   color:var(--red-700);padding:0;margin-bottom:12px;display:block}
 html[lang="hi"] .lgd{letter-spacing:.02em;text-transform:none;font-size:15px}
+/* The phone is the required half of the contact question, so it is marked.
+   Nothing else on the form is, because nothing else on the form needs to be:
+   the name is obvious and everything after it is optional by design. */
+.req{color:var(--red-600);margin-left:3px;font-size:.9em}
 .f{margin-bottom:18px;min-width:0}
 .f:last-child{margin-bottom:0}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -832,6 +922,73 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 .done-t{font:300 clamp(23px,3.4vw,32px)/1.3 var(--display)}
 .done-s{font:400 15px/1.6 var(--ui);color:#7A5A50;margin-top:10px}
 .done .btn{margin-top:24px}
+/* The calendar goes above "reply for somebody else", because taking the dates
+   away is the thing they came to do and replying again is the exception. */
+.done-cal{margin-top:4px}
+.done-cal .cal-add{margin-top:24px}
+
+/* ==========================================================================
+   the wardrobe planner
+
+   A page that is honest about being empty. Mummy asked for it on 7 September
+   and the outfit guidance does not exist yet, so the page says "Will be
+   updated soon!" in the one place a reader looks first, and the four cards
+   below hold the shape the answer will take.
+
+   The illustration does the work in the meantime, which is the only thing
+   that justifies a picture this size on a page with almost no words on it.
+   It is the family's own drawing, not a meme lifted off the internet.
+   ========================================================================== */
+.sec-wr{background:linear-gradient(180deg,var(--ivory) 0%,#F7EEDC 100%)}
+
+/* The status line is set like a stamp on an envelope: small, tracked, on the
+   crimson, and knocked a degree off square so it reads as something added to
+   the page rather than part of it — because that is exactly what it is, and
+   it comes off the day the guidance lands. */
+.wr-soon{display:inline-block;margin-top:20px;padding:10px 18px;
+  font:600 12.5px/1 var(--ui);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold-200);background:var(--red-700);
+  border:1px solid var(--gold-400);box-shadow:5px 5px 0 var(--ivory-sh);
+  rotate:-1deg}
+html[lang="hi"] .wr-soon{letter-spacing:.04em;text-transform:none;font-size:14px}
+
+.wr-fig{max-width:760px;margin:0 auto;padding:clamp(12px,2vw,18px);
+  background:var(--ivory);border:1px solid var(--line-gold);
+  box-shadow:0 16px 48px rgba(58,21,18,.10)}
+.wr-fig img{width:100%;height:auto;display:block}
+.wr-fig figcaption{display:grid;grid-template-columns:1fr auto;gap:6px 16px;
+  align-items:end;padding:15px 5px 2px}
+.wr-cap{font:500 clamp(17px,2.4vw,23px)/1.3 var(--display);color:var(--red-800)}
+.wr-cap2{font:600 10.5px/1.3 var(--ui);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-600);white-space:nowrap}
+html[lang="hi"] .wr-cap2{letter-spacing:.02em;text-transform:none;font-size:12px}
+
+.wr-ct{margin-top:clamp(40px,5.5vw,64px);margin-bottom:18px}
+
+.looks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  max-width:900px;margin:0 auto}
+.look{display:flex;flex-direction:column;justify-content:space-between;
+  min-height:158px;padding:18px;background:rgba(250,243,228,.8);
+  border:1px solid var(--line-gold);border-top-width:3px;border-radius:var(--r)}
+/* One card per function, coloured by what kind of function it is: the pool
+   and the after party are the groom's blue and the bride's rose on the rest
+   of the site, and the two ceremonies take gold and crimson. */
+.look:nth-child(1){border-top-color:var(--groom)}
+.look:nth-child(2){border-top-color:var(--bride)}
+.look:nth-child(3){border-top-color:var(--gold-500)}
+.look:nth-child(4){border-top-color:var(--red-700)}
+.look-w{font:600 10px/1.3 var(--ui);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold-600)}
+html[lang="hi"] .look-w{letter-spacing:.02em;text-transform:none;font-size:12px}
+.look h2{margin:13px 0 18px;font:500 clamp(19px,2.2vw,23px)/1.1 var(--display);
+  color:var(--red-800)}
+.look-s{font:600 10px/1.4 var(--ui);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-2)}
+html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5px}
+.look-b{font:400 14.5px/1.6 var(--ui);color:var(--ink-2)}
+
+.wr-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  margin-top:clamp(36px,5vw,54px)}
 
 /* ==========================================================================
    travel
@@ -915,6 +1072,22 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 /* ==========================================================================
    narrow
    ========================================================================== */
+/* The wardrobe cards go two across before they go one, because at four across
+   below 900px the titles wrap to three lines each. */
+@media (max-width:900px){
+  .looks{grid-template-columns:1fr 1fr}
+}
+
+@media (max-width:520px){
+  .looks{grid-template-columns:1fr;gap:10px}
+  .look{min-height:0;padding:15px 16px}
+  .look h2{margin:9px 0 12px}
+  .wr-fig figcaption{grid-template-columns:1fr}
+  .wr-cap2{white-space:normal}
+  .cal-bar{flex-direction:column;gap:10px}
+  .cal-note{font-size:12.5px}
+}
+
 @media (max-width:900px){
   .ev{grid-template-columns:32px 1fr;gap:12px}
   .ev-t{grid-column:2;padding-top:0}
@@ -1030,7 +1203,15 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      30px inside a 331px card and the whole thing pressed against its own
      border; everything here comes back a step so the card has margins again,
      which is what makes a printed card look like one. */
-  .card{padding:clamp(26px,7vw,40px) clamp(18px,5vw,28px)}
+  /* No columns on a phone. The frame's opening is 82% of the card's width,
+     and 82% of a 346px card is 284px — narrower than the names, so the two
+     of them would be standing in a doorway rather than under an arch. The
+     head alone crowns the card and the card goes back to being a card. */
+  .card{aspect-ratio:auto;padding:0}
+  .card-in{padding:clamp(10px,3vw,18px) clamp(18px,5vw,28px) clamp(26px,7vw,40px)}
+  .card-frame{position:static;display:block}
+  .card-frame .cf-shaft,
+  .card-frame .cf-base{display:none}
   .cn h1{font-size:clamp(25px,7vw,32px)}
   .cn-amp{font-size:clamp(26px,7vw,34px)}
   .card-om{font-size:13.5px}
@@ -1074,7 +1255,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
   .hero-in{gap:clamp(5px,.9vh,13px)}
   .lintel-g{width:clamp(42px,3.4vw,56px)}
   .hero-names{font-size:clamp(21px,2.69vw,33px)}
-  .hero-tag{font-size:clamp(22px,2.5vw,32px)}
+  .hero-tag{font-size:clamp(17px,2.05vw,25px)}
   .way-ic{height:clamp(40px,4.4vw,60px)}
   .cd-n{font-size:clamp(24px,2.9vw,36px)}
   .cd-blk{padding:clamp(8px,1.1vh,13px) clamp(12px,1.6vw,22px)}
@@ -1083,7 +1264,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 @media (min-width:821px) and (max-height:760px){
   .hero-in{gap:clamp(4px,.7vh,10px)}
   .hero-names{font-size:clamp(20px,2.36vw,28px)}
-  .hero-tag{font-size:clamp(20px,2.2vw,28px)}
+  .hero-tag{font-size:clamp(16px,1.79vw,21px)}
   .way-ic{height:clamp(36px,3.8vw,52px)}
   .cd-n{font-size:clamp(22px,2.5vw,30px)}
   .hero{padding-bottom:clamp(44px,5.5vw,80px)}
@@ -1101,7 +1282,7 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
      fine to zoom out, so it does. */
   .hero-in{gap:clamp(11px,2vh,20px);max-width:420px}
   .hero-names{font-size:clamp(20px,6vw,28px)}
-  .hero-tag{font-size:clamp(22px,7vw,32px)}
+  .hero-tag{font-size:clamp(16px,4.56vw,21px)}
   .hero-when{font-size:12.5px;max-width:none;line-height:1.5}
   .hero-when .dot{padding:0 .4em}
   /* Columns sized to what is in them, not two equal halves of a fixed width.

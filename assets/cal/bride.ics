@@ -1,0 +1,120 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//foreverVIDHyou//Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:The Bride's Side\, Vibhakar & Dhwani
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:bride-ganesh@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261205T083000
+DTEND;TZID=Asia/Kolkata:20261205T103000
+SUMMARY:Vinayak Shubh Aarambh · Ganesh Poojan and Haat Kaam
+LOCATION:Panditji's room\, Club Mahindra Assonora\, Assonora\, Bardez\, Nor
+ th Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-fiesta@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261205T123000
+DTEND;TZID=Asia/Kolkata:20261205T163000
+SUMMARY:In and Out the Pool · Fun Fiesta
+LOCATION:Pool deck\, Club Mahindra Assonora\, Assonora\, Bardez\, North Goa
+  403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-sangeet@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261205T190000
+DTEND;TZID=Asia/Kolkata:20261205T230000
+SUMMARY:Sangeet: Sur\, Taal aur Shaadi
+LOCATION:The gardens\, Club Mahindra Assonora\, Assonora\, Bardez\, North G
+ oa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-afterparty@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261205T210000
+DTEND;TZID=Asia/Kolkata:20261206T000000
+SUMMARY:Knock Out Before Tying the Knot · After Party
+LOCATION:Banquet\, Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 4
+ 03503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-baraat@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T170000
+DTEND;TZID=Asia/Kolkata:20261206T190000
+SUMMARY:Baraat
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-varmala@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T180000
+DTEND;TZID=Asia/Kolkata:20261206T200000
+SUMMARY:Varmala
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-pheras@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T183000
+DTEND;TZID=Asia/Kolkata:20261206T210000
+SUMMARY:Pheras: Shaadi Forever Begins
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-reception@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T203000
+DTEND;TZID=Asia/Kolkata:20261206T230000
+SUMMARY:Meet & Greet
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-checkout@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261207T110000
+DTEND;TZID=Asia/Kolkata:20261207T120000
+SUMMARY:Checkout
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+END:VCALENDAR
