@@ -996,7 +996,6 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 .chip input:checked+.chip-b .chip-yes{opacity:1}
 
 .slow-hint{text-align:center;margin-top:12px}
-.travel-hint{margin:-4px 0 14px}
 
 /* after submitting */
 .done{text-align:center;padding:clamp(34px,5vw,52px) 24px;

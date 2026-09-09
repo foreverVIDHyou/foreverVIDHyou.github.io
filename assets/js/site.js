@@ -689,6 +689,21 @@
   // --- fill the form from a saved record ----------------------------------
 
   /**
+   * Hold the two date fields inside the days there is anybody to arrive for.
+   *
+   * `min` and `max` grey out the rest of the calendar in a native picker, but
+   * the form carries `novalidate` so a date typed directly into the field
+   * still submits. This snaps an out-of-range one to the nearest end.
+   */
+  $$('#f-arr, #f-dep', form).forEach(function (el) {
+    el.addEventListener('change', function () {
+      if (!el.value) return;
+      if (el.min && el.value < el.min) el.value = el.min;
+      if (el.max && el.value > el.max) el.value = el.max;
+    });
+  });
+
+  /**
    * Coerce whatever the sheet gives back into the yyyy-MM-dd that a date input
    * will accept.
    *
