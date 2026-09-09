@@ -587,7 +587,29 @@
     if (el) el.addEventListener('input', function () { clearMiss(pair[1]); });
   });
 
-  /** Drop one line from the "still needed" list once it is answered. */
+  /**
+   * Put the list away entirely.
+   *
+   * It only ever appears in answer to a submit, so any path that refills the
+   * form behind the guest's back has to clear it: loading a previous reply
+   * fills the phone and the yes/no from the sheet without either firing the
+   * events that drop those lines one at a time, so the list would sit there
+   * naming two things that are now filled in.
+   */
+  function resetMiss() {
+    var box = $('#f-miss');
+    if (!box) return;
+    $$('[data-miss]', box).forEach(function (el) { el.hidden = true; });
+    box.hidden = true;
+    showErr('e-name', false);
+    showErr('e-contact', false);
+    var pair = $('.contact');
+    if (pair) pair.classList.remove('has-error');
+    var yn = $('#step-yes');
+    if (yn) yn.classList.remove('needs');
+  }
+
+  /** Drop one line from the list once that one thing is answered. */
   function clearMiss(key) {
     var box = $('#f-miss');
     if (!box || box.hidden) return;
@@ -748,6 +770,7 @@
 
   function fill(r) {
     editingId = r.id || null;
+    resetMiss();
     $('#f-name').value = r.name || '';
     $('#f-email').value = r.email || '';
 
@@ -1015,6 +1038,7 @@
       done.hidden = true;
       form.hidden = false;
       lkSay(null);
+      resetMiss();
       setBtn(editingId ? 'edit' : 'idle');
       form.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });

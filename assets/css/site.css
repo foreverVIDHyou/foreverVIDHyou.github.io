@@ -60,6 +60,24 @@
 
 /* --- reset ---------------------------------------------------------------- */
 *,*::before,*::after{box-sizing:border-box}
+
+/* `hidden` has to actually hide.
+
+   The attribute is only `[hidden]{display:none}` in the browser's own sheet,
+   which is the weakest declaration there is: ANY author rule that sets
+   `display` on the same element beats it, and then `el.hidden = true` sets
+   the attribute, reads back as true, and changes nothing on screen.
+
+   That shipped. `.form-miss{display:block}` meant the reply page told every
+   guest "we still need your name, a phone number, whether you are coming"
+   the instant it loaded, before they had touched anything — and both the
+   bride's and the groom's calendar buttons showed on the thank-you screen at
+   once. Neither was caught by a test, because a test that asks `el.hidden`
+   asks the property and gets `true` from a box that is plainly visible.
+
+   The elsewhere-correct way to write it is `:not([hidden])` on the rule that
+   sets display, the way .lk-msg does. This makes forgetting it harmless. */
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
