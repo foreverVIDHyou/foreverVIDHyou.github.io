@@ -882,7 +882,8 @@ html[lang="hi"] .fm-h{font-size:14px}
 .contact{background:var(--paper-2);border:1px solid var(--line);
   border-radius:var(--r);padding:20px}
 .contact .f input,.contact .f select{background:var(--paper)}
-.contact-lede{margin:-4px 0 14px}
+.contact-lede,
+.travel-hint{margin:-4px 0 14px}
 .locked-wrap{position:relative;display:flex;gap:8px;min-width:0}
 /* Sized to its longest option, not to a guess. At a fixed 96px the box
    held "+1 USA/Canada", which needs more, and cut it off mid-word — on the
