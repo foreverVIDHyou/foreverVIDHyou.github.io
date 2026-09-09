@@ -772,7 +772,6 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
   gap:8px 16px;margin:0 0 clamp(24px,3.4vw,38px);text-align:center}
 .cal-add{display:inline-flex;align-items:center;gap:9px}
 .cal-add svg{width:18px;height:18px;flex:0 0 auto}
-.cal-note{font:400 13.5px/1.5 var(--ui);color:#7A5A50}
 .side-bride .cal-add{border-color:color-mix(in srgb, var(--bride) 38%, transparent);
   color:var(--bride)}
 .side-groom .cal-add{border-color:color-mix(in srgb, var(--groom) 38%, transparent);
@@ -1170,7 +1169,6 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
   .wr-fig figcaption{grid-template-columns:1fr}
   .wr-cap2{white-space:normal}
   .cal-bar{flex-direction:column;gap:10px}
-  .cal-note{font-size:12.5px}
 }
 
 @media (max-width:900px){
