@@ -1085,6 +1085,164 @@
   mountPage();
 
   // =========================================================================
+  // analytics
+  // =========================================================================
+
+  /**
+   * Set by analytics(); called by the navigation layer on every page swap.
+   * Stays a no-op when there is no endpoint to talk to.
+   */
+  var trackPage = function () {};
+
+  /**
+   * Two pings a visit: one when it starts, one when the tab goes away.
+   *
+   * Enough to know that a link landed , how many opened it, when, from what
+   * timezone, in which language, where they went and roughly how long they
+   * stayed. Deliberately not product analytics: no per-click events, no
+   * heartbeats, no third-party tag, and nothing that can delay a guest's RSVP.
+   *
+   * Lives outside mountPage() so a soft navigation does not start a second
+   * visit; the whole session is one runtime, which is why the path can just
+   * accumulate in an array.
+   */
+  (function analytics() {
+    try { setupAnalytics(); } catch (e) {}
+  })();
+
+  function setupAnalytics() {
+    var body = document.body;
+    var ENDPOINT = body.getAttribute('data-endpoint') || '';
+    var TOKEN = body.getAttribute('data-token') || '';
+    if (!ENDPOINT) return;                      // same silence as a dead form
+
+    var SES_KEY = 'vidh-ses', VIS_KEY = 'vidh-vis', START_KEY = 'vidh-start';
+    var started = Date.now();
+    var hops = [];
+    var ended = false;
+
+    function uuid() {
+      try {
+        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      } catch (e) {}
+      // randomUUID is missing before iOS 15.4, and this is an opaque id rather
+      // than anything that needs to be unguessable.
+      return 'x' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+
+    /** A stored id, or a throwaway one: private mode throws on both stores. */
+    function id(storeName, key) {
+      try {
+        var store = window[storeName];
+        var v = store.getItem(key);
+        if (!v) { v = uuid(); store.setItem(key, v); }
+        return v;
+      } catch (e) { return uuid(); }
+    }
+
+    var session = id('sessionStorage', SES_KEY);   // one tab
+    var visitor = id('localStorage', VIS_KEY);     // one browser
+
+    /** Claim the one start ping for this session before sending it. */
+    function firstStart() {
+      try {
+        var store = window.sessionStorage;
+        if (store.getItem(START_KEY) === session) return false;
+        store.setItem(START_KEY, session);
+        return true;
+      } catch (e) { return true; }
+    }
+
+    function page() {
+      return (body.className.match(/p-([\w-]+)/) || [])[1] || '';
+    }
+
+    function tz() {
+      try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }
+      catch (e) { return ''; }
+    }
+
+    /** Where the link was opened from, coarsely. Never the full URL. */
+    function ref() {
+      var r = document.referrer || '';
+      if (!r) return 'direct';                  // typed, or an in-app browser
+      if (/whatsapp/i.test(r)) return 'whatsapp';
+      try { return new URL(r).hostname; } catch (e) { return ''; }
+    }
+
+    function payload(type) {
+      return {
+        action: 'event', token: TOKEN, type: type,
+        session: session, visitor: visitor,
+        page: page(),
+        lang: document.documentElement.lang === 'hi' ? 'hi' : 'en',
+        w: window.innerWidth || 0,
+        tz: tz(),
+        ref: ref()
+      };
+    }
+
+    /**
+     * Fire and forget, with exactly one retry.
+     *
+     * Not the RSVP call() helper: that one retries twice, quickly, because a
+     * guest is watching. Here nothing is waiting, so the retry is slow and
+     * jittered on purpose , it keeps analytics out of the burst where guests'
+     * saves are competing for the same Apps Script slots.
+     *
+     * Apps Script sometimes appends the row and *then* answers with an HTML
+     * error page, so a retry can write a duplicate. That is why the Summary
+     * tab counts unique session and visitor ids rather than rows. The two go
+     * together: dropping COUNTUNIQUE would silently inflate every figure.
+     *
+     * No Content-Type header. The browser then sends text/plain, which is a
+     * simple request with no CORS preflight, and Apps Script cannot answer a
+     * preflight at all.
+     */
+    function send(data, retry) {
+      fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(data) })
+        .then(function (r) { return r.text(); })
+        .then(function (b) { if (b.charAt(0) !== '{') throw new Error('non-json'); })
+        .catch(function () {
+          if (retry) {
+            setTimeout(function () { send(data, false); },
+                       3000 + Math.random() * 2000);
+          }
+        });
+    }
+
+    /** One hop of the journey: page id, and seconds in when it was reached. */
+    function hop(name) {
+      if (hops.length >= 20) return;            // no 5KB cells
+      hops.push((name || '?') + ':' + Math.round((Date.now() - started) / 1000));
+    }
+
+    function end() {
+      if (ended) return;
+      ended = true;
+      var data = payload('end');
+      data.dur_ms = Date.now() - started;
+      data.path = hops.join(',').slice(0, 400);
+      try {
+        // A string, so the beacon goes out as text/plain. A Blob typed
+        // application/json would preflight and fail with nothing in the
+        // console to say so.
+        if (navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    hop(page());
+    trackPage = hop;
+    if (firstStart()) send(payload('start'), true);
+
+    // `pagehide` and not `visibilitychange`: the latter also fires when a
+    // guest flips to WhatsApp mid-read, which would record time-to-first-
+    // distraction rather than how long they stayed. Ends are lossy either way
+    // , a missing one never means "still reading".
+    window.addEventListener('pagehide', end);
+  }
+
+  // =========================================================================
   // soft navigation
   // =========================================================================
 
@@ -1142,6 +1300,7 @@
 
       // the header's current-page marker lives outside <main>
       var here = (doc.querySelector('body').className.match(/p-([\w-]+)/) || [])[1];
+      trackPage(here);
       $$('.nav-a').forEach(function (a) {
         var on = a.getAttribute('href') === url.split('/').pop();
         a.classList.toggle('on', on);
