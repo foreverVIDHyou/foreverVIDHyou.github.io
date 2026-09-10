@@ -54,8 +54,8 @@ BEGIN:VEVENT
 UID:bride-afterparty@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261205T210000
-DTEND;TZID=Asia/Kolkata:20261206T000000
+DTSTART;TZID=Asia/Kolkata:20261205T223000
+DTEND;TZID=Asia/Kolkata:20261206T013000
 SUMMARY:Knock Out Before Tying the Knot · After Party
 LOCATION:Banquet\, Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 4
  03503
