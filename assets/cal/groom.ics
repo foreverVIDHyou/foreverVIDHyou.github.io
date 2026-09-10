@@ -30,8 +30,8 @@ BEGIN:VEVENT
 UID:groom-fiesta@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261205T123000
-DTEND;TZID=Asia/Kolkata:20261205T163000
+DTSTART;TZID=Asia/Kolkata:20261205T114500
+DTEND;TZID=Asia/Kolkata:20261205T154500
 SUMMARY:In and Out the Pool · Fun Fiesta
 LOCATION:Pool deck\, Club Mahindra Assonora\, Assonora\, Bardez\, North Goa
   403503
@@ -78,7 +78,7 @@ UID:groom-battissi@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
 DTSTART;TZID=Asia/Kolkata:20261206T093000
-DTEND;TZID=Asia/Kolkata:20261206T113000
+DTEND;TZID=Asia/Kolkata:20261206T103000
 SUMMARY:Battissi and Maayra
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Groom's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
@@ -132,8 +132,8 @@ BEGIN:VEVENT
 UID:groom-pheras@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261206T183000
-DTEND;TZID=Asia/Kolkata:20261206T210000
+DTSTART;TZID=Asia/Kolkata:20261206T193000
+DTEND;TZID=Asia/Kolkata:20261206T213000
 SUMMARY:Pheras
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Groom's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
@@ -146,6 +146,17 @@ SEQUENCE:0
 DTSTART;TZID=Asia/Kolkata:20261206T203000
 DTEND;TZID=Asia/Kolkata:20261206T230000
 SUMMARY:Meet & Greet
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Groom's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/groom.html
+END:VEVENT
+BEGIN:VEVENT
+UID:groom-muhdikhai@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261207T100000
+DTEND;TZID=Asia/Kolkata:20261207T110000
+SUMMARY:Muh Dikhai
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Groom's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
 URL:https://foreverVIDHyou.github.io/groom.html

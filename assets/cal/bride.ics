@@ -30,8 +30,8 @@ BEGIN:VEVENT
 UID:bride-fiesta@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261205T123000
-DTEND;TZID=Asia/Kolkata:20261205T163000
+DTSTART;TZID=Asia/Kolkata:20261205T114500
+DTEND;TZID=Asia/Kolkata:20261205T154500
 SUMMARY:In and Out the Pool · Fun Fiesta
 LOCATION:Pool deck\, Club Mahindra Assonora\, Assonora\, Bardez\, North Goa
   403503
@@ -63,11 +63,33 @@ DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
 URL:https://foreverVIDHyou.github.io/bride.html
 END:VEVENT
 BEGIN:VEVENT
+UID:bride-battissi@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T090000
+DTEND;TZID=Asia/Kolkata:20261206T100000
+SUMMARY:Battissi
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-maayra@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261206T100000
+DTEND;TZID=Asia/Kolkata:20261206T110000
+SUMMARY:Maayra
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
 UID:bride-baraat@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261206T170000
-DTEND;TZID=Asia/Kolkata:20261206T190000
+DTSTART;TZID=Asia/Kolkata:20261206T173000
+DTEND;TZID=Asia/Kolkata:20261206T193000
 SUMMARY:Baraat
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
@@ -88,8 +110,8 @@ BEGIN:VEVENT
 UID:bride-pheras@forevervidhyou.github.io
 DTSTAMP:20260908T000000Z
 SEQUENCE:0
-DTSTART;TZID=Asia/Kolkata:20261206T183000
-DTEND;TZID=Asia/Kolkata:20261206T210000
+DTSTART;TZID=Asia/Kolkata:20261206T193000
+DTEND;TZID=Asia/Kolkata:20261206T213000
 SUMMARY:Pheras: Shaadi Forever Begins
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
