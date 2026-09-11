@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" width="240" height="320" fill="none" role="presentation"><defs><filter id="wsh" x="-16%" y="-12%" width="132%" height="130%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#3E0F12" flood-opacity="0.22"/></filter><linearGradient id="wface" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#7E1D1D"/><stop offset="1" stop-color="#5C1418"/></linearGradient><linearGradient id="wdoor" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A2222"/><stop offset=".62" stop-color="#6B1719"/><stop offset="1" stop-color="#5C1418"/></linearGradient><linearGradient id="win" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#FDFAF1"/><stop offset=".55" stop-color="#F6E7CE"/><stop offset="1" stop-color="#EAD6B4"/></linearGradient><linearGradient id="wcrown" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A2222"/><stop offset="1" stop-color="#4E1216"/></linearGradient><pattern id="wj" width="22" height="22" patternUnits="userSpaceOnUse"><g stroke="#D3B463" stroke-width="0.9" fill="none" opacity="0.13"><circle cx="0" cy="0" r="11"/><circle cx="22" cy="0" r="11"/><circle cx="0" cy="22" r="11"/><circle cx="22" cy="22" r="11"/><circle cx="11" cy="11" r="11"/></g></pattern></defs><g filter="url(#wsh)">
+
+  <!-- feet -->
+  <path d="M 52,286 L 72,286 L 70,306 L 54,306 Z" fill="#3E0F12"/>
+  <path d="M 168,286 L 188,286 L 186,306 L 170,306 Z" fill="#3E0F12"/>
+
+  <!-- carcass, and the interior it opens onto -->
+  <path d="M 34,44 L 206,44 L 206,290 L 34,290 Z" fill="#3E0F12"/>
+  <path d="M 44,54 L 120,54 L 120,280 L 44,280 Z" fill="url(#win)"/>
+
+  <!-- the rail, and what is hanging off it: the bride's rose, the groom's
+       blue, marigold and gold, which is the whole joke of the page -->
+  <path d="M 50,74 L 114,74" stroke="#B08D3C" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 58,76 L 66,76 L 71,140 L 53,140 Z" fill="#A32A4E"/>
+  <path d="M 72,76 L 80,76 L 86,152 L 66,152 Z" fill="#2F5D7C"/>
+  <path d="M 86,76 L 94,76 L 100,134 L 80,134 Z" fill="#E8A020"/>
+  <path d="M 99,76 L 107,76 L 112,146 L 94,146 Z" fill="#D3B463"/>
+  <path d="M 44,196 L 120,196 L 120,202 L 44,202 Z" fill="#D9C49E"/>
+  <path d="M 52,206 L 112,206 L 108,244 L 56,244 Z" fill="#EAD6B4"/>
+
+  <!-- the right-hand door, still shut -->
+  <path d="M 120,44 L 206,44 L 206,290 L 120,290 Z" fill="url(#wdoor)"/>
+  <path d="M 120,44 L 206,44 L 206,290 L 120,290 Z" fill="url(#wj)"/>
+  <path d="M 134,64 L 192,64 L 192,268 L 134,268 Z" stroke="#B08D3C" stroke-width="2.2" fill="none" opacity=".62"/>
+
+  <!-- the open door, swung out to the left and catching the light -->
+  <path d="M 44,54 L 12,34 L 12,296 L 44,280 Z" fill="url(#wface)"/>
+  <path d="M 44,54 L 12,34 L 12,296 L 44,280 Z" fill="url(#wj)"/>
+  <path d="M 36,72 L 20,62 L 20,272 L 36,262 Z" stroke="#B08D3C" stroke-width="2" fill="none" opacity=".5"/>
+
+  <!-- handles -->
+  <circle cx="128" cy="168" r="4.6" fill="#D3B463"/>
+  <circle cx="39" cy="170" r="4" fill="#D3B463"/>
+
+  <!-- crown -->
+  <path d="M 26,26 L 214,26 L 206,48 L 34,48 Z" fill="url(#wcrown)"/>
+  <path d="M 26,26 L 214,26 L 214,32 L 26,32 Z" fill="#D3B463" opacity=".85"/>
+</g></svg>

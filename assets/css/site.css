@@ -316,7 +316,7 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 
 /* --- the page arriving --------------------------------------------------- */
 /* One sequence, in the order a person reads it: Ganeshji, then whose wedding
-   it is, then when and where, then the hashtag, then the four ways in, then
+   it is, then when and where, then the hashtag, then the five ways in, then
    the clock and the way down. Nothing bounces and nothing slides sideways;
    everything rises a few pixels into place, which is what a card being laid
    on a table does.
@@ -342,10 +342,11 @@ html[lang="hi"] .foot-nav a{letter-spacing:.03em;text-transform:none;font-size:1
 .flat-more  {animation:rise .75s var(--ease) 1.06s both}
 /* the four pieces are dealt out one after another */
 .way        {animation:rise .6s var(--ease) both}
-.way:nth-child(1){animation-delay:.60s}
-.way:nth-child(2){animation-delay:.70s}
-.way:nth-child(3){animation-delay:.80s}
-.way:nth-child(4){animation-delay:.90s}
+.way:nth-child(1){animation-delay:.58s}
+.way:nth-child(2){animation-delay:.66s}
+.way:nth-child(3){animation-delay:.74s}
+.way:nth-child(4){animation-delay:.82s}
+.way:nth-child(5){animation-delay:.90s}
 /* the view itself washes in under all of it, slowest of anything */
 .hero-bg{animation:wash 1.5s var(--ease) both}
 @keyframes wash{from{opacity:0}to{opacity:1}}
@@ -398,15 +399,15 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 .hero-tag{font:500 clamp(18px,2.83vw,36px)/1.1 var(--display);
   letter-spacing:.012em;color:var(--red-800)}
 
-/* --- the four ways in ----------------------------------------------------- */
+/* --- the five ways in ----------------------------------------------------- */
 /* The same drawings that used to lie on the table, at about a quarter of the
    size and in the order a guest wants them. A row on a laptop, two by two on
    a phone, which is the only arrangement that keeps the labels readable
    without shrinking the pictures to nothing. */
-.ways{display:grid;grid-template-columns:repeat(4,1fr);
+.ways{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;
   gap:clamp(6px,1.4vw,26px);width:100%;max-width:760px;
   margin-top:clamp(2px,.6vh,10px)}
-.way{display:flex;flex-direction:column;align-items:center;gap:7px;
+.way{flex:0 1 128px;display:flex;flex-direction:column;align-items:center;gap:7px;
   text-decoration:none;color:inherit;padding:8px 4px 10px;border-radius:var(--r);
   transition:translate .24s var(--ease),background .24s}
 .way:hover,.way:focus-visible{translate:0 -3px;background:rgba(250,243,228,.5)}
@@ -1338,7 +1339,7 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
   .hero{padding-bottom:clamp(44px,5.5vw,80px)}
 }
 
-/* On a phone the four ways in go two by two rather than four across: at 360px
+/* On a phone the five ways in go three across rather than five: at 360px
    a four-column row leaves each icon 78px to live in and wraps its label to
    three lines. Everything else is the same view, smaller. */
 @media (max-width:820px){
@@ -1362,8 +1363,10 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
      tag is 30px and the invitation 46, so the drawings ended up 125-132px
      apart even though the column gap was 22. `auto auto` makes the gap the
      gap. */
-  .ways{grid-template-columns:auto auto;justify-content:center;max-width:none;
-    column-gap:clamp(20px,7vw,34px);row-gap:clamp(14px,4vw,24px)}
+  .ways{max-width:none;
+    column-gap:clamp(14px,5vw,28px);row-gap:clamp(14px,4vw,24px)}
+  /* Three across, so the five wrap to 3 + 2 with both rows centred. */
+  .way{flex-basis:clamp(72px,24vw,104px)}
   .way-ic{height:clamp(46px,13vw,64px)}
   .way{gap:9px;padding:4px 2px}
   /* The cue was sitting 11px under the clock with 59px of empty pool below
