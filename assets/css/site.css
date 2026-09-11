@@ -1014,14 +1014,12 @@ html[lang="hi"] .chip-yes{letter-spacing:.02em;text-transform:none;font-size:13p
 /* ==========================================================================
    the wardrobe planner
 
-   A page that is honest about being empty. Mummy asked for it on 7 September
-   and the outfit guidance does not exist yet, so the page says "Will be
-   updated soon!" in the one place a reader looks first, and the four cards
-   below hold the shape the answer will take.
+   Mummy asked for this page on 7 September and sent the dress codes on 11
+   September. Six cards, one per function that has a code, above the picture
+   rather than below it: the guest came here for the dress code, not the joke.
 
-   The illustration does the work in the meantime, which is the only thing
-   that justifies a picture this size on a page with almost no words on it.
-   It is the family's own drawing, not a meme lifted off the internet.
+   The illustration is the family's own drawing, not a meme lifted off the
+   internet. It carried the page while it was empty and now plays it out.
    ========================================================================== */
 .sec-wr{background:linear-gradient(180deg,var(--ivory) 0%,#F7EEDC 100%)}
 
@@ -1049,18 +1047,22 @@ html[lang="hi"] .wr-cap2{letter-spacing:.02em;text-transform:none;font-size:12px
 
 .wr-ct{margin-top:clamp(40px,5.5vw,64px);margin-bottom:18px}
 
-.looks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+.looks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
   max-width:900px;margin:0 auto}
 .look{display:flex;flex-direction:column;justify-content:space-between;
   min-height:158px;padding:18px;background:rgba(250,243,228,.8);
   border:1px solid var(--line-gold);border-top-width:3px;border-radius:var(--r)}
-/* One card per function, coloured by what kind of function it is: the pool
-   and the after party are the groom's blue and the bride's rose on the rest
-   of the site, and the two ceremonies take gold and crimson. */
-.look:nth-child(1){border-top-color:var(--groom)}
-.look:nth-child(2){border-top-color:var(--bride)}
-.look:nth-child(3){border-top-color:var(--gold-500)}
-.look:nth-child(4){border-top-color:var(--red-700)}
+/* One card per function, coloured by what kind of function it is: the parties
+   take the two sides' colours and the marigold accent, the rituals take gold,
+   and the pheras alone take crimson. Six rules for six cards , a card past the
+   end of this list falls back to the plain gold hairline, which reads as an
+   oversight rather than a choice. */
+.look:nth-child(1){border-top-color:var(--gold-500)}   /* Vinayak   */
+.look:nth-child(2){border-top-color:var(--groom)}      /* the pool  */
+.look:nth-child(3){border-top-color:var(--bride)}      /* sangeet   */
+.look:nth-child(4){border-top-color:var(--marigold)}   /* after party */
+.look:nth-child(5){border-top-color:var(--gold-500)}   /* maayra    */
+.look:nth-child(6){border-top-color:var(--red-700)}    /* pheras    */
 .look-w{font:600 10px/1.3 var(--ui);letter-spacing:.12em;text-transform:uppercase;
   color:var(--gold-600)}
 html[lang="hi"] .look-w{letter-spacing:.02em;text-transform:none;font-size:12px}
