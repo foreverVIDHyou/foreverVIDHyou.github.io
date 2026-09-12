@@ -310,8 +310,31 @@
     // `pagehide` is the one that fires on a real navigation, including into
     // the back/forward cache, where `unload` is unreliable.
     window.addEventListener('pagehide', savePos);
+    /**
+     * Stop when the phone does.
+     *
+     * A phone that locks, or switches to WhatsApp, does not stop the audio on
+     * its own — that is deliberate browser behaviour, and right for a music
+     * app. It is wrong here: a guest who glances at the invitation and puts
+     * the phone in a pocket should not be carrying a sitar loop around with
+     * them, and the only control is back on a page they have left.
+     *
+     * This is NOT the same as pressing pause, so it must not touch STOP_KEY.
+     * That key means "the guest chose silence" and outlives the tab; this is
+     * a duck, and it undoes itself. A guest who did press pause stays paused
+     * on return, because `ducked` was never set for them.
+     */
+    var ducked = false;
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden') savePos();
+      if (document.visibilityState === 'hidden') {
+        savePos();
+        if (!audio.paused) { ducked = true; audio.pause(); }
+      } else if (ducked) {
+        ducked = false;
+        // Resuming after a visibility change is not a fresh autoplay: the
+        // page already has user activation from whatever started the track.
+        start().catch(function () {});
+      }
     });
 
     var missing = false;
