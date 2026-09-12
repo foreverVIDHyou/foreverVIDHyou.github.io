@@ -90,7 +90,7 @@ DTSTAMP:20260908T000000Z
 SEQUENCE:0
 DTSTART;TZID=Asia/Kolkata:20261206T173000
 DTEND;TZID=Asia/Kolkata:20261206T193000
-SUMMARY:Baraat
+SUMMARY:Baraat Swagat
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
 URL:https://foreverVIDHyou.github.io/bride.html
@@ -123,7 +123,18 @@ DTSTAMP:20260908T000000Z
 SEQUENCE:0
 DTSTART;TZID=Asia/Kolkata:20261206T203000
 DTEND;TZID=Asia/Kolkata:20261206T230000
-SUMMARY:Meet & Greet
+SUMMARY:Congratulate and Click
+LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
+DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
+URL:https://foreverVIDHyou.github.io/bride.html
+END:VEVENT
+BEGIN:VEVENT
+UID:bride-breakfast@forevervidhyou.github.io
+DTSTAMP:20260908T000000Z
+SEQUENCE:0
+DTSTART;TZID=Asia/Kolkata:20261207T073000
+DTEND;TZID=Asia/Kolkata:20261207T103000
+SUMMARY:Breakfast
 LOCATION:Club Mahindra Assonora\, Assonora\, Bardez\, North Goa 403503
 DESCRIPTION:The Bride's Side\, Vibhakar & Dhwani\, #foreverVIDHyou
 URL:https://foreverVIDHyou.github.io/bride.html
