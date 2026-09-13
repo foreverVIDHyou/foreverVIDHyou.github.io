@@ -755,13 +755,6 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
 .side-groom .day-h{border-bottom-color:color-mix(in srgb, var(--groom) 34%, transparent)}
 .side-bride .ev-ic{color:var(--bride)}
 .side-groom .ev-ic{color:var(--groom)}
-/* Checkout is on the list so a guest knows when the rooms go, not because
-   there is anything to reply to. The tag says so, quietly. */
-.ev-info{display:inline-block;vertical-align:middle;margin-left:10px;
-  font:600 9.5px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gold-600);border:1px solid var(--line-gold);border-radius:99px;
-  padding:4px 8px;translate:0 -2px}
-
 .prog-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
   margin-top:40px}
 
