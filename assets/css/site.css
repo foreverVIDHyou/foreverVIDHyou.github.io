@@ -862,7 +862,6 @@ html[lang="hi"] .fm-h{font-size:14px}
    it takes the wider half. Split evenly, the dropdown took 146px of 275 and
    the number ran under the padlock. */
 .f2-contact{grid-template-columns:1.32fr 1fr}
-.f-narrow{max-width:190px}
 .f label{display:block;font:600 13.5px/1.5 var(--ui);color:var(--red-700);
   margin-bottom:7px}
 .f input,.f select,.f textarea{

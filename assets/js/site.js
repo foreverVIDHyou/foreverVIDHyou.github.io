@@ -822,8 +822,6 @@
       });
       if (known) cc.value = ph.code;
     }
-    $('#f-head').value = r.headcount || 1;
-    $('#f-party').value = r.party || '';
     $('#f-note').value = r.note || '';
     $('#f-arr').value = asDate(r.arrival);
     $('#f-dep').value = asDate(r.departure);
@@ -1004,8 +1002,6 @@
       attending: going ? 'yes' : 'no',
       side: going ? chosenSide() : '',
       events: going ? chosenEvents() : [],
-      headcount: going ? $('#f-head').value : 0,
-      party: going ? $('#f-party').value.trim() : '',
       arrival: going ? $('#f-arr').value : '',
       departure: going ? $('#f-dep').value : '',
       arrival_point: going ? $('#f-arrpt').value : '',
