@@ -220,7 +220,8 @@ html[lang="hi"] .nav-a{letter-spacing:.03em;text-transform:none;font-size:14px}
   max-width:none;transform:translateX(-50%);opacity:.13;pointer-events:none}
 .foot .wrap{position:relative;z-index:1}
 .foot-mono{width:60px;height:60px;margin:0 auto 18px;opacity:.95}
-.foot-names{font:300 clamp(26px,3.6vw,36px)/1.2 var(--display);color:var(--gold-200)}
+.foot-names{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;
+  gap:0 .34em;font:300 clamp(26px,3.6vw,36px)/1.2 var(--display);color:var(--gold-200)}
 .foot-when{font:400 15px/1.6 var(--ui);color:rgba(250,243,228,.66);margin-top:8px}
 .foot-nav{display:flex;flex-wrap:wrap;gap:6px 4px;justify-content:center;
   margin:26px 0 20px}
@@ -398,6 +399,15 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
    it is set like a name and not like a caption. */
 .hero-tag{font:500 clamp(18px,2.83vw,36px)/1.1 var(--display);
   letter-spacing:.012em;color:var(--red-800)}
+
+/* --- whose name leads --------------------------------------------------- */
+/* Every name pair is written groom-first in the templates, because that is
+   the default a bare link gets. The bride's invitation link sets the flag and
+   this reverses the three flex children, which carries the ampersand back to
+   the middle without a rule of its own. */
+html[data-first="bride"] .hero-names,
+html[data-first="bride"] .card-names{flex-direction:column-reverse}
+html[data-first="bride"] .foot-names{flex-direction:row-reverse}
 
 /* --- the five ways in ----------------------------------------------------- */
 /* The same drawings that used to lie on the table, at about a quarter of the
