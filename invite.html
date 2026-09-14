@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-first="groom">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -41,18 +41,13 @@
     var L = localStorage.getItem('vidh-lang');
     if (L === 'hi' || L === 'en') document.documentElement.lang = L;
   } catch (e) {}
-  /* Whose name leads. A page that states it (the two invitation links) wins
-     and is remembered; every other page follows what was remembered, so a
-     guest who arrived on the bride's link keeps her name first as they move
-     around. Same shape as the language above, and set before first paint for
-     the same reason. */
+  /* Whose name leads, remembered exactly like the language above and applied
+     before first paint for the same reason. Nothing on the site sets it: the
+     /bride and /groom links do, then send the guest here. Absent means the
+     groom's order, which is how every name pair is written in the markup. */
   try {
-    var F = document.documentElement.getAttribute('data-first');
-    if (F === 'bride' || F === 'groom') localStorage.setItem('vidh-first', F);
-    else {
-      F = localStorage.getItem('vidh-first');
-      if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
-    }
+    var F = localStorage.getItem('vidh-first');
+    if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
   } catch (e) {}
 </script>
 

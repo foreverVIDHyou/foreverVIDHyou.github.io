@@ -41,18 +41,13 @@
     var L = localStorage.getItem('vidh-lang');
     if (L === 'hi' || L === 'en') document.documentElement.lang = L;
   } catch (e) {}
-  /* Whose name leads. A page that states it (the two invitation links) wins
-     and is remembered; every other page follows what was remembered, so a
-     guest who arrived on the bride's link keeps her name first as they move
-     around. Same shape as the language above, and set before first paint for
-     the same reason. */
+  /* Whose name leads, remembered exactly like the language above and applied
+     before first paint for the same reason. Nothing on the site sets it: the
+     /bride and /groom links do, then send the guest here. Absent means the
+     groom's order, which is how every name pair is written in the markup. */
   try {
-    var F = document.documentElement.getAttribute('data-first');
-    if (F === 'bride' || F === 'groom') localStorage.setItem('vidh-first', F);
-    else {
-      F = localStorage.getItem('vidh-first');
-      if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
-    }
+    var F = localStorage.getItem('vidh-first');
+    if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
   } catch (e) {}
 </script>
 
@@ -128,7 +123,7 @@ aria-current="page"><span class="l" data-l="en">Schedule</span><span class="l" d
 </header>
 
     <div class="picks" data-reveal>
-      <a class="pick pick-bride" href="bride.html" data-reveal-item>
+      <a class="pick pick-bride" href="schedule-bride.html" data-reveal-item>
         <span class="pick-pt" aria-hidden="true">
           <img src="assets/art/portrait-bride.png" alt="" width="600" height="800"
                loading="lazy" decoding="async">
@@ -136,7 +131,7 @@ aria-current="page"><span class="l" data-l="en">Schedule</span><span class="l" d
         <span class="pick-l"><span class="l" data-l="en">Bride&#39;s side</span><span class="l" data-l="hi" lang="hi">दुल्हन का पक्ष</span></span>
         <span class="pick-go"><span class="l" data-l="en">Ladkiwaale hain hum</span><span class="l" data-l="hi" lang="hi">लड़कीवाले हैं हम</span></span>
       </a>
-      <a class="pick pick-groom" href="groom.html" data-reveal-item>
+      <a class="pick pick-groom" href="schedule-groom.html" data-reveal-item>
         <span class="pick-pt" aria-hidden="true">
           <img src="assets/art/portrait-groom.png" alt="" width="600" height="800"
                loading="lazy" decoding="async">

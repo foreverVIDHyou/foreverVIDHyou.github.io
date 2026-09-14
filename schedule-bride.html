@@ -8,13 +8,13 @@
 
 <title>The Bride&#39;s Side · Vibhakar &amp; Dhwani, 5–6 December 2026</title>
 <meta name="description" content="Vibhakar and Dhwani are getting married at Club Mahindra Assonora, Goa on 5–6 December 2026. Come and celebrate with us.">
-<link rel="canonical" href="https://foreverVIDHyou.github.io/bride.html">
+<link rel="canonical" href="https://foreverVIDHyou.github.io/schedule-bride.html">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Vibhakar &amp; Dhwani">
 <meta property="og:title" content="Vibhakar &amp; Dhwani, 5–6 December 2026">
 <meta property="og:description" content="Vibhakar and Dhwani are getting married at Club Mahindra Assonora, Goa on 5–6 December 2026. Come and celebrate with us.">
-<meta property="og:url" content="https://foreverVIDHyou.github.io/bride.html">
+<meta property="og:url" content="https://foreverVIDHyou.github.io/schedule-bride.html">
 <meta property="og:image" content="https://foreverVIDHyou.github.io/assets/img/og-7e420dd8.jpg">
 <meta property="og:image:secure_url" content="https://foreverVIDHyou.github.io/assets/img/og-7e420dd8.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -41,18 +41,13 @@
     var L = localStorage.getItem('vidh-lang');
     if (L === 'hi' || L === 'en') document.documentElement.lang = L;
   } catch (e) {}
-  /* Whose name leads. A page that states it (the two invitation links) wins
-     and is remembered; every other page follows what was remembered, so a
-     guest who arrived on the bride's link keeps her name first as they move
-     around. Same shape as the language above, and set before first paint for
-     the same reason. */
+  /* Whose name leads, remembered exactly like the language above and applied
+     before first paint for the same reason. Nothing on the site sets it: the
+     /bride and /groom links do, then send the guest here. Absent means the
+     groom's order, which is how every name pair is written in the markup. */
   try {
-    var F = document.documentElement.getAttribute('data-first');
-    if (F === 'bride' || F === 'groom') localStorage.setItem('vidh-first', F);
-    else {
-      F = localStorage.getItem('vidh-first');
-      if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
-    }
+    var F = localStorage.getItem('vidh-first');
+    if (F === 'bride' || F === 'groom') document.documentElement.setAttribute('data-first', F);
   } catch (e) {}
 </script>
 
@@ -281,7 +276,7 @@ aria-current="page"><span class="l" data-l="en">Schedule</span><span class="l" d
 
     <div class="prog-acts center" data-reveal>
       <a class="btn btn-primary" href="rsvp.html"><span class="l" data-l="en">Tell us you&#39;re coming</span><span class="l" data-l="hi" lang="hi">बताइए कि आप आ रहे हैं</span></a>
-      <a class="btn btn-ghost" href="groom.html"><span class="l" data-l="en">See the other side</span><span class="l" data-l="hi" lang="hi">दूसरा पक्ष देखें</span></a>
+      <a class="btn btn-ghost" href="schedule-groom.html"><span class="l" data-l="en">See the other side</span><span class="l" data-l="hi" lang="hi">दूसरा पक्ष देखें</span></a>
     </div>
 
   </div>
