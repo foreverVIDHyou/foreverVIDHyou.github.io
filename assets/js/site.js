@@ -483,10 +483,13 @@
     return new Promise(function (res) { setTimeout(res, ms); });
   }
 
-  function call(payload, tries, delay) {
+  function call(payload, tries, delay, meta) {
     tries = tries == null ? 2 : tries;
     delay = delay == null ? 900 : delay;
     payload.token = TOKEN;
+    // Counted because a retried save cannot be read the same way as a first
+    // one: see the note at the call site.
+    if (meta) meta.attempts = (meta.attempts || 0) + 1;
 
     return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
       .then(function (r) { return r.text(); })
@@ -507,7 +510,7 @@
       .catch(function (err) {
         if (tries > 1) {
           return sleep(delay).then(function () {
-            return call(payload, tries - 1, Math.round(delay * 1.8));
+            return call(payload, tries - 1, Math.round(delay * 1.8), meta);
           });
         }
         throw err;
@@ -1046,16 +1049,35 @@
       done.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
 
-    call(payload)
+    /**
+     * "Your earlier answer has been replaced" must mean the guest had an
+     * earlier answer , not that we wrote one ourselves a second ago.
+     *
+     * Apps Script often writes the row and *then* answers with an HTML error
+     * page; that is the whole reason landed() exists. So a save that is
+     * retried finds, on the second attempt, the row its own first attempt
+     * created, and the server truthfully reports updated:true. Read straight
+     * through, that told first-time guests their earlier reply had been
+     * overwritten.
+     *
+     * So the server's verdict is trusted only when it arrives on the first
+     * attempt. After a retry, and in the landed() fallback where we cannot
+     * tell our own write from anyone else's, the question becomes one the
+     * browser can answer honestly: did this guest look up an existing reply
+     * and edit it? That errs towards "Saved", which is the harmless way to be
+     * wrong.
+     */
+    var meta = {};
+    call(payload, null, null, meta)
       .then(function (res) {
         if (!res || !res.ok) throw new Error((res && res.error) || 'failed');
-        showDone(res.updated, res.rsvp);
+        showDone(meta.attempts > 1 ? !!editingId : res.updated, res.rsvp);
       })
       .catch(function () {
         // The reply did not arrive, which does not mean the row did not.
         return landed(payload).then(function (rec) {
           if (!rec) throw new Error('failed');
-          showDone(rec.created_at !== rec.updated_at, rec);
+          showDone(!!editingId, rec);
         });
       })
       .catch(function () {
