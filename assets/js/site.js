@@ -483,6 +483,23 @@
     return new Promise(function (res) { setTimeout(res, ms); });
   }
 
+  /**
+   * Stop waiting after CALL_MS, because by then the answer is not coming.
+   *
+   * Apps Script answers a POST with a 302 to script.googleusercontent.com, and
+   * the browser has to follow it to read the reply. The script itself runs on
+   * the first hop , the row is written in under a second , and it is the second
+   * hop that intermittently hangs for ten seconds and more and then fails.
+   * Measured here: four identical calls, three following in about 0.3s and one
+   * taking 10.2s before erroring.
+   *
+   * Waiting that out is pointless. The write has already happened, so aborting
+   * costs nothing and the lookup that follows will find the row. Without this
+   * the wait is unbounded and a guest sits on "sending" for forty seconds
+   * watching a reply that is already in the sheet.
+   */
+  var CALL_MS = 5000;
+
   function call(payload, tries, delay, meta) {
     tries = tries == null ? 2 : tries;
     delay = delay == null ? 900 : delay;
@@ -491,8 +508,16 @@
     // one: see the note at the call site.
     if (meta) meta.attempts = (meta.attempts || 0) + 1;
 
-    return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
-      .then(function (r) { return r.text(); })
+    var stop = null, timer = null;
+    try { stop = new AbortController(); } catch (e) {}
+    var opts = { method: 'POST', body: JSON.stringify(payload) };
+    if (stop) {
+      opts.signal = stop.signal;
+      timer = setTimeout(function () { try { stop.abort(); } catch (e) {} }, CALL_MS);
+    }
+
+    return fetch(ENDPOINT, opts)
+      .then(function (r) { if (timer) clearTimeout(timer); return r.text(); })
       .then(function (body) {
         var res;
         try {
@@ -508,6 +533,7 @@
         return res;
       })
       .catch(function (err) {
+        if (timer) clearTimeout(timer);
         if (tries > 1) {
           return sleep(delay).then(function () {
             return call(payload, tries - 1, Math.round(delay * 1.8), meta);
