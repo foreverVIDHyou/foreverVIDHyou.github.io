@@ -534,7 +534,7 @@
     var key = payload.email || payload.phone;
     if (!key) return Promise.resolve(null);
 
-    return call({ action: 'lookup', key: key }, 2)
+    return call({ action: 'lookup', key: key }, 1)
       .then(function (res) {
         if (!res || !res.found || !res.rsvp) return null;
         var when = Date.parse(res.rsvp.updated_at);
@@ -1067,17 +1067,41 @@
      * and edit it? That errs towards "Saved", which is the harmless way to be
      * wrong.
      */
+    /**
+     * Ask before trying again.
+     *
+     * The old order was: save, save again, then look it up, then look it up
+     * again , four round trips before the guest was told anything, every time
+     * the first answer was not JSON. And it usually is not: Apps Script writes
+     * the row in a second or two and *then* answers with an HTML error page,
+     * which is the very case landed() exists for. So the button sat on
+     * "sending" while the row was already in the sheet.
+     *
+     * Now a failed answer is followed by a lookup rather than a blind retry.
+     * If the row is there the guest is told at once , two round trips instead
+     * of four , and the save is repeated only when the lookup says it really
+     * did not land.
+     */
     var meta = {};
-    call(payload, null, null, meta)
-      .then(function (res) {
-        if (!res || !res.ok) throw new Error((res && res.error) || 'failed');
-        showDone(meta.attempts > 1 ? !!editingId : res.updated, res.rsvp);
-      })
+    function saveOnce() { return call(payload, 1, null, meta); }
+    function answered(res) {
+      if (!res || !res.ok) throw new Error((res && res.error) || 'failed');
+      showDone(meta.attempts > 1 ? !!editingId : res.updated, res.rsvp);
+    }
+    function didItLand(orElse) {
+      return landed(payload).then(function (rec) {
+        if (rec) { showDone(!!editingId, rec); return; }
+        return orElse();
+      });
+    }
+
+    saveOnce()
+      .then(answered)
       .catch(function () {
-        // The reply did not arrive, which does not mean the row did not.
-        return landed(payload).then(function (rec) {
-          if (!rec) throw new Error('failed');
-          showDone(!!editingId, rec);
+        return didItLand(function () {
+          return saveOnce().then(answered).catch(function () {
+            return didItLand(function () { throw new Error('failed'); });
+          });
         });
       })
       .catch(function () {
