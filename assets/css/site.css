@@ -31,7 +31,7 @@
   --red-900:#2A0E10; --red-800:#4E1216; --red-700:#7E1D1D; --red-600:#9B2A22;
   --red-500:#B23A2A;
   --marigold:#E8A020; --marigold-dk:#C97E10; --marigold-lt:#F5C24B;
-  --gold-600:#8F6B22; --gold-500:#B08D3C; --gold-400:#D3B463; --gold-200:#EBDCB4;
+  --gold-600:#87641F; --gold-500:#B08D3C; --gold-400:#D3B463; --gold-200:#EBDCB4;
   --ivory:#FAF3E4; --ivory-2:#F2E6CE; --ivory-sh:#E4D3B4;
   --terra:#A87B5E; --terra-dk:#7A4A34; --blush:#F2D7C6;
   --leaf:#4F7A3E;
@@ -680,8 +680,8 @@ html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17
 .card-names{display:flex;flex-direction:column;align-items:center;gap:6px;gap:.9cqw}
 .cn h1{font-size:clamp(30px,5.4vw,48px);font-size:7.27cqw;color:var(--red-800)}
 .cn-p{font:400 15px/1.6 var(--ui);color:var(--ink-2);margin-top:8px;
-  font-size:max(11px,2.27cqw);margin-top:1.21cqw}
-.cn-l{color:var(--gold-600);font-size:13.5px;font-size:max(10px,2.05cqw)}
+  font-size:max(8.9px,2.27cqw);margin-top:1.21cqw}
+.cn-l{color:var(--gold-600);font-size:13.5px;font-size:max(8.3px,2.05cqw)}
 /* Grandparents and parents are one block of two lines, so the second sits
    close under the first rather than repeating the gap that separates the
    pair from the name above. */
