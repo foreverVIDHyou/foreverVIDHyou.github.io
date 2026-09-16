@@ -682,6 +682,10 @@ html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17
 .cn-p{font:400 15px/1.6 var(--ui);color:var(--ink-2);margin-top:8px;
   font-size:max(11px,2.27cqw);margin-top:1.21cqw}
 .cn-l{color:var(--gold-600);font-size:13.5px;font-size:max(10px,2.05cqw)}
+/* Grandparents and parents are one block of two lines, so the second sits
+   close under the first rather than repeating the gap that separates the
+   pair from the name above. */
+.cn-p + .cn-p{margin-top:.34cqw}
 .cn-f{font:400 14px/1.6 var(--ui);color:#7A5A50;margin-top:2px;
   font-size:max(10px,2.12cqw)}
 .cn-amp{font:400 clamp(30px,5vw,46px)/1 var(--script);color:var(--gold-500);
