@@ -681,9 +681,8 @@ html[lang="hi"] .card-req{font-family:var(--deva);font-style:normal;font-size:17
 .cn h1{font-size:clamp(30px,5.4vw,48px);font-size:7.27cqw;color:var(--red-800)}
 .cn-p{font:400 15px/1.6 var(--ui);color:var(--ink-2);margin-top:8px;
   font-size:max(8.9px,2.27cqw);margin-top:1.21cqw}
-.cn-l{color:var(--gold-600);font-size:13.5px;font-size:max(8.3px,2.05cqw)}
-/* A label on its own line, for an entry long enough to want the break. */
-.cn-l-own{display:block}
+.cn-l{display:block;color:var(--gold-600);font-size:13.5px;
+  font-size:max(8.3px,2.05cqw);line-height:1.35}
 /* Grandparents and parents are one block of two lines, so the second sits
    close under the first rather than repeating the gap that separates the
    pair from the name above. */
