@@ -733,13 +733,24 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
 
               <div class="f">
                 <label for="f-arrpt"><span class="l" data-l="en">Arriving via</span><span class="l" data-l="hi" lang="hi">कहाँ पहुँच रहे हैं</span></label>
-                <select id="f-arrpt" name="arrival_point">
-                  <option value="">Not decided yet</option>
-                  <option value="mopa">Flight to Mopa (GOX)</option>
-                  <option value="dabolim">Flight to Dabolim (GOI)</option>
-                  <option value="thivim">Train to Thivim</option>
-                  <option value="road">By road</option>
-                </select>
+                <input type="text" id="f-arrpt" name="arrival_point"
+                       list="arrpt-en" autocomplete="off" maxlength="80"
+                       data-en-list="arrpt-en" data-hi-list="arrpt-hi"
+                       data-was='mopa=Flight to Mopa (GOX)|dabolim=Flight to Dabolim (GOI)|thivim=Train to Thivim|road=By road'
+                       data-en-placeholder="Pick one, or type how you are coming" data-hi-placeholder="चुनिए, या लिखिए कि आप कैसे आ रहे हैं"
+                       placeholder="Pick one, or type how you are coming">
+                <datalist id="arrpt-en">
+                  <option value="Flight to Mopa (GOX)"></option>
+                  <option value="Flight to Dabolim (GOI)"></option>
+                  <option value="Train to Thivim"></option>
+                  <option value="By road"></option>
+                </datalist>
+                <datalist id="arrpt-hi">
+                  <option value="उड़ान, मोपा (GOX)"></option>
+                  <option value="उड़ान, डाबोलिम (GOI)"></option>
+                  <option value="ट्रेन, थिविम"></option>
+                  <option value="सड़क मार्ग से"></option>
+                </datalist>
               </div>
 
               <div class="f">
@@ -864,6 +875,6 @@ aria-current="page"><span class="l" data-l="en">RSVP</span><span class="l" data-
   <source src="assets/audio/theme.ogg" type="audio/ogg">
 </audio>
 
-<script src="assets/js/site.js?v=ec568885" defer></script>
+<script src="assets/js/site.js?v=4ca0002a" defer></script>
 </body>
 </html>

@@ -42,6 +42,12 @@
       var v = el.getAttribute('data-' + l + '-src');
       if (v !== null && el.getAttribute('src') !== v) el.setAttribute('src', v);
     });
+    // Which <datalist> a combobox offers, so the suggestions read in the
+    // language on screen. Only "how are you arriving" needs it so far.
+    $$('[data-' + l + '-list], [data-' + other + '-list]').forEach(function (el) {
+      var v = el.getAttribute('data-' + l + '-list');
+      if (v !== null) el.setAttribute('list', v);
+    });
     // Alt text is read aloud, so it is one of the two languages like anything
     // else on the page. Only the wardrobe illustration needs it so far.
     $$('[data-' + l + '-alt], [data-' + other + '-alt]').forEach(function (el) {
@@ -856,7 +862,14 @@
     $('#f-dep').value = asDate(r.departure);
     $('#f-arrdet').value = r.arrival_detail || '';
     var ap = $('#f-arrpt');
-    if (ap && r.arrival_point != null) ap.value = String(r.arrival_point);
+    if (ap && r.arrival_point != null) {
+      var was = String(r.arrival_point), label = was;
+      (ap.getAttribute('data-was') || '').split('|').forEach(function (pair) {
+        var bits = pair.split('=');
+        if (bits[0] && bits[0] === was) label = bits.slice(1).join('=');
+      });
+      ap.value = label;
+    }
 
     var going = String(r.attending || 'yes') === 'yes';
     var radio = form.querySelector('input[name="attending"][value="' + (going ? 'yes' : 'no') + '"]');
