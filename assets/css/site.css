@@ -400,14 +400,21 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 .hero-tag{font:500 clamp(18px,2.83vw,36px)/1.1 var(--display);
   letter-spacing:.012em;color:var(--red-800)}
 
+/* Wording that differs by side , the dates, the days, the wardrobe eyebrow.
+   Both are in the page and one is hidden, as the two languages are. The
+   bride's shows by default, because an unmarked link is hers. */
+.sd-g{display:none}
+html[data-first="groom"] .sd-b{display:none}
+html[data-first="groom"] .sd-g{display:inline}
+
 /* --- whose name leads --------------------------------------------------- */
-/* Every name pair is written groom-first in the templates, because that is
-   the default a bare link gets. The bride's invitation link sets the flag and
-   this reverses the three flex children, which carries the ampersand back to
-   the middle without a rule of its own. */
-html[data-first="bride"] .hero-names,
-html[data-first="bride"] .card-names{flex-direction:column-reverse}
-html[data-first="bride"] .foot-names{flex-direction:row-reverse}
+/* Every name pair is written bride-first in the templates, because that is
+   what a bare link gets. The groom's link sets the flag and this reverses the
+   three flex children, which carries the ampersand back to the middle without
+   a rule of its own. */
+html[data-first="groom"] .hero-names,
+html[data-first="groom"] .card-names{flex-direction:column-reverse}
+html[data-first="groom"] .foot-names{flex-direction:row-reverse}
 
 /* --- the five ways in ----------------------------------------------------- */
 /* The same drawings that used to lie on the table, at about a quarter of the
