@@ -403,10 +403,12 @@ html[lang="hi"] .hero-names{font-family:var(--deva);
 
 /* Wording that differs by side , the dates, the days, the wardrobe eyebrow.
    Both are in the page and one is hidden, as the two languages are. The
-   bride's shows by default, because an unmarked link is hers. */
-.sd-g{display:none}
-html[data-first="groom"] .sd-b{display:none}
-html[data-first="groom"] .sd-g{display:inline}
+   bride's shows by default, because an unmarked link is hers.
+   Not .sd-b/.sd-g: the RSVP side cards already use .sd and .sd-b, and
+   hiding .sd-b for groom-first visitors emptied both cards, photos and all. */
+.sided-g{display:none}
+html[data-first="groom"] .sided-b{display:none}
+html[data-first="groom"] .sided-g{display:inline}
 
 /* --- whose name leads --------------------------------------------------- */
 /* Every name pair is written bride-first in the templates, because that is
