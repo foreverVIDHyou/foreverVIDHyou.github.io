@@ -444,8 +444,16 @@ html[data-first="groom"] .foot-names{flex-direction:row-reverse}
   filter:drop-shadow(0 5px 14px rgba(58,21,18,.32));
   transition:filter .24s var(--ease)}
 .way:hover .way-ic img{filter:drop-shadow(0 10px 22px rgba(58,21,18,.40))}
+/* Crimson pills, not bare captions. Dark-red text on the peach sky was easy
+   to miss, and the family asked for these to stand out more. `min-width:0` lets
+   a long pill run past its tile instead of widening the tile and breaking
+   the three-then-two rows on a 360px phone. */
+.way{min-width:0}
 .way-l{font:600 clamp(9.5px,.92vw,12px)/1.25 var(--ui);letter-spacing:.11em;
-  text-transform:uppercase;color:var(--red-800);text-wrap:balance}
+  text-transform:uppercase;color:var(--ivory);background:var(--red-700);
+  padding:6px 10px 5px;border-radius:99px;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(58,21,18,.22);transition:background .24s}
+.way:hover .way-l{background:var(--red-600)}
 html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
   font-size:clamp(11px,1.05vw,13.5px)}
 
@@ -745,13 +753,22 @@ html[lang="hi"] .card-close{font-family:var(--deva);font-style:normal;font-size:
 .picks{align-items:stretch}
 .pick{justify-content:flex-start}
 .pick-go{margin-top:auto}
+/* Filled, not outlined, and with an arrow: as a gold-edged pill on paper the
+   button read as a caption under the portrait, and guests stopped at this
+   page instead of tapping through. */
 .pick-go{font:600 12px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;
-  margin-top:18px;padding:11px 18px;border-radius:99px;
-  border:1px solid var(--line-gold);transition:background .22s}
+  margin-top:18px;padding:12px 16px 12px 20px;border-radius:99px;
+  display:inline-flex;align-items:center;gap:8px;color:var(--paper);
+  box-shadow:0 5px 14px rgba(58,21,18,.16);
+  transition:filter .22s,box-shadow .22s}
+.pick-go::after{content:"\2192";font-size:1.35em;line-height:0;
+  transition:transform .22s var(--ease)}
 html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px}
-.pick-bride .pick-go{color:var(--bride)}
-.pick-groom .pick-go{color:var(--groom)}
-.pick:hover .pick-go{background:rgba(176,141,60,.1)}
+.pick-bride .pick-go{background:var(--bride)}
+.pick-groom .pick-go{background:var(--groom)}
+.pick:hover .pick-go{filter:brightness(1.1);box-shadow:0 8px 20px rgba(58,21,18,.22)}
+.pick:hover .pick-go::after{transform:translateX(3px)}
+.pick:active{transform:scale(.98)}
 .pick-note{margin-top:30px;font:400 15px/1.7 var(--ui);color:#7A5A50}
 
 /* ==========================================================================
@@ -1314,8 +1331,9 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
   .pick{padding:16px 8px 18px}
   .pick-pt{width:min(100%,124px)}
   .pick-l{font-size:clamp(16px,4.6vw,21px);margin-top:11px}
-  .pick-go{font-size:9.5px;letter-spacing:.06em;padding:9px 8px;margin-top:12px}
-  html[lang="hi"] .pick-go{font-size:11px}
+  .pick-go{font-size:10px;letter-spacing:.05em;padding:10px 8px;margin-top:12px;
+    gap:5px;width:100%;justify-content:center}
+  html[lang="hi"] .pick-go{font-size:12px}
   .cd-row{gap:8px}
   .cd-u{min-width:52px}
   .pol{width:calc(50% - 10px)}
@@ -1383,6 +1401,7 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
   .way{flex-basis:clamp(72px,24vw,104px)}
   .way-ic{height:clamp(46px,13vw,64px)}
   .way{gap:9px;padding:4px 2px}
+  .way-l{letter-spacing:.06em;padding:6px 8px 5px}
   /* The cue was sitting 11px under the clock with 59px of empty pool below
      it. It drops into that space, which is the emptiest part of the drawing
      and the obvious place for it. */
