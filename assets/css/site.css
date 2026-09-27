@@ -806,7 +806,6 @@ html[lang="hi"] .pick-go{letter-spacing:.03em;text-transform:none;font-size:14px
 /* ==========================================================================
    the reply
    ========================================================================== */
-.sec-rsvp .deadline{margin-bottom:30px}
 .rsvp-box{max-width:600px;margin:0 auto}
 
 /* find an existing reply: its own panel, visibly not part of the form */
