@@ -444,16 +444,8 @@ html[data-first="groom"] .foot-names{flex-direction:row-reverse}
   filter:drop-shadow(0 5px 14px rgba(58,21,18,.32));
   transition:filter .24s var(--ease)}
 .way:hover .way-ic img{filter:drop-shadow(0 10px 22px rgba(58,21,18,.40))}
-/* Crimson pills, not bare captions. Dark-red text on the peach sky was easy
-   to miss, and the family asked for these to stand out more. `min-width:0` lets
-   a long pill run past its tile instead of widening the tile and breaking
-   the three-then-two rows on a 360px phone. */
-.way{min-width:0}
 .way-l{font:600 clamp(9.5px,.92vw,12px)/1.25 var(--ui);letter-spacing:.11em;
-  text-transform:uppercase;color:var(--ivory);background:var(--red-700);
-  padding:6px 10px 5px;border-radius:99px;white-space:nowrap;
-  box-shadow:0 3px 10px rgba(58,21,18,.22);transition:background .24s}
-.way:hover .way-l{background:var(--red-600)}
+  text-transform:uppercase;color:var(--red-800);text-wrap:balance}
 html[lang="hi"] .way-l{letter-spacing:.02em;text-transform:none;
   font-size:clamp(11px,1.05vw,13.5px)}
 
@@ -1401,7 +1393,6 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
   .way{flex-basis:clamp(72px,24vw,104px)}
   .way-ic{height:clamp(46px,13vw,64px)}
   .way{gap:9px;padding:4px 2px}
-  .way-l{letter-spacing:.06em;padding:6px 8px 5px}
   /* The cue was sitting 11px under the clock with 59px of empty pool below
      it. It drops into that space, which is the emptiest part of the drawing
      and the obvious place for it. */
