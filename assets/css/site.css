@@ -28,6 +28,7 @@
    never a ground and never a large area.
    -------------------------------------------------------------------------- */
 :root {
+  color-scheme:only light;
   --red-900:#2A0E10; --red-800:#4E1216; --red-700:#7E1D1D; --red-600:#9B2A22;
   --red-500:#B23A2A;
   --marigold:#E8A020; --marigold-dk:#C97E10; --marigold-lt:#F5C24B;

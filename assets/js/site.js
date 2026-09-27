@@ -730,7 +730,7 @@
       $$('[data-miss]', box).forEach(function (el) {
         el.hidden = !miss[el.getAttribute('data-miss')];
       });
-      box.hidden = !any;
+      box.hidden = !(miss.name || miss.phone);
     }
     showErr('e-form', false);
 
