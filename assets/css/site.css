@@ -571,8 +571,6 @@ html[lang="hi"] .flat-more{letter-spacing:.02em;text-transform:none;font-size:13
   text-wrap:balance}
 html[lang="hi"] .band-l{font-family:var(--deva);
   font-size:clamp(17px,2.2vw,25px);line-height:1.6}
-.band-by{font:400 clamp(11.5px,1.05vw,13.5px)/1.5 var(--ui);color:var(--ink-2);
-  margin-top:14px}
 .sec-band .btn{margin-top:clamp(16px,2vw,22px)}
 
 /* the polaroids, laid out like a handful of photographs on the table */
@@ -1257,7 +1255,6 @@ html[lang="hi"] .look-s{letter-spacing:.01em;text-transform:none;font-size:12.5p
 
   /* the closing ask */
   .band-l{font-size:19px}
-  .band-by{font-size:12px}
   .sec-band .btn{margin-top:16px}
   .btn{font-size:12px;padding:15px 26px;letter-spacing:.13em}
 
